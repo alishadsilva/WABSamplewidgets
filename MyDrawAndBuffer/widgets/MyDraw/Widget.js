@@ -128,10 +128,10 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
     }, "buffer").startup();
 
       function toggle2(){
-        self.on("click", enablebutton)
-        function enablebutton(){
-          registry.byId('buffer').set('disabled', false)
-        }
+        // self.on("click", enablebutton)
+        // function enablebutton(){
+        //   registry.byId('buffer').set('disabled', false)
+        // }
         registry.byId('buffer').set('disabled', false)
         }
       dojo.ready(function(){
