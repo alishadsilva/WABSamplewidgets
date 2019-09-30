@@ -13,9 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
-define(['dojo/_base/declare',"dijit/form/Button", "dojo/dom", "dojo/_base/lang","esri/toolbars/draw", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol","esri/graphic", "esri/Color","dojo/parser", 'jimu/BaseWidget',"dojo/domReady!"],
+define(['dojo/_base/declare',"dijit/form/Button", "dojo/dom", "dojo/_base/lang","esri/toolbars/draw", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol","esri/graphic", "esri/Color","esri/tasks/GeometryService","esri/tasks/BufferParameters","dojo/parser","dijit/registry", 'jimu/BaseWidget',"dojo/domReady!"],
 function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,SimpleFillSymbol, Graphic, 
-        Color, parser, BaseWidget,ready) {
+        Color,GeometryService, BufferParameters, parser, registry, BaseWidget,ready) {
   //To create a widget, you need to derive from BaseWidget.
   return declare([BaseWidget], {
     // DemoWidget code goes here
@@ -26,16 +26,18 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
     toggleFlag: true,
     postCreate: function() {
       this.inherited(arguments);
-      console.log('postCreate');
+      console.log("postCreate");
     },
 
     startup: function() {
       this.inherited(arguments);
       // this.mapIdNode.innerHTML = 'map id:' + this.map.id;
       parser.parse();
+      var self= this.map
       var myButton = new Button({
         label: "Point",
         onClick: lang.hitch(this, function(event){
+          registry.byId('buffer').set('disabled', false)
             var markerpointSymbol = new SimpleMarkerSymbol();
             markerpointSymbol.setColor(new Color("#00FFFF"));
 
@@ -55,6 +57,7 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
       var myButton = new Button({
         label: "Line",
         onClick: lang.hitch(this, function(event){
+          registry.byId('buffer').set('disabled', false)
             var markerlineSymbol = new SimpleLineSymbol();
             markerlineSymbol.setColor(new Color("#718fca"));
 
@@ -73,6 +76,7 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
       var myButton = new Button({
         label: "Polygon",
         onClick: lang.hitch(this, function(event){
+          registry.byId('buffer').set('disabled', false)
             var markerpolySymbol = new SimpleFillSymbol();
             markerpolySymbol.setColor(new Color("#ff000e"));
 
@@ -93,9 +97,37 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
         label: "Clear",
         onClick: lang.hitch(this, function(event){
             this.map.graphics.clear()
+            registry.byId('buffer').set('disabled', true)
 
         })
     }, "cleard").startup();
+
+      var myButton = new Button({
+        label: "Buffer",
+        disabled: true,
+        onClick: lang.hitch(this, function(event){
+            console.log(this.map.graphics.graphics[0].geometry);
+            gsvc= new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+            var params = new BufferParameters()
+            params.geometries  = [this.map.graphics.graphics[0].geometry]
+            params.distances = [ 1000 ]
+            params.unit = esri.tasks.GeometryService.UNIT_KILOMETER;
+            gsvc.buffer(params, showBuffer)
+
+            function showBuffer(geometries){
+            var markerSymbol = new SimpleFillSymbol();
+            markerSymbol.setColor(new Color("#ff000g"))
+            var symbol=markerSymbol;
+            dojo.forEach(geometries, function(geometry) {
+              var graphic = new esri.Graphic(geometry,symbol);
+              self.graphics.add(graphic);
+              // self.graphics.getDojoShape().moveToBack()
+              registry.byId('buffer').set('disabled', true)
+            });
+            // this.map.graphics.add(new Graphic(geometries.geometry, symbol))
+          }
+        })
+    }, "buffer").startup();
 
       console.log('startup');
     },
