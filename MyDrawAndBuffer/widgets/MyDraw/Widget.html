@@ -1,0 +1,30 @@
+<div>
+	<p>
+		Click and add a Point, Line or Polygon on the map using the appropriate buttons to enable Buffer.
+	</p>
+	<button id="point">Point</button>
+	<button id="line">Line</button>
+	<button id="polygon">Polygon</button>
+	<br>
+	<br>
+	<p>
+		<label for="BufferValue">Enter a valid buffer Value: </label>
+		<input id="BufferValue" type="text"
+    data-dojo-type="dijit/form/NumberTextBox"
+    name= "BufferValue"
+    required="true"
+    data-dojo-props="constraints:{
+            pattern: '#####'
+        },
+        promptMessage: 'Value required',
+        missingMessage: 'What is the buffer radius?',
+        invalidMessage:'Please enter a numeric value.'" />
+	</p>
+	<button id="buffer">Buffer</button>
+	<br>
+	<br>
+	<p>
+		Click on Clear to clear your graphics and the associated buffers.
+	</p>
+	<button id="cleard">Clear</button>
+</div>

@@ -13,9 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
-define(['dojo/_base/declare',"dijit/form/Button", "dojo/dom", "dojo/_base/lang","esri/toolbars/draw", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol","esri/graphic", "esri/Color","esri/tasks/GeometryService","esri/tasks/BufferParameters","dojo/parser","dijit/registry", 'jimu/BaseWidget',"dojo/domReady!"],
+define(['dojo/_base/declare',"dijit/form/Button", "dojo/dom", "dojo/_base/lang","esri/toolbars/draw", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol","esri/graphic", "esri/Color","esri/tasks/GeometryService","esri/tasks/BufferParameters","dojo/parser","dijit/registry","dijit/form/NumberTextBox", "jimu/BaseWidget","dojo/domReady!"],
 function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,SimpleFillSymbol, Graphic, 
-        Color,GeometryService, BufferParameters, parser, registry, BaseWidget,ready) {
+        Color,GeometryService, BufferParameters, parser, registry,NumberTextBox, BaseWidget,ready) {
   //To create a widget, you need to derive from BaseWidget.
   return declare([BaseWidget], {
     // DemoWidget code goes here
@@ -37,7 +37,6 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
       var myButton = new Button({
         label: "Point",
         onClick: lang.hitch(this, function(event){
-          registry.byId('buffer').set('disabled', false)
             var markerpointSymbol = new SimpleMarkerSymbol();
             markerpointSymbol.setColor(new Color("#00FFFF"));
 
@@ -57,7 +56,6 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
       var myButton = new Button({
         label: "Line",
         onClick: lang.hitch(this, function(event){
-          registry.byId('buffer').set('disabled', false)
             var markerlineSymbol = new SimpleLineSymbol();
             markerlineSymbol.setColor(new Color("#718fca"));
 
@@ -76,7 +74,6 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
       var myButton = new Button({
         label: "Polygon",
         onClick: lang.hitch(this, function(event){
-          registry.byId('buffer').set('disabled', false)
             var markerpolySymbol = new SimpleFillSymbol();
             markerpolySymbol.setColor(new Color("#ff000e"));
 
@@ -97,8 +94,8 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
         label: "Clear",
         onClick: lang.hitch(this, function(event){
             this.map.graphics.clear()
+            dom.byId("BufferValue").value=""
             registry.byId('buffer').set('disabled', true)
-
         })
     }, "cleard").startup();
 
@@ -110,7 +107,8 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
             gsvc= new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
             var params = new BufferParameters()
             params.geometries  = [this.map.graphics.graphics[0].geometry]
-            params.distances = [ 1000 ]
+            params.distances = [parseInt(dom.byId("BufferValue").value)]
+            console.log(params.distances)
             params.unit = esri.tasks.GeometryService.UNIT_KILOMETER;
             gsvc.buffer(params, showBuffer)
 
@@ -129,6 +127,16 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
         })
     }, "buffer").startup();
 
+      function toggle2(){
+        self.on("click", enablebutton)
+        function enablebutton(){
+          registry.byId('buffer').set('disabled', false)
+        }
+        registry.byId('buffer').set('disabled', false)
+        }
+      dojo.ready(function(){
+        dojo.connect(dojo.byId("BufferValue"), "onclick", toggle2);
+        });
       console.log('startup');
     },
 
