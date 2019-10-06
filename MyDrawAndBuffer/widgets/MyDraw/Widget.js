@@ -13,9 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
-define(['dojo/_base/declare',"dijit/form/Button", "dojo/dom", "dojo/_base/lang","esri/toolbars/draw", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol","esri/graphic", "esri/Color","esri/tasks/GeometryService","esri/tasks/BufferParameters","dojo/parser","dijit/registry","dijit/form/NumberTextBox", "jimu/BaseWidget","dojo/domReady!"],
+define(['dojo/_base/declare',"dijit/form/Button", "dojo/dom", "dojo/_base/lang","esri/toolbars/draw", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol","esri/graphic", "esri/Color","esri/tasks/GeometryService","esri/tasks/BufferParameters","dojo/parser","dijit/registry","dijit/form/NumberTextBox", "esri/tasks/query","esri/tasks/QueryTask","dojo/_base/array","dojo/store/JsonRest","dojox/grid/DataGrid","dojo/store/Memory","dojo/data/ObjectStore","dojo/request","dojo/dom-construct","dijit/_WidgetBase", "dijit/_Templated", "jimu/BaseWidget","dojo/dom-style","dojo/fx/Toggler","jimu/WidgetManager","dojo/domReady!"],
 function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,SimpleFillSymbol, Graphic, 
-        Color,GeometryService, BufferParameters, parser, registry,NumberTextBox, BaseWidget,ready) {
+        Color,GeometryService, BufferParameters, parser, registry, NumberTextBox, Query,QueryTask,array, JsonRest, DataGrid, Memory, ObjectStore, request, domConstruct,_WidgetBase, _Templated,BaseWidget,domStyle,Toggler,WidgetManager, ready) {
   //To create a widget, you need to derive from BaseWidget.
   return declare([BaseWidget], {
     // DemoWidget code goes here
@@ -24,6 +24,7 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
     //templateString: template,
     baseClass: 'jimu-widget-mydraw',
     toggleFlag: true,
+    
     postCreate: function() {
       this.inherited(arguments);
       console.log("postCreate");
@@ -31,9 +32,19 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
 
     startup: function() {
       this.inherited(arguments);
-      // this.mapIdNode.innerHTML = 'map id:' + this.map.id;
+      var panel = this.getPanel();
+        var pos = panel.position;
+        // pos.width = 500;
+        pos.height= 500;
+        panel.setPosition(pos);
+        panel.panelManager.normalizePanel(panel)
+      var toggler = new Toggler({
+    node: "label"
+  })
+      toggler.hide();
       parser.parse();
-      var self= this.map
+      var self= this.map;
+    domStyle.set(grid.domNode, 'display', 'none');
       var myButton = new Button({
         label: "Point",
         onClick: lang.hitch(this, function(event){
@@ -60,7 +71,7 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
             markerlineSymbol.setColor(new Color("#718fca"));
 
             var toolbar = new Draw(this.map);
-            toolbar.activate(Draw.LINE)
+            toolbar.activate(Draw.POLYLINE)
             toolbar.on("draw-end", addGraphic);
 
           function addGraphic(lineevt){
@@ -95,7 +106,8 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
         onClick: lang.hitch(this, function(event){
             this.map.graphics.clear()
             dom.byId("BufferValue").value=""
-            registry.byId('buffer').set('disabled', true)
+            domStyle.set(grid.domNode, 'display', 'none')
+            toggler.hide();
         })
     }, "cleard").startup();
 
@@ -108,7 +120,7 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
             var params = new BufferParameters()
             params.geometries  = [this.map.graphics.graphics[0].geometry]
             params.distances = [parseInt(dom.byId("BufferValue").value)]
-            console.log(params.distances)
+            console.log(params.geometries)
             params.unit = esri.tasks.GeometryService.UNIT_KILOMETER;
             gsvc.buffer(params, showBuffer)
 
@@ -119,24 +131,55 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
             dojo.forEach(geometries, function(geometry) {
               var graphic = new esri.Graphic(geometry,symbol);
               self.graphics.add(graphic);
-              // self.graphics.getDojoShape().moveToBack()
               registry.byId('buffer').set('disabled', true)
             });
-            // this.map.graphics.add(new Graphic(geometries.geometry, symbol))
           }
         })
     }, "buffer").startup();
 
       function toggle2(){
-        // self.on("click", enablebutton)
-        // function enablebutton(){
-        //   registry.byId('buffer').set('disabled', false)
-        // }
         registry.byId('buffer').set('disabled', false)
         }
       dojo.ready(function(){
         dojo.connect(dojo.byId("BufferValue"), "onclick", toggle2);
         });
+
+      var myButton = new Button({
+        label: "View",
+        onClick: lang.hitch(this, function(event){
+          toggler.show();
+          domStyle.set(grid.domNode, 'display', '')
+          var queryTask = new QueryTask(this.map._layers.Cities_States_JS_5079.url)
+          var queryparams= new Query()
+          queryparams.geometry= this.map.graphics.graphics[1].geometry
+          queryparams.where="1=1"
+          queryparams.outFields=['*']
+          queryparams.spatialRelationship= Query.SPATIAL_REL_CONTAINS
+          queryTask.execute(queryparams,select)
+          function select(evt){
+            var outFieldsNF = ["OBJECTID", "CITY_NAME", "STATE_NAME", "TYPE", "POP1990"]
+            dataNF = array.map(evt.features, function(feature) {
+              return {
+           // Step: Reference the attribute field values
+          "OBJECTID" : feature.attributes[outFieldsNF[0]],
+          "CITY_NAME" : feature.attributes[outFieldsNF[1]],
+          "STATE_NAME" : feature.attributes[outFieldsNF[2]],
+          "TYPE" : feature.attributes[outFieldsNF[3]],
+          "POP1990" : feature.attributes[outFieldsNF[4]]
+        }
+      });
+
+      var objectstore= new Memory({
+        data: dataNF
+      });
+
+      var store= new ObjectStore({objectStore: objectstore});
+      grid.setStore(store);
+      grid.resize();
+      };
+        
+          })
+      }, "view").startup();
       console.log('startup');
     },
 

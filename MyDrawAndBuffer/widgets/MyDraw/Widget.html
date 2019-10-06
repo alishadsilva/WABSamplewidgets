@@ -24,7 +24,24 @@
 	<br>
 	<br>
 	<p>
-		Click on Clear to clear your graphics and the associated buffers.
+		Click on Clear to clear your graphics and the associated data.
 	</p>
 	<button id="cleard">Clear</button>
+	<br>
+	<br>
+	<p>Click on View to get the cities lying within the buffer.</p>
+	<button id="view">View</button>
+	<br>
+	<br>
+	<div id="label"<label for="grid">Cities within the buffer: </label></div>
+	<table data-dojo-type="dojox.grid.DataGrid" data-dojo-id="grid">
+  <thead>
+    <tr>
+      <th field="OBJECTID" width="75px">Number</th>
+      <th field="STATE_NAME" width="100px">State Name</th>
+      <th field="TYPE" width="100px">Type</th>
+      <th field="POP1990" width="100px">Population</th>
+    </tr>
+  </thead>
+</table>
 </div>
