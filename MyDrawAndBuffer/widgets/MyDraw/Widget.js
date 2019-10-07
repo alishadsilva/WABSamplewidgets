@@ -125,8 +125,13 @@ function(declare, Button, dom, lang, Draw, SimpleMarkerSymbol,SimpleLineSymbol,S
             gsvc.buffer(params, showBuffer)
 
             function showBuffer(geometries){
-            var markerSymbol = new SimpleFillSymbol();
-            markerSymbol.setColor(new Color("#ff000g"))
+            // var markerSymbol = new SimpleFillSymbol();
+            // markerSymbol.setStyle(SimpleFillSymbol.STYLE_NULL)
+            // markerSymbol.setOutline(new SimpleLineSymbol(), new Color("#ff000g"))
+            var markerSymbol= new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+    new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+    new Color([150,0,0]), 2),new Color([255,255,0,0.25])
+  );
             var symbol=markerSymbol;
             dojo.forEach(geometries, function(geometry) {
               var graphic = new esri.Graphic(geometry,symbol);
