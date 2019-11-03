@@ -1,8 +1,3 @@
-<link rel="stylesheet" type="text/css" href="{{baseUrl}}dojo/resources/dojo.css" >
-<link rel="stylesheet" type="text/css" href="{{baseUrl}}dijit/themes/claro/claro.css" >
-<link rel="stylesheet" type="text/css" href="{{baseUrl}}dojox/grid/resources/claroGrid.css" >
-
-
 .dojoxGrid table {
   margin: 0;
 }
