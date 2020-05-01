@@ -17,7 +17,8 @@ define([
   'dojo/_base/declare', 
   'jimu/BaseWidget',
   "dojo/parser", 
-  "dojo/_base/lang",
+  "esri/layers/FeatureLayer",
+  "esri/tasks/RelationshipQuery",
   "esri/tasks/query",
   "esri/tasks/QueryTask",
   "dijit/layout/TabContainer", 
@@ -30,7 +31,8 @@ define([
 function(declare, 
   BaseWidget,
   parser, 
-  lang,
+  FeatureLayer,
+  RelationshipQuery,
   Query,
   QueryTask,
   TabContainer, 
@@ -57,18 +59,48 @@ function(declare,
 
       function registerpt(evt){
         console.log(evt.mapPoint.x, evt.mapPoint.y)
-        var newquerytask= new QueryTask(self.itemInfo.itemData.tables[0].url)
-        var params= new Query()
-        params.geometry= evt.mapPoint
-        params.where="1=1"
-        params.outFields=['*']
-        params.spatialRelationship= Query.SPATIAL_REL_CONTAINS
-        newquerytask.execute(params,select)
+
+        var featurelayer= new FeatureLayer(self._layers.RelatedTable_9147.url, {mode: FeatureLayer.MODE_SELECTION})
+
+        var query= new Query();
+        query.geometry = evt.mapPoint;
+        featurelayer.selectFeatures(query,FeatureLayer.SELECTION_NEW);
+        
+        var statename= ""
+
+        featurelayer.on("selection-complete", select)
 
         function select(feature) {
           console.log(feature)
-        }
+          statename=feature.features[0].attributes.STATE_NAME
+          var relquery= new RelationshipQuery()
+          relquery.definitionEpression= "NAME =" + "'" + statename + "'"
+          relquery.outFields=['*']
+          relquery.relationshipId=0
+          featurelayer.queryRelatedFeatures(relquery)
+
+          featurelayer.on("query-related-features-complete", relatedrecords)
+
+          function relatedrecords(features){
+          console.log(features)
+          }
+
+        
+        // function relationquery(relrecords){
+          
+        // }
       }
+      }
+      
+      
+        // var newquerytask= new QueryTask(self._layers.RelatedTable_9147.url)
+        // var params= new Query()
+        // params.geometry= evt.mapPoint
+        // params.where="1=1"
+        // params.outFields=['*']
+        // params.spatialRelationship= Query.SPATIAL_REL_CONTAINS
+        // newquerytask.execute(params,select)
+
       var tc = new TabContainer({
         style: "height: 100%; width: 100%;"
     }, "reldata");
