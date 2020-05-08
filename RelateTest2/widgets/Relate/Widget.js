@@ -19,8 +19,11 @@ define([
   "dojo/parser", 
   "esri/layers/FeatureLayer",
   "esri/tasks/RelationshipQuery",
+  "dojo/_base/connect",
   "esri/tasks/query",
-  "esri/tasks/QueryTask",
+  "dojo/store/Memory",
+  "dojo/_base/array",
+  "dojo/data/ObjectStore",  
   "dijit/layout/TabContainer", 
   "dijit/layout/ContentPane",
   "dojox/grid/EnhancedGrid",
@@ -33,10 +36,15 @@ function(declare,
   parser, 
   FeatureLayer,
   RelationshipQuery,
+  connect,
   Query,
-  QueryTask,
+  Memory,
+  array,
+  ObjectStore,
   TabContainer, 
-  ContentPane
+  ContentPane,
+  EnhancedGrid,
+  ItemFileWriteStore
   ) {
   //To create a widget, you need to derive from BaseWidget.
   return declare([BaseWidget], {
@@ -54,62 +62,60 @@ function(declare,
 
     startup: function() {
       this.inherited(arguments);
-      var self= this.map
-      this.map.on("click", registerpt)
-
-      function registerpt(evt){
-        console.log(evt.mapPoint.x, evt.mapPoint.y)
-
-        var featurelayer= new FeatureLayer(self._layers.RelatedTable_9147.url, {mode: FeatureLayer.MODE_SELECTION})
-
-        var query= new Query();
-        query.geometry = evt.mapPoint;
-        featurelayer.selectFeatures(query,FeatureLayer.SELECTION_NEW);
-        
-        var statename= ""
-
-        featurelayer.on("selection-complete", select)
-
-        function select(feature) {
-          console.log(feature)
-          statename=feature.features[0].attributes.STATE_NAME
-          var relquery= new RelationshipQuery()
-          relquery.definitionEpression= "NAME =" + "'" + statename + "'"
-          relquery.outFields=['*']
-          relquery.relationshipId=0
-          featurelayer.queryRelatedFeatures(relquery)
-
-          featurelayer.on("query-related-features-complete", relatedrecords)
-
-          function relatedrecords(features){
-          console.log(features)
-          }
-
-        
-        // function relationquery(relrecords){
-          
-        // }
-      }
-      }
-      
-      
-        // var newquerytask= new QueryTask(self._layers.RelatedTable_9147.url)
-        // var params= new Query()
-        // params.geometry= evt.mapPoint
-        // params.where="1=1"
-        // params.outFields=['*']
-        // params.spatialRelationship= Query.SPATIAL_REL_CONTAINS
-        // newquerytask.execute(params,select)
-
       var tc = new TabContainer({
         style: "height: 100%; width: 100%;"
     }, "reldata");
 
-    var cp1 = new ContentPane({
-         title: "Table 1",
-         content: "We offer amazing food"
-    });
-    tc.addChild(cp1);
+      var self= this.map
+    
+      this.map.on("click", registerpt)
+
+      function registerpt(evt){
+        var featurelayer= self.getLayer("RelatedTables_4354")
+
+        var relquery= new RelationshipQuery()
+        relquery.outFields=['*']
+        relquery.relationshipId=1
+        
+        featurelayer.on("click", function(evt){
+          graphicAttributes=evt.graphic.attributes;
+          relquery.definitionExpression= "STATE_NAME=" +"'" + graphicAttributes.STATE_NAME +"'"
+          featurelayer.queryRelatedFeatures(relquery, function relatedRecords(data){
+            console.log(data)
+            var outFieldsNF = ["OBJECTID", "CITY_NAME", "STATE_NAME", "TYPE", "POP1990"]
+              dataNF = array.map(data[4].features, function(feature) {
+                return {
+                // Step: Reference the attribute field values
+                "OBJECTID" : feature.attributes[outFieldsNF[0]],
+                "CITY_NAME" : feature.attributes[outFieldsNF[1]],
+                "STATE_NAME" : feature.attributes[outFieldsNF[2]],
+                "TYPE" : feature.attributes[outFieldsNF[3]],
+                "POP1990" : feature.attributes[outFieldsNF[4]]
+              }
+            });
+
+              var objectstore= new Memory({
+                data: dataNF
+              });
+
+              var store= new ObjectStore({objectStore: objectstore});
+              // reldata.setStore(store);
+              // reldata.resize();
+
+              var grid= new EnhancedGrid({
+                id: "grid",
+                store: store
+              })
+
+              var cp1 = new ContentPane({
+                   title: "Table 1",
+                   content: grid
+              });
+              tc.addChild(cp1);
+          })
+      })
+    }
+
 
     var cp2 = new ContentPane({
          title: "Table 2",
