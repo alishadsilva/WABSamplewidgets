@@ -63,15 +63,22 @@ function(declare,
     startup: function() {
       this.inherited(arguments);
       var tc = new TabContainer({
-        style: "height: 100%; width: 100%;"
+        style: "width: 375px; height: 370px;"
     }, "reldata");
 
       var self= this.map
-    
-      this.map.on("click", registerpt)
+      var store, grid, outFieldsNF;
 
-      function registerpt(evt){
-        var featurelayer= self.getLayer("RelatedTables_4354")
+      var layout = [[
+      {'name': 'OBJECT ID', 'field': 'OBJECTID'},
+      {'name': 'CITY NAME', 'field': 'CITY_NAME'},
+      {'name': 'STATE NAME', 'field': 'STATE_NAME'},
+      {'name': 'TYPE', 'field': 'TYPE'},
+      {'name': 'POP1990', 'field': 'POP1990'}
+    ]];
+
+      
+      var featurelayer= self.getLayer("RelatedTables_4354")
 
         var relquery= new RelationshipQuery()
         relquery.outFields=['*']
@@ -83,7 +90,7 @@ function(declare,
           featurelayer.queryRelatedFeatures(relquery, function relatedRecords(data){
             console.log(data)
             var outFieldsNF = ["OBJECTID", "CITY_NAME", "STATE_NAME", "TYPE", "POP1990"]
-              dataNF = array.map(data[4].features, function(feature) {
+              dataNF = array.map(data[graphicAttributes.OBJECTID].features, function(feature) {
                 return {
                 // Step: Reference the attribute field values
                 "OBJECTID" : feature.attributes[outFieldsNF[0]],
@@ -99,27 +106,29 @@ function(declare,
               });
 
               var store= new ObjectStore({objectStore: objectstore});
-              // reldata.setStore(store);
-              // reldata.resize();
+              grid.setStore(store);
+              grid.resize();
+            })
+        })
 
-              var grid= new EnhancedGrid({
-                id: "grid",
-                store: store
-              })
+        var grid= new EnhancedGrid({
+              id: "grid",
+              store: store,
+              structure: layout
+            })
 
-              var cp1 = new ContentPane({
-                   title: "Table 1",
-                   content: grid
-              });
-              tc.addChild(cp1);
-          })
-      })
-    }
+        var cp1 = new ContentPane({
+          title: "Table 1",
+          content: grid,
+          style: "width: 375px; height: 370px;"
+        });
+        tc.addChild(cp1);
 
 
     var cp2 = new ContentPane({
          title: "Table 2",
-         content: "We are known for our drinks."
+         content: "We are known for our drinks.",
+         style: "width: 375px; height: 370px;"
     });
     tc.addChild(cp2);
 
