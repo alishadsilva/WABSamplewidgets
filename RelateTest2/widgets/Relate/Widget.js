@@ -67,7 +67,7 @@ function(declare,
     }, "reldata");
 
       var self= this.map
-      var store, grid1, grid2;
+      var store1,store2, grid1, grid2;
 
       var layout1 = [[
       {'name': 'OBJECT ID', 'field': 'field1'},
@@ -87,9 +87,9 @@ function(declare,
       
       var featurelayer= self.getLayer("RelatedTables_4354")
 
-        var relquery1= new RelationshipQuery()
-        relquery.outFields=['*']
-        relquery.relationshipId=0
+        // var relquery1= new RelationshipQuery()
+        // relquery.outFields=['*']
+        // relquery.relationshipId=0
         
         featurelayer.on("click", function(evt){
           for (var i = 0; i <= self._layers.RelatedTables_4354.relationships.length; i++) {
@@ -98,9 +98,9 @@ function(declare,
             relquery.relationshipId=i
             graphicAttributes=evt.graphic.attributes;
             relquery.definitionExpression= "STATE_NAME=" +"'" + graphicAttributes.STATE_NAME +"'"
+            if (i==0) {
             featurelayer.queryRelatedFeatures(relquery, function relatedRecords(data){
               console.log(data)
-              if (i==0) {
                 var outFieldsNF = ["OBJECTID", "NAME", "STATE_NAME", "AREA", "POP1990"]
                 dataNF = array.map(data[graphicAttributes.OBJECTID].features, function(feature) {
                   return {
@@ -119,8 +119,11 @@ function(declare,
               var store1= new ObjectStore({objectStore: objectstore1});
               grid1.setStore(store1);
               grid1.resize();
-              }
-              if (i==1) {
+              })
+            }
+            if (i==1) {
+              featurelayer.queryRelatedFeatures(relquery, function relatedRecords(data){
+                console.log(data)
                 var outFieldsNF = ["OBJECTID", "CITY_NAME", "STATE_NAME", "TYPE", "POP1990"]
                 dataNF2 = array.map(data[graphicAttributes.OBJECTID].features, function(feature) {
                   return {
@@ -132,14 +135,14 @@ function(declare,
                   "field10" : feature.attributes[outFieldsNF[4]]
                 }
               });
-                var objectStore2= new Memory({
+                var objectstore2= new Memory({
                   data: dataNF2
                 })
                 var store2= new ObjectStore({objectStore: objectstore2});
                 grid2.setStore(store2)
                 grid2.resize();
-              }
               })
+              }
           }
         })
 
@@ -150,7 +153,7 @@ function(declare,
             })
 
         var grid2= new EnhancedGrid({
-              id: "grid1",
+              id: "grid2",
               store: store2,
               structure: layout2
             })
