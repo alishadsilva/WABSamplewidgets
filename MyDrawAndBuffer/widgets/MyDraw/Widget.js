@@ -145,7 +145,7 @@ function(declare, Button, Tooltip, dom, lang, Draw, SimpleMarkerSymbol,SimpleLin
             // toggler.show();
             registry.byId('export').set('disabled', false)
             domStyle.set(grid.domNode, 'display', '')
-            var queryTask = new QueryTask(this.map._layers.Cities_States_JS_5079.url)
+            var queryTask = new QueryTask(this.map._layers.U_S__Cities_6992.url)
             var queryparams= new Query()
             queryparams.geometry= this.map.graphics.graphics[1].geometry
             queryparams.where="1=1"
