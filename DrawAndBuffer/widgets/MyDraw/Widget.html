@@ -1,0 +1,44 @@
+<div>
+	<p>
+		Click and add a Point, Line or Polygon on the map using the appropriate buttons to enable Buffer.
+	</p>
+	<button id="point">Point</button>
+	<button id="line">Line</button>
+	<button id="polygon">Polygon</button>
+	<br>
+	<br>
+	<p>
+		<label for="BufferValue">Enter a valid buffer Value(KM): </label>
+		<input id="BufferValue" type="text"
+    data-dojo-type="dijit/form/NumberTextBox"
+    name= "BufferValue"
+    required="true"
+    data-dojo-props="constraints:{
+            pattern: '#####'
+        },
+        promptMessage: 'Value required',
+        missingMessage: 'What is the buffer radius?',
+        invalidMessage:'Please enter a numeric value.'" />
+	</p>
+	<button id="buffer">Buffer</button>
+	<button id="view">View</button>
+	<br>
+	<br>
+	<table data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-id="grid" data-dojo-props="
+	plugins:{
+	exporter: true
+}">
+  <thead>
+    <tr>
+    	<th field="OBJECTID" width="75px">Number</th>
+    	<th field="STATE_NAME" width="100px">State Name</th>
+    	<th field="TYPE" width="100px">Type</th>
+    	<th field="POP1990" width="100px">Population</th>
+    </tr>
+  </thead>
+</table>
+<div>
+	<button id="cleard">Clear</button>
+	<button id="export">Export</button>
+</div>
+</div>
