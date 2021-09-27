@@ -98,19 +98,30 @@ define({
     "tooltipText": "Eszköztipp szövege",
     "findAddressOrPlace": "Cím vagy hely keresése",
     "expand": "${value} kibontása",
-    "collapse": "${value} összecsukása"
+    "collapse": "${value} összecsukása",
+    "asc": "Növekvő",
+    "desc": "Csökkenő"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Korlátozott böngésző támogatás",
+    "onlineContent1": "Elavult böngészőt használ. Az alkalmazás néhány funkciója, vagy az alkalmazás egésze ebben a böngészőben nem fog műkködni. Ennek a böngészőnak a támogatása hamarosan megszűnik.",
+    "content2": "Kérjük, használja a <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, vagy a <edge-link>Microsoft Edge</edge-link> legújabb verzióját.",
+    "onlineContent3": "A támogatott böngészőkkel kapcsolatos további ismertetésért lásd a dokumentációt. Küldje el a visszajelzését a <feedback-link>GeoNeten, az Esri közösségén keresztül</feedback-link>.",
+    "enterpriseContent1": "Ön olyan böngészőt használ, amely már nem támogatott. Az alkalmazás néhány funkciója, vagy az alkalmazás egésze ebben a böngészőben nem fog műkködni."
   },
   "errorCode": "Kód",
   "errorMessage": "Üzenet",
   "errorDetail": "Részletek",
   "widgetPlaceholderTooltip": "A beállításhoz lépjen a widgetekre, és kattintson a megfelelő helyőrzőre",
+  "widgetToolTip": "${widgetLabel}. Nyomja meg az Entert, ha szeretne a widgeten belülre fókuszálni. Ha a fókusz a belül van, nyomja meg az Esc gombot, hogy újra a widgetre fókuszáljon.",
   "skips": {
     "skips": "Hivatkozások kihagyása",
     "skipTo": "Ugrás ide: ${value}",
     "headerController": "Ugrás a fejlécvezérlőhöz",
     "map": "Ugrás a térképhez",
     "sidePanel": "Ugrás az oldalsó panelhez",
-    "attributeTable": "Ugrás az attribútumtáblához"
+    "attributeTable": "Ugrás az attribútumtáblához",
+    "tabAway": "Nyomja le a Tab billentyűt a folytatáshoz és az alkalmazásból való kilépéshez, vagy nyomja le a Shift és a Tab billentyűt, ha az alkalmazáson belül vissza akar lépni a következő értékre: ${value}"
   },
   "panelHeader": {
     "foldWindow": "Ablak összehajtása",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Pont",
+    "arrow": "Nyíl",
     "line": "Vonal",
     "polyline": "Polyline",
     "freehandPolyline": "Szabadkézi vonallánc",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "A mező minden egyedi értéke",
     "previousCascadeFilterTip": "Az előző kifejezésekkel szűrt értékek",
     "allCascadeFilterTip": "Az összes többi kifejezéssel szűrt értékek",
+    "dateOptions": "Dátumbeállítások",
+    "startDateOptions": "Kezdő dátum beállításai",
+    "endDateOptions": "Befejező dátum beállításai",
     "custom": "a dátum...",
     "today": "ma",
     "yesterday": "tegnap",
     "tomorrow": "holnap",
+    "atLeastOne": "Legalább egy dátumbeállítást be kell jelölni.",
+    "notUncheckedCurrent": "A kiválasztott dátumbeállítás bejelölését nem lehet megszüntetni.",
     "theseDays": "ezek a napok",
     "thisWeek": "ezen a héten",
     "thisMonth": "ebben a hónapban",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Kiválasztott elemek megjelenítése",
     "ExportToFeatureCollection": "Exportálás vektoros gyűjteménybe",
     "ExportToGeoJSON": "Exportálás GeoJSON-ba",
+    "ExportToFilegdb": "Exportálás a fájl-geoadatbázisba",
+    "ExportToShapefile": "Exportálás shapefile-ba",
     "EditAttributes": "Attribútumok szerkesztése",
     "AddMarker": "Jelölő hozzáadása",
     "RemoveMarker": "Jelölő eltávolítása",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "év",
     "years": "Év",
+    "quarter": "Negyedév",
     "month": "hónap",
     "months": "Hónap",
     "week": "Hét",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Alkalmazás beágyazása egy webhelyen",
     "shareEmailSubject": "A webes alkalmazás megosztása:",
-    "shareEmailTxt1": "Íme egy webalkalmazás, amelyet a Web AppBuilder for ArcGIS segítségével osztottak meg Önnel.",
-    "shareEmailTxt2": "Saját webalkalmazásait is létrehozhatja és megoszthatja az Esri Web AppBuilder for ArcGIS használatával.",
+    "shareEmailTxt1": "Íme egy webalkalmazás, amelyet az ArcGIS Web AppBuilder segítségével osztottak meg Önnel.",
+    "shareEmailTxt2": "Saját webalkalmazásait is létrehozhatja és megoszthatja az Esri ArcGIS Web AppBuilder használatával.",
     "shareEmailTxt3": "A részletekért látogasson el a http://www.esri.com/software/web-appbuilder weboldalra.",
     "smallSize": "Kicsi",
     "mediumSize": "Közepes",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Kimenet kibontása",
     "tooltip": "A pont hozzáadásához kattintson a térképre"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Hivatkozás erre: ",
+    "previewLinkToolTipsSuffix": "Ez a hivatkozás az alkalmazás indítását követően lesz elérhető."
+  },
   "noEditPrivileges": "A fiókja nem teszi lehetővé az adatok létrehozását vagy módosítását.",
   "noEditableLayers": "A fiókja nem teszi lehetővé az adatok létrehozását vagy módosítását. Vagy ez a webtérkép nem tartalmaz szerkeszthető rétegeket.",
   "invalidConfiguration": "A widget nincs konfigurálva, vagy a konfigurációban lévő rétegek már nem szerepelnek a térképen. Nyissa meg az alkalmazást építő módban, és konfigurálja újra a widgetet.",
   "essentialAppsLicenseErrorForApp": "Az Ön fiókjának licence nem terjed ki a nem nyilvános alkalmazásokra. Igényelje a szervezete adminisztrátorától, hogy rendeljen Önhöz olyan felhasználótípust, amely tartalmazza az alapvető alkalmazásokat, vagy egy kiegészítő alapvető alkalmazásokra vonatkozó licencet.",
-  "essentialAppsLicenseErrorForBuilder": "Az Ön fiókjának licence nem terjed ki a Web AppBuilder alkalmazásra. Igényelje a szervezete adminisztrátorától, hogy rendeljen Önhöz olyan felhasználótípust, amely tartalmazza az alapvető alkalmazásokat, vagy egy kiegészítő alapvető alkalmazásokra vonatkozó licencet."
+  "essentialAppsLicenseErrorForBuilder": "Az Ön fiókjának licence nem terjed ki a Web AppBuilder alkalmazásra. Igényelje a szervezete adminisztrátorától, hogy rendeljen Önhöz olyan felhasználótípust, amely tartalmazza az alapvető alkalmazásokat, vagy egy kiegészítő alapvető alkalmazásokra vonatkozó licencet.",
+  "blockedByAdminErrorForApp": "Az Ön szervezete blokkolta a hozzáférést ehhez az alkalmazáshoz. További részletekért forduljon adminisztrátorához.",
+  "blockedByAdminErrorForBuilder": "Az Ön szervezete blokkolta a hozzáférést a Web AppBuilder alkalmazáshoz. További részletekért forduljon adminisztrátorához.",
+  "orgUrlMessage": "Az elérni kívánt alkalmazás nem a megadott URL-ből eredeztethető.",
+  "advancedOptions": "Speciális beállítások",
+  "proceedTo": "Folytatás: ${value}",
+  "setStyle": "Stílus beállítása"
 });

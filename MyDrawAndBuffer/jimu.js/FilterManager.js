@@ -93,7 +93,7 @@ define(['dojo/_base/declare',
 
         var layerInfo = this.layerInfos.getLayerInfoById(layerId) ||
           this.layerInfos.getTableInfoById(layerId);
-        var filterExp = this._getFilterExp(layerId);
+        var filterExp = this.getFilterExp(layerId);
         if (filterExp !== null && layerInfo) {
           layerInfo.setFilter(filterExp, {'zoomAfterFilter': zoomAfterFilter});
         }
@@ -200,7 +200,7 @@ define(['dojo/_base/declare',
         }
       },
 
-      _getFilterExp: function(layerId) {
+      getFilterExp: function(layerId, excludeWidgetId) {
         if (!this._filters[layerId]) {
           return null;
         }
@@ -212,6 +212,9 @@ define(['dojo/_base/declare',
 
         for (var p in filterExprs) {
           var expr = filterExprs[p];
+          if(excludeWidgetId && p.indexOf(excludeWidgetId) >= 0){
+            continue; //not including filters from current widget.   
+          }
           if (expr) {
             parts.push('(' + expr + ')');
           }

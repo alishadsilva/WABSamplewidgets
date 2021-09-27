@@ -67,12 +67,12 @@ define([
     },
 
     //sort order client statistics data
-    sortClientStatisticsData: function(data, options) {
+    sortClientStatisticsData: function(data, options, layerObject) {
       var mode = options.mode;
       var sortOrder = options.sortOrder; //{isAsc:boolean,field:''}
       var valueFields = options.valueFields;
       var clusterField = options.clusterField;
-      return this.sortStatisticsData(data, mode, sortOrder, clusterField, valueFields);
+      return this.sortStatisticsData(data, mode, sortOrder, clusterField, valueFields, layerObject);
     },
 
     //Slice data by input number
@@ -269,34 +269,36 @@ define([
       return data;
     },
 
-    getValuesByValueFieldForFieldMode: function(fieldName, features, hasStatisticsed, operation) {
-      var cloneOperator = operation === 'average' ? 'avg' : operation;
-      if (hasStatisticsed) {
-        var upperFieldName = jimuUtils.upperCaseString(fieldName + '_' + cloneOperator);
-        var lowerFieldName = jimuUtils.lowerCaseString(fieldName + '_' + cloneOperator);
+    getValueFromAttributes: function(attributes, fieldName, operation, hasStatisticsed){
+      if (!attributes) {
+        return;
       }
+      operation = operation === 'average' ? 'avg' : operation;
+      var value;
+      if (!hasStatisticsed) {
+        value = attributes[fieldName];
+      } else {
+        var key = jimuUtils.upperCaseString(fieldName + '_' + operation);
+        value = attributes[key];
+        if (typeof value === 'undefined') {
+          key = jimuUtils.lowerCaseString(fieldName + '_' + operation);
+          value = attributes[key];
+        }
+      }
+      return value;
+    },
+
+    getValuesByValueFieldForFieldMode: function(fieldName, features, hasStatisticsed, operation) {
       var values = features.map(lang.hitch(this, function(feature) {
-        var attributes = feature.attributes;
-        if (!attributes) {
-          return;
-        }
-        var v;
-        if (hasStatisticsed) {
-          v = attributes[upperFieldName];
-          if (typeof v === 'undefined') {
-            v = attributes[lowerFieldName];
-          }
-        } else {
-          v = attributes[fieldName];
-        }
-        return v;
+        var value = this.getValueFromAttributes(feature.attributes, fieldName, operation, hasStatisticsed);
+        return value;
       }));
       return values;
     },
 
     /*------------ Tool method -------------*/
     //return sorted data
-    sortStatisticsData: function(data, mode, sortOrder, labelField, valueFields) {
+    sortStatisticsData: function(data, mode, sortOrder, labelField, valueFields, layerObject) {
       //sortOrder
       //  isLabelAxis:boolean
       //  isAsc:boolean
@@ -353,7 +355,18 @@ define([
       data.sort(function(a, b) {
         var aValue = getVaildValue(a, mode, sortOrder);
         var bValue = getVaildValue(b, mode, sortOrder);
-
+        if(sortOrder.isLabelAxis && layerObject && mode !== 'field') {
+          var attr1= {};
+          attr1[labelField] = aValue;
+          var res1 = jimuUtils.getDisplayValueForCodedValueOrSubtype(layerObject, labelField, attr1);
+          var attr2= {};
+          attr2[labelField] = bValue;
+          var res2 = jimuUtils.getDisplayValueForCodedValueOrSubtype(layerObject, labelField, attr2);
+          if(res1.isCodedValueOrSubtype && res2.isCodedValueOrSubtype){
+            aValue = res1.displayValue;
+            bValue = res2.displayValue;
+          }
+        }
         if (aValue === '_NULL&UNDEFINED_') {
           aValue = Infinity;
         }
@@ -413,27 +426,9 @@ define([
     },
 
     getValuesByValueFieldForCategoryMode: function(fieldName, features, hasStatisticsed, operation) {
-
-      var cloneOperator = operation === 'average' ? 'avg' : operation;
-      if (hasStatisticsed) {
-        var upperFieldName = jimuUtils.upperCaseString(fieldName + '_' + cloneOperator);
-        var lowerFieldName = jimuUtils.lowerCaseString(fieldName + '_' + cloneOperator);
-      }
       var values = features.map(lang.hitch(this, function(feature) {
-        var attributes = feature.attributes;
-        if (!attributes) {
-          return;
-        }
-        var v;
-        if (hasStatisticsed) {
-          v = attributes[upperFieldName];
-          if (typeof v === 'undefined') {
-            v = attributes[lowerFieldName];
-          }
-        } else {
-          v = attributes[fieldName];
-        }
-        return v;
+        var value = this.getValueFromAttributes(feature.attributes, fieldName, operation, hasStatisticsed);
+        return value;
       }));
       return values;
     },
@@ -484,7 +479,7 @@ define([
     },
     //return {twixs:[], dateUnit:'year...second'}
     _getTimeTwixs: function(features, fieldName, dateFormatter) {
-      var formats = ['year', 'month', 'day', 'hour', 'minute', 'second', 'automatic'];
+      var formats = ['year', 'quarter', 'month', 'day', 'hour', 'minute', 'second', 'automatic'];
       if (formats.indexOf(dateFormatter) < 0) {
         console.log('Invaild data formatter: ' + dateFormatter);
         return false;

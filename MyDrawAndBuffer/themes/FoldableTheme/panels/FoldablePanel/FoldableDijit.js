@@ -32,7 +32,8 @@ define(['dojo/_base/declare',
       folded: false,
       templateString: '<div>' +
         '<div class="title" data-dojo-attach-point="titleNode">' +
-        '<div class="title-label" data-dojo-attach-point="titleLabelNode"></div>' +
+        '<h2 class="title-label" data-dojo-attach-point="titleLabelNode" tabindex="-1" ' +
+        'data-dojo-attach-event="onkeydown:_onTitleLabelKeyDown"></h2>' +
         '<div class="btns-container" data-dojo-attach-point="btnsContainer"></div>' +
         '</div>' +
         '<div class="jimu-panel-content" data-dojo-attach-point="containerNode"></div>' +
@@ -69,6 +70,12 @@ define(['dojo/_base/declare',
         this.label = label;
         this.titleLabelNode.innerHTML = jimuUtils.stripHTML(label);
         this.titleLabelNode.title = label;
+      },
+
+      _onTitleLabelKeyDown: function (evt) {
+        if (evt.shiftKey && evt.keyCode === keys.TAB) {
+          evt.preventDefault();
+        }
       },
 
       createFoldableBtn: function() {

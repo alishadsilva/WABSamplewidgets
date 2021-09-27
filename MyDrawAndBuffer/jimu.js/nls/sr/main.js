@@ -98,19 +98,30 @@ define({
     "tooltipText": "Tekst opisa alatke",
     "findAddressOrPlace": "Pronađi adresu ili mesto",
     "expand": "Proširi ${value}",
-    "collapse": "Skupi ${value}"
+    "collapse": "Skupi ${value}",
+    "asc": "Rastuće",
+    "desc": "Opadajuće"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Ograničena podrška za pregledač",
+    "onlineContent1": "Koristite pregledač koji je zastareo. Neki segmenti ove aplikacije možda neće raditi optimalno ili uopšte neće raditi u ovom pregledaču. Podrška za ovaj pregledač biće prekinuta u budućnosti.",
+    "content2": "Koristite najnovije verzije pregledača <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, ili <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Za više informacija o podršci za pregledač pogledajte našu dokumentaciju. Obezbedite povratne informacije preko <feedback-link>GeoNet-a, zajednice kompanije Esri</feedback-link>.",
+    "enterpriseContent1": "Koristite pregledač koji više nije podržan. Neki segmenti ove aplikacije možda neće raditi optimalno ili uopšte neće raditi u ovom pregledaču."
   },
   "errorCode": "Kôd",
   "errorMessage": "Poruka",
   "errorDetail": "Detalj",
   "widgetPlaceholderTooltip": "Da biste postavili, idite na „Vidžet“ i kliknite na odgovarajućeg čuvara mesta",
+  "widgetToolTip": "${widgetLabel}. Pritisnite Enter da biste se fokusirali na unutrašnjost ovog vidžeta. Kada se fokusirate na unutrašnjost, pritisnite Esc da biste pomerili fokus van vidžeta.",
   "skips": {
     "skips": "Preskoči linkove",
     "skipTo": "Pređi na ${value}",
     "headerController": "Pređi na kontroler zaglavlja",
     "map": "Pređi na mapu",
     "sidePanel": "Pređi na bočni panel",
-    "attributeTable": "Pređi na atributnu tabelu"
+    "attributeTable": "Pređi na atributnu tabelu",
+    "tabAway": "Pritisnite dugme „Tab” da biste nastavili i izašli iz aplikacije, pritisnite dugmad „Shift” i „Tab” da biste se vratili na ${value}"
   },
   "panelHeader": {
     "foldWindow": "Preklopi prozor",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Tačka",
+    "arrow": "Strelica",
     "line": "Linija",
     "polyline": "Poligon",
     "freehandPolyline": "Polilinija slobodnom rukom",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Sve jedinstvene vrednosti u ovom polju",
     "previousCascadeFilterTip": "Vrednosti filtrirane po prethodnim izrazima.",
     "allCascadeFilterTip": "Vrednosti filtrirane po svim drugim izrazima.",
+    "dateOptions": "Opcije datuma",
+    "startDateOptions": "Opcije datuma početka",
+    "endDateOptions": "Opcije datuma završetka",
     "custom": "datum...",
     "today": "danas",
     "yesterday": "juče",
     "tomorrow": "sutra",
+    "atLeastOne": "Bar jedna opcija datuma mora da bude potvrđena.",
+    "notUncheckedCurrent": "Opciju izabranog datuma nije moguće potvrditi.",
     "theseDays": "ovih dana",
     "thisWeek": "ove sedmice",
     "thisMonth": "ovog meseca",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Prikaži izabrane geoobjekte",
     "ExportToFeatureCollection": "Izvezi u kolekciju geoobjekata",
     "ExportToGeoJSON": "Izvezi u GeoJSON",
+    "ExportToFilegdb": "Istražite bazu geopodataka datoteke",
+    "ExportToShapefile": "Izvezi u shapefile datoteku",
     "EditAttributes": "Izmeni atribute",
     "AddMarker": "Dodaj marker",
     "RemoveMarker": "Ukloni marker",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Godina",
     "years": "Godine",
+    "quarter": "Kvartal",
     "month": "Mesec",
     "months": "Meseci",
     "week": "Sedmica",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Ugradi ovu aplikaciju u veb sajt",
     "shareEmailSubject": "Deljenje veb aplikacije:",
-    "shareEmailTxt1": "Evo veb aplikacije koja se deli sa vama pomoću Veb AppBuilder-a za ArcGIS.",
-    "shareEmailTxt2": "Možete da kreirate i delite svoju veb aplikaciju pomoću Esri Veb AppBuilder-a za ArcGIS.",
+    "shareEmailTxt1": "Evo veb aplikacije koja se deli sa vama pomoću ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Možete kreirati i deliti svoje veb aplikacije uz ArcGIS Web AppBuilder kompanije Esri.",
     "shareEmailTxt3": "Posetite http://www.esri.com/software/web-appbuilder za detalje.",
     "smallSize": "Malo",
     "mediumSize": "Srednje",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Proširi izlazne rezultate",
     "tooltip": "Kliknite na mapu kako biste dodali tačku"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Veza do: ",
+    "previewLinkToolTipsSuffix": "Ova veza će raditi kada se aplikacija pokrene."
+  },
   "noEditPrivileges": "Vaš nalog nema dozvolu za kreiranje ili izmenu podataka.",
   "noEditableLayers": "Vaš nalog nema dozvolu za kreiranje ili izmenu podataka. Ili ova veb mapa ne sadrži slojeve koji mogu da se uređuju.",
   "invalidConfiguration": "Vidžet nije konfigurisan ili slojevi u konfiguraciji više nisu na mapi. Otvorite aplikaciju u režimu za izradu i ponovo konfigurišite vidžet.",
   "essentialAppsLicenseErrorForApp": "Vaš nalog nema licencu za korišćenje aplikacija koje nisu javne. Zatražite od administratora organizacije da vam dodeli onaj tip korisnika koji uključuje osnovne aplikacije ili licencu za dodatne osnovne aplikacije.",
-  "essentialAppsLicenseErrorForBuilder": "Vaš nalog nema licencu za Web AppBuilder. Zatražite od administratora organizacije da vam dodeli onaj tip korisnika koji uključuje osnovne aplikacije ili licencu za dodatne osnovne aplikacije."
+  "essentialAppsLicenseErrorForBuilder": "Vaš nalog nema licencu za Web AppBuilder. Zatražite od administratora organizacije da vam dodeli onaj tip korisnika koji uključuje osnovne aplikacije ili licencu za dodatne osnovne aplikacije.",
+  "blockedByAdminErrorForApp": "Vaša organizacija je blokirala pristup ovoj aplikaciji. Za detalje kontaktirajte svog administratora.",
+  "blockedByAdminErrorForBuilder": "Vaša organizacija je blokirala pristup Web AppBuilder-u. Za detalje kontaktirajte svog administratora.",
+  "orgUrlMessage": "Aplikacija kojoj pokušavate da pristupite ne potiče sa URL adrese koju ste naveli.",
+  "advancedOptions": "Napredne opcije",
+  "proceedTo": "Nastavite da ${value}",
+  "setStyle": "Postavi stil"
 });

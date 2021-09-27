@@ -98,19 +98,30 @@ define({
     "tooltipText": "Text al sfatului ecran",
     "findAddressOrPlace": "Găsire adresă sau loc",
     "expand": "Extindere ${value}",
-    "collapse": "Restrângere ${value}"
+    "collapse": "Restrângere ${value}",
+    "asc": "Ascendent",
+    "desc": "Descendent"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Asistență limitată pentru browser",
+    "onlineContent1": "Folosiți un browser depășit. Unele părți ale acestei aplicații pot să nu funcționeze optim sau deloc în acest browser. Asistența pentru acest browser va fi întreruptă în viitor.",
+    "content2": "Utilizați ultimele versiuni <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> sau <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Pentru mai multe informații privind asistența pentru browser, consultați documentația noastră. Oferiți feedback prin <feedback-link>GeoNet, Comunitatea Esri</feedback-link>.",
+    "enterpriseContent1": "Folosiți un browser care nu mai este acceptat. Unele părți ale acestei aplicații pot să nu funcționeze optim sau deloc în acest browser."
   },
   "errorCode": "Cod",
   "errorMessage": "Mesaj",
   "errorDetail": "Detaliu",
   "widgetPlaceholderTooltip": "Pentru a-l configura, mergeţi la Widgeturi şi faceţi clic pe substituentul corespunzător",
+  "widgetToolTip": "${widgetLabel}. Apăsați pe Enter pentru a focaliza în acest widget. Când focalizarea este în interior, apăsați pe Esc pentru ca focalizarea să revină pe widget.",
   "skips": {
     "skips": "Omitere linkuri",
     "skipTo": "Omitere la ${value}",
     "headerController": "Omitere la controller antet",
     "map": "Omitere la hartă",
     "sidePanel": "Omitere la panoul lateral",
-    "attributeTable": "Omitere la tabel de atribute"
+    "attributeTable": "Omitere la tabel de atribute",
+    "tabAway": "Apăsați tasta Tab pentru a continua și ieși din aplicație, apăsați tastele Shift și Tab pentru a reveni la ${value} din cadrul intervalului"
   },
   "panelHeader": {
     "foldWindow": "Pliere fereastră",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punct",
+    "arrow": "Săgeată",
     "line": "Linie",
     "polyline": "Linie poligonală",
     "freehandPolyline": "Linie poligonală trasată manual",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Toate valorile unice ale acestui câmp",
     "previousCascadeFilterTip": "Valori filtrate de expresiile anterioare",
     "allCascadeFilterTip": "Valori filtrate de toate celelalte expresii",
+    "dateOptions": "Opțiuni date",
+    "startDateOptions": "Opțiuni pentru data începerii",
+    "endDateOptions": "Opțiuni pentru data încheierii",
     "custom": "data...",
     "today": "astăzi",
     "yesterday": "ieri",
     "tomorrow": "mâine",
+    "atLeastOne": "Trebuie bifată cel puțin o opțiune de dată.",
+    "notUncheckedCurrent": "Opțiunea de dată selectată nu poate fi debifată.",
     "theseDays": "aceste zile",
     "thisWeek": "săptămâna aceasta",
     "thisMonth": "luna aceasta",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Afişare obiecte spaţiale selectate",
     "ExportToFeatureCollection": "Export către colecția de obiecte spațiale",
     "ExportToGeoJSON": "Export către GeoJSON",
+    "ExportToFilegdb": "Export către baza de date geografice",
+    "ExportToShapefile": "Export către fișierul shapefile",
     "EditAttributes": "Editare atribute",
     "AddMarker": "Adăugare marcaj",
     "RemoveMarker": "Eliminare marcaj",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "An",
     "years": "Ani",
+    "quarter": "Trimestru",
     "month": "Lună",
     "months": "Luni",
     "week": "Săptămână",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Încorporaţi această aplicaţie într-un site web",
     "shareEmailSubject": "Partajarea aplicaţiei web:",
-    "shareEmailTxt1": "Aceasta este o aplicaţie web partajată cu dvs. prin intermediul Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Vă puteţi crea şi partaja propria aplicaţie web folosind Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Aceasta este o aplicație web partajată cu dvs. prin intermediul ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Vă puteţi crea şi partaja propria aplicaţie web folosind Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Accesaţi adresa http://www.esri.com/software/web-appbuilder pentru detalii.",
     "smallSize": "Mic",
     "mediumSize": "Mediu",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Extindere ieșire",
     "tooltip": "Faceți clic pe hartă pentru a adăuga un punct"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Link către: ",
+    "previewLinkToolTipsSuffix": "Acest link va funcționa la lansarea aplicației."
+  },
   "noEditPrivileges": "Contul dumneavoastră nu are permisiunea de a crea sau modifica date.",
   "noEditableLayers": "Contul dumneavoastră nu are permisiunea de a crea sau modifica date. Sau această hartă web nu include niciun strat tematic editabil.",
   "invalidConfiguration": "Widgetul nu este configurat sau straturile tematice din configuraţie nu se mai află pe hartă.  Deschideţi aplicaţia în modul de creare şi reconfiguraţi widgetul.",
   "essentialAppsLicenseErrorForApp": "Contul dvs. nu este licențiat să utilizeze o aplicație care nu este publică. Solicitați-i administratorului organizației să vă aloce un tip de utilizator care include aplicații esențiale sau o licență pentru aplicații esențiale de completare.",
-  "essentialAppsLicenseErrorForBuilder": "Contul dvs. nu este licențiat pentru Web AppBuilder. Solicitați-i administratorului organizației să vă aloce un tip de utilizator care include aplicații esențiale sau o licență pentru aplicații esențiale de completare."
+  "essentialAppsLicenseErrorForBuilder": "Contul dvs. nu este licențiat pentru Web AppBuilder. Solicitați-i administratorului organizației să vă aloce un tip de utilizator care include aplicații esențiale sau o licență pentru aplicații esențiale de completare.",
+  "blockedByAdminErrorForApp": "Organizația dvs. a blocat accesul la această aplicație. Contactaţi administratorul pentru detalii.",
+  "blockedByAdminErrorForBuilder": "Organizația dvs. a blocat accesul la Web AppBuilder. Contactaţi administratorul pentru detalii.",
+  "orgUrlMessage": "Aplicația pe care încercați să o accesați nu are originea în URL-ul pus la dispoziție de dvs.",
+  "advancedOptions": "Opţiuni avansate",
+  "proceedTo": "Continuați la ${value}",
+  "setStyle": "Setați stilul"
 });

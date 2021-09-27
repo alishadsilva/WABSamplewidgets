@@ -98,19 +98,30 @@ define({
     "tooltipText": "Įrankio informacijos tekstas",
     "findAddressOrPlace": "Surasti adresą arba vietą",
     "expand": "Išskleisti ${value}",
-    "collapse": "Suskleisti ${value}"
+    "collapse": "Suskleisti ${value}",
+    "asc": "Didėjimo tvarka",
+    "desc": "Mažėjimo tvarka"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Ribotas naršyklės palaikymas",
+    "onlineContent1": "Jūsų naudojama naršyklė yra pasenusi. Šioje naršyklėje kai kurios šios aplikacijos dalys gali neveikti optimaliai arba visai neveikti. Šios naršyklės palaikymas bus nutrauktas ateityje.",
+    "content2": "Naudokite naujausią <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> arba <edge-link>Microsoft Edge</edge-link> versiją.",
+    "onlineContent3": "Daugiau informacijos apie naršyklės palaikymą rasite dokumentacijoje. Pateikite atsiliepimą <feedback-link>GeoNet, Esri bendruomenėje</feedback-link>.",
+    "enterpriseContent1": "Jūsų naudojama naršyklė nebėra palaikoma. Šioje naršyklėje kai kurios šios aplikacijos dalys gali neveikti optimaliai arba visai neveikti."
   },
   "errorCode": "Kodas",
   "errorMessage": "Pranešimas",
   "errorDetail": "Išsamiau",
   "widgetPlaceholderTooltip": "Norėdami nustatyti, eikite į valdiklių dalį ir spustelėkite atitinkamą vietą",
+  "widgetToolTip": "${widgetLabel}. Norėdami įeiti į šį valdiklį, paspauskite Enter. Norėdami išeiti iš valdiklio, paspauskite Esc.",
   "skips": {
     "skips": "Praleisti susiejimus",
     "skipTo": "Praleisti iki ${value}",
-    "headerController": "Praleisti iki antraštės valdiklio",
+    "headerController": "Prakeisti iki antraštės valdiklio",
     "map": "Praleisti iki žemėlapio",
     "sidePanel": "Praleisti iki šoninio skydelio",
-    "attributeTable": "Praleisti iki atributų lentelės"
+    "attributeTable": "Praleisti iki atributų lentelės",
+    "tabAway": "Paspauskite Tab, norėdami tęsti ir išeikite iš aplikacijos, paspauskite Shift ir Tab, kad sugrįžtumėte į ${value} per"
   },
   "panelHeader": {
     "foldWindow": "Suskleisti langą",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Taškas",
+    "arrow": "Rodyklė",
     "line": "Linija",
     "polyline": "Kreivė",
     "freehandPolyline": "Laisvai piešiama kreivė",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Visos unikalios šio lauko reikšmės",
     "previousCascadeFilterTip": "Reikšmės išfiltruotos pagal ankstesnes išraiškas",
     "allCascadeFilterTip": "Reikšmės išfiltruotos pagal visas kitas išraiškas",
+    "dateOptions": "Datos parinktys",
+    "startDateOptions": "Pradžios datos parinktys",
+    "endDateOptions": "Pabaigos datos parinktys",
     "custom": "data...",
     "today": "šiandien",
     "yesterday": "vakar",
     "tomorrow": "rytoj",
+    "atLeastOne": "Būtina pažymėti bent vieną parinktį.",
+    "notUncheckedCurrent": "Pasirinktos datos parinkties žymėjimo negalima anuliuoti.",
     "theseDays": "pastarosiomis dienomis",
     "thisWeek": "ši savaitė",
     "thisMonth": "šis mėnuo",
@@ -416,7 +433,7 @@ define({
     "selectWebMap": "Pasirinkite internetinį žemėlapį",
     "addMapFromOnlineOrPortal": "ArcGIS Online viešuosiuose ištekliuose arba privačiame turinyje, esančiame ArcGIS Online arba Portal, raskite ir pridėkite aplikacijoje interneto žemėlapį.",
     "searchMapName": "Ieškoti pagal žemėlapio pavadinimą...",
-    "searchNone": "Nepavyko rasti jūsų ieškomo elemento. Pabandykite dar kartą.",
+    "searchNone": "Nepavyko rasti jūsų ieškomo elemento. Bandykite dar kartą.",
     "groups": "Grupės",
     "noneGroups": "Grupių nėra",
     "signInTip": "Baigėsi prisijungimo laikas, atnaujinkite naršyklės langą, kad vėl prisijungtumėte prie portalo.",
@@ -486,7 +503,7 @@ define({
     "toGeoJSON": "Eksportuoti į GeoJSON"
   },
   "appState": {
-    "title": "Aplikacijos būsena",
+    "title": "Programėlės būsena",
     "restoreMap": "Spustelėkite, kad atkurtumėte naudotą žemėlapio aprėptį ir matomus sluoksnius"
   },
   "featureActions": {
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Rodyti pažymėtus elementus",
     "ExportToFeatureCollection": "Eksportuoti į elementų rinkinį",
     "ExportToGeoJSON": "Eksportuoti į GeoJSON",
+    "ExportToFilegdb": "Eksportuoti į failų geoduomenų bazę",
+    "ExportToShapefile": "Eksportuoti į Shape failą",
     "EditAttributes": "Redaguoti atributus",
     "AddMarker": "Pridėti žymeklį",
     "RemoveMarker": "Pašalinti žymeklį",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Metai",
     "years": "Metai",
+    "quarter": "Ketvirtis",
     "month": "Mėnuo",
     "months": "Mėnesiai",
     "week": "Savaitė",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "Klaida kuriant valdiklį",
     "createWidgetSettingPageError": "Klaida kuriant valdiklio nustatymų langą",
-    "loadWidgetResourceError": "Klaida užkraunant valdiklio resursus"
+    "loadWidgetResourceError": "Klaida įkeliant valdiklio išteklių"
   },
   "shareOptions": {
     "shareMap": "Pasirinti, kas galės matyti šį žemėlapį",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Įterpti šią aplikaciją į interneto svetainę",
     "shareEmailSubject": "Internetinės aplikacijos bendrinimas:",
-    "shareEmailTxt1": "Ši internetinė aplikacija bendrinama su jumis naudojant Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Galite kurti ir bendrinti savo internetines aplikacijas naudodami Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Ši internetinė aplikacija bendrinama su jumis naudojant ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Galite kurti ir bendrinti savo internetines aplikacijas naudodami Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Daugiau informacijos rasite http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Mažas",
     "mediumSize": "Vidutinė",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Išplėsti išvestį",
     "tooltip": "Paspauskite ant žemėlapio, kad įtrauktumėte tašką"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Nuoroda į: ",
+    "previewLinkToolTipsSuffix": "Ši nuoroda veiks paleidus aplikaciją."
+  },
   "noEditPrivileges": "Jūsų paskyra neturi teisės kurti arba modifikuoti duomenų.",
   "noEditableLayers": "Jūsų paskyra neturi teisės kurti arba modifikuoti duomenis. Arba šiame žiniatinklio žemėlapyje nėra redaguojamų sluoksnių.",
   "invalidConfiguration": "Valdiklis nesukonfigūruotas arba konfigūracijos sluoksnių žemėlapyje nebėra. Atidarykite aplikaciją kūrimo režime ir iš naujo sukonfigūruokite valdiklį.",
   "essentialAppsLicenseErrorForApp": "Jūsų paskyra nelicencijuota naudoti ne viešą aplikaciją. Kreipkitės į organizacijos administratorių, kad paskirtų jums naudotojo tipą, kuris turi svarbiausias aplikacijas, arba suteiktų jums papildomą svarbiausių aplikacijų licenciją.",
-  "essentialAppsLicenseErrorForBuilder": "Jūsų paskyra nelicencijuota naudoti Web AppBuilder. Kreipkitės į organizacijos administratorių, kad paskirtų jums naudotojo tipą, kuris turi svarbiausias aplikacijas, arba suteiktų jums papildomą svarbiausių aplikacijų licenciją."
+  "essentialAppsLicenseErrorForBuilder": "Jūsų paskyra nelicencijuota naudoti Web AppBuilder. Kreipkitės į organizacijos administratorių, kad paskirtų jums naudotojo tipą, kuris turi svarbiausias aplikacijas, arba suteiktų jums papildomą svarbiausių aplikacijų licenciją.",
+  "blockedByAdminErrorForApp": "Jūsų organizacija užblokavo prieigą prie šios aplikacijos. Norėdami gauti daugiau informacijos, susisiekite su savo administratoriumi.",
+  "blockedByAdminErrorForBuilder": "Jūsų organizacija užblokavo prieigą prie Web AppBuilder. Norėdami gauti daugiau informacijos, susisiekite su savo administratoriumi.",
+  "orgUrlMessage": "Aplikacija, kurią bandote pasiekti, nėra pasiekiama naudojant jūsų nurodytą URL.",
+  "advancedOptions": "Papildomi nustatymai",
+  "proceedTo": "Tęskite ${value}",
+  "setStyle": "Nustatyti stilių"
 });

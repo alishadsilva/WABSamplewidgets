@@ -22,6 +22,7 @@ define([
   "dojo/has",
   'dojo/query',
   'dojo/Deferred',
+  'dojo/promise/all',
   "dijit/_WidgetBase",
   "dijit/_TemplatedMixin",
   'esri/undoManager',
@@ -35,7 +36,7 @@ define([
   'jimu/ConfigManager',
   'jimu/dijit/DropdownMenu',
   'jimu/LayerInfos/LayerInfos'
-  ], function(declare, lang, array, html, on, has, query, Deferred, _WidgetBase, _TemplatedMixin,
+  ], function(declare, lang, array, html, on, has, query, Deferred, all, _WidgetBase, _TemplatedMixin,
   UndoManager, OperationBase, RelationshipQuery, Popup, PopupMobile, graphicsUtils, PopupTemplate,
   jimuUtils, ConfigManager, DropdownMenu, jimuLayerInfos) {
     /*jshint unused: false*/
@@ -254,7 +255,7 @@ define([
           displayTitle = this._getDisplayTitleFromPopup(relatedLayerInfo, relatedRecord, displayFieldName);
         }
 
-        return displayTitle ? displayTitle : "";
+        return displayTitle ? displayTitle : " ";
       },
 
       _getDisplayTitleFromPopup: function(relatedLayerInfo, relatedRecord, displayFieldName) {
@@ -273,8 +274,37 @@ define([
       },
 
       _getPopupTemplateWithOnlyDisplayField: function(relatedLayerInfo, displayFieldName) {
-        var popupInfo = relatedLayerInfo._getCustomPopupInfo(relatedLayerInfo.layerObject, [displayFieldName]);
-        var popupTemplate = new PopupTemplate(popupInfo);
+        //var popupInfo = relatedLayerInfo._getCustomPopupInfo(relatedLayerInfo.layerObject, [displayFieldName]);
+        var popupInfo = relatedLayerInfo.getPopupInfo() || relatedLayerInfo._getDefaultPopupInfo(relatedLayerInfo.layerObject); //this._getDefaultPopupInfo(relatedLayerInfo.layerObject);
+
+        var newPopupInfo = {
+          title: '',
+          fieldInfos:[],
+          description: '',
+          showAttachments: false,
+          mediaInfos: []
+        };
+
+        try {
+          if(popupInfo && popupInfo.fieldInfos && displayFieldName) {
+            array.some(popupInfo.fieldInfos, function(fieldInfo){
+              if(fieldInfo.fieldName.toLowerCase() === displayFieldName.toLowerCase()) {
+                var newFieldInfo = lang.clone(fieldInfo);
+                newFieldInfo.visible = true;
+                newPopupInfo.fieldInfos.push(newFieldInfo);
+                return true;
+              } else {
+                return false;
+              }
+            }, this);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+
+        var popupTemplate = new PopupTemplate(newPopupInfo);
+
+
         return popupTemplate;
       },
 
@@ -446,6 +476,15 @@ define([
             this._setTitle(window.jimuNls.popup.relatedTables);
           }
 
+          var relationshipCount = {};
+          array.forEach(layerInfoArray, function(relatedLayerInfo) {
+            if(relationshipCount[relatedLayerInfo.id] === undefined) {
+              relationshipCount[relatedLayerInfo.id] = 0;
+            } else {
+              relationshipCount[relatedLayerInfo.id]++;
+            }
+          }, this);
+
           var relationshipIndexs = {};
           array.forEach(layerInfoArray, function(relatedLayerInfo, index) {
             if(relationshipIndexs[relatedLayerInfo.id] === undefined) {
@@ -454,12 +493,31 @@ define([
               relationshipIndexs[relatedLayerInfo.id]++;
             }
             var backgroundClass = (index % 2 === 0) ? 'oddLine' : 'evenLine';
+            var titleDivStr = '<div title="' + (relatedLayerInfo.title) + '">' + relatedLayerInfo.title + '</div>';
             var tableItem = html.create('div', {
               'class': 'item table-item ' + backgroundClass,
-              innerHTML: relatedLayerInfo.title
+              innerHTML: titleDivStr
             }, this.contentBox);
 
             var relationshipIndex = relationshipIndexs[relatedLayerInfo.id];
+            if(relationshipCount[relatedLayerInfo.id] > 0) {
+              var oriLayerObjectDef = operation.data.oriJimuLayerInfo.getLayerObject();
+              var relatedLayerObjectDef =  relatedLayerInfo.getLayerObject();
+              all({
+                oriLayerObject: oriLayerObjectDef,
+                relatedLayerObject: relatedLayerObjectDef
+              }).then(lang.hitch(this, function(result) {
+                var relationship = operation.data.oriJimuLayerInfo.
+                                   getOriRelationshipByDestLayer(result.oriLayerObject,
+                                                                  result.relatedLayerObject,
+                                                                  relationshipIndex);
+                var relationshipName = (relationship.name || relationship.id);
+                var relationshipNameDivStr = '<div class="relationshipName" title="' +
+                                                relationshipName + '">(' +  relationshipName + ')</div>';
+                tableItem.innerHTML = titleDivStr + relationshipNameDivStr;
+              }));
+            }
+
             var handle = on(tableItem, 'click', lang.hitch(this, function() {
               relatedLayerInfo.getLayerObject().then(lang.hitch(this, function() {
                 this._addOperation(operation);
@@ -685,7 +743,10 @@ define([
 
       addDomNode: function(domNode) {
         setTimeout(lang.hitch(this, function() {
-          html.place(domNode, this._getRefDomNode(), "after");
+          var refDomNode = this._getRefDomNode();
+          if(refDomNode) {
+            html.place(domNode, refDomNode, "after");
+          }
         }), 1);
       },
 

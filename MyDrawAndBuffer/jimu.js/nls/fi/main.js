@@ -98,19 +98,30 @@ define({
     "tooltipText": "Työkaluvihjeen teksti",
     "findAddressOrPlace": "Etsi osoite tai paikka",
     "expand": "Laajenna ${value}",
-    "collapse": "Kutista ${value}"
+    "collapse": "Kutista ${value}",
+    "asc": "Nouseva",
+    "desc": "Laskeva"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Rajoitettu selaimen tuki",
+    "onlineContent1": "Käytät vanhentunutta selainta. Jotkin tämän sovelluksen osat eivät ehkä toimi parhaalla mahdollisella tavalla tai ollenkaan tässä selaimessa. Tämän selaimen tuki päättyy myöhemmin.",
+    "content2": "Käytä <chrome-link>Google Chromen</chrome-link>, <firefox-link>Mozilla Firefoxin</firefox-link>, <safari-link>Apple Safarin</safari-link> tai <edge-link>Microsoft Edgen</edge-link> uusinta versiota.",
+    "onlineContent3": "Lisätietoja selaimen tuesta on dokumentaatiossa. Anna palautteesi <feedback-link>Esrin GeoNet-yhteisön, Esri Communityn </feedback-link> kautta.",
+    "enterpriseContent1": "Käytät selainta, jota ei enää tueta. Jotkin tämän sovelluksen osat eivät ehkä toimi parhaalla mahdollisella tavalla tai ollenkaan tässä selaimessa."
   },
   "errorCode": "Koodi",
   "errorMessage": "Viesti",
   "errorDetail": "Yksityiskohta",
   "widgetPlaceholderTooltip": "Kun haluat asettaa tähän pienoisohjelman, mene Pienoisohjelmat-välilehdelle ja napsauta vastaavaa paikkamerkkiä",
+  "widgetToolTip": "${widgetLabel}. Kohdista tämän pienoisohjelman sisään painamalla ENTER-näppäintä. Kun kohdistus on sisällä, kohdista takaisin pienoisohjelmaan painamalla Esc-näppäintä.",
   "skips": {
     "skips": "Ohita linkit",
     "skipTo": "Siirry kohteeseen ${value}",
     "headerController": "Siirry ylätunnisteen hallintaan",
     "map": "Siirry karttaan",
     "sidePanel": "Siirry sivupaneeliin",
-    "attributeTable": "Siirry ominaisuustietotauluun"
+    "attributeTable": "Siirry ominaisuustietotauluun",
+    "tabAway": "Jatka painamalla sarkainta ja poistu sovelluksesta tai siirry takaisin kohteeseen ${value} seuraavan ajan kuluessa painamalla vaihtonäppäintä ja sarkainta:"
   },
   "panelHeader": {
     "foldWindow": "Kutista ikkuna",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Piste",
+    "arrow": "Nuoli",
     "line": "Viiva",
     "polyline": "Taiteviiva",
     "freehandPolyline": "Viivan piirto vapaalla kädellä",
@@ -222,7 +234,7 @@ define({
     "clear": "Tyhjennä"
   },
   "popupConfig": {
-    "title": "Otsikko",
+    "title": "Titteli",
     "add": "Lisää",
     "fields": "Kentät",
     "noField": "Ei kenttää",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Kaikki tämän kentän yksilölliset arvot",
     "previousCascadeFilterTip": "Aiempien lausekkeiden suodattamat arvot",
     "allCascadeFilterTip": "Kaikkien muiden lausekkeiden suodattamat arvot",
+    "dateOptions": "Päivämääräasetukset",
+    "startDateOptions": "Aloituspäivämääräasetukset",
+    "endDateOptions": "Lopetuspäivämääräasetukset",
     "custom": "päivämäärä...",
     "today": "tänään",
     "yesterday": "eilen",
     "tomorrow": "huomenna",
+    "atLeastOne": "Vähintään yksi päivämääräasetus on valittava.",
+    "notUncheckedCurrent": "Valitun päivämääräasetuksen valintaa ei voi poistaa.",
     "theseDays": "näinä päivinä",
     "thisWeek": "tällä viikolla",
     "thisMonth": "tässä kuussa",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Näytä valitut kohteet",
     "ExportToFeatureCollection": "Vie kohdekokoelmaan",
     "ExportToGeoJSON": "Vie GeoJSON-muotoon",
+    "ExportToFilegdb": "Vie File Geodatabseen",
+    "ExportToShapefile": "Vie shapefile-tiedostoon",
     "EditAttributes": "Muokkaa ominaisuuksia",
     "AddMarker": "Lisää merkintä",
     "RemoveMarker": "Poista merkintä",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Vuosi",
     "years": "Vuotta",
+    "quarter": "Neljännes",
     "month": "Kuukausi",
     "months": "Kuukautta",
     "week": "Viikko",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Upota tämä sovellus Web-sivustoon",
     "shareEmailSubject": "Web-sovelluksen jakaminen:",
-    "shareEmailTxt1": "Tässä on web-sovellus, joka jaetaan kanssasi käyttämällä Web AppBuilder for ArcGIS -sovellusta.",
-    "shareEmailTxt2": "Voit luoda ja jakaa oman web-sovelluksesi Esri Web AppBuilder for ArcGIS -sovelluksella.",
+    "shareEmailTxt1": "Tässä on web-sovellus, joka jaetaan kanssasi käyttämällä ArcGIS Web AppBuilderia .",
+    "shareEmailTxt2": "Voit luoda ja jakaa oman web-sovelluksesi Esrin ArcGIS Web AppBuilderilla.",
     "shareEmailTxt3": "Saat lisätietoja osoitteesta http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Pieni",
     "mediumSize": "Keskisuuri",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Laajenna tulosaineisto",
     "tooltip": "Lisää piste napsauttamalla karttaa"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Linkki: ",
+    "previewLinkToolTipsSuffix": "Tämä linkki toimii, kun sovellus käynnistetään."
+  },
   "noEditPrivileges": "Tililläsi ei ole tietojen luonti- tai muokkausoikeuksia.",
   "noEditableLayers": "Tilisi käyttöoikeudet eivät riitä aineiston luontiin tai muokkaamiseen. Vaihtoehtoisesti tämä web-kartta ei sisällä muokattavia karttatasoja.",
   "invalidConfiguration": "Pienoisohjelmaa ei ole joko määritetty tai määrityksen karttatasoja ei ole enää kartassa. Avaa sovellus luontitilassa ja määritä pienoisohjelma uudelleen.",
   "essentialAppsLicenseErrorForApp": "Tiliäsi ei ole lisensoitu käyttämään sovellusta, joka ei ole julkinen. Pyydä organisaatiosi pääkäyttäjää määrittämään sinulle käyttäjätyyppi, joka sisältää keskeiset sovellukset tai keskeisten sovellusten lisäosan lisenssin.",
-  "essentialAppsLicenseErrorForBuilder": "Tiliäsi ei ole lisensoitu Web AppBuilderille. Pyydä organisaatiosi pääkäyttäjää määrittämään sinulle käyttäjätyyppi, joka sisältää keskeiset sovellukset tai keskeisten sovellusten lisäosan lisenssin."
+  "essentialAppsLicenseErrorForBuilder": "Tiliäsi ei ole lisensoitu Web AppBuilderille. Pyydä organisaatiosi pääkäyttäjää määrittämään sinulle käyttäjätyyppi, joka sisältää keskeiset sovellukset tai keskeisten sovellusten lisäosan lisenssin.",
+  "blockedByAdminErrorForApp": "Organisaatiosi on estänyt tämän sovelluksen käytön. Pyydä lisätietoja järjestelmänvalvojalta.",
+  "blockedByAdminErrorForBuilder": "Organisaatiosi on estänyt Web AppBuilderin käytön. Pyydä lisätietoja järjestelmänvalvojalta.",
+  "orgUrlMessage": "Sovellus, jota yrität käyttää, ei ole peräisin määrittämästäsi URL-osoitteesta.",
+  "advancedOptions": "Lisäasetukset",
+  "proceedTo": "Jatka kohtaan ${value}",
+  "setStyle": "Määritä tyyli"
 });

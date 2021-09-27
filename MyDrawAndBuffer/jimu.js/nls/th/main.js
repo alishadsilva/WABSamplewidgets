@@ -98,19 +98,30 @@ define({
     "tooltipText": "ข้อความแนะนำเครื่องมือ",
     "findAddressOrPlace": "ค้นหาที่อยู่หรือสถานที่",
     "expand": "ขยาย ${value}",
-    "collapse": "ย่อ ${value}"
+    "collapse": "ย่อ ${value}",
+    "asc": "เรียงจากน้อยไปมาก",
+    "desc": "เรียงจากมากไปน้อย"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "การรองรับเบราว์เซอร์แบบจำกัด",
+    "onlineContent1": "คุณกำลังใช้เบราว์เซอร์ที่ถูกปฏิเสธ บางส่วนของแอพพลิเคชั่นนี้อาจทำงานไม่เต็มที่หรือไม่ทำงานเลยในเบราว์เซอร์นี้ บริการรองรับสำหรับเบราว์เซอร์นี้จะสิ้นสุดในอนาคตอันใกล้",
+    "content2": "โปรดใช้ <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> หรือ <edge-link>Microsoft Edge</edge-link> เวอร์ชันล่าสุด",
+    "onlineContent3": "สามารถดูข้อมูลเพิ่มเติมเกี่ยวกับการรองรับเบราว์เซอร์ได้ที่เอกสารของเรา เขียนคำติชมของคุณผ่าน <feedback-link>GeoNet ชุมชน Esri</feedback-link>",
+    "enterpriseContent1": "คุณกำลังใช้งานเบราว์เซอร์ที่ไม่รองรับอีกต่อไป บางส่วนของแอพพลิเคชั่นนี้อาจทำงานไม่เต็มที่หรือไม่ทำงานเลยในเบราว์เซอร์นี้"
   },
   "errorCode": "รหัส",
   "errorMessage": "ข้อความ",
   "errorDetail": "รายละเอียด",
   "widgetPlaceholderTooltip": "ทำการตั้งค่า ไปยัง widget และคลิกที่ตัวยืดร่วม",
+  "widgetToolTip": "${widgetLabel} กด Enter เพื่อโฟกัสภายในวิดเจ็ตนี้ ขณะที่โฟกัสภายใน ให้กด Esc เพื่อกลับไปโฟกัสที่วิดเจ็ต",
   "skips": {
     "skips": "ข้ามลิงก์",
     "skipTo": "ข้ามไปยัง ${value}",
     "headerController": "ข้ามไปยังตัวควบคุมส่วนหัว",
     "map": "ข้ามไปยังแผนที่",
     "sidePanel": "ข้ามไปยังพาเนลด้านข้าง",
-    "attributeTable": "ข้ามไปยังตารางแอตทริบิวต์"
+    "attributeTable": "ข้ามไปยังตารางแอตทริบิวต์",
+    "tabAway": "กด Tab เพื่อดำเนินการต่อและออกจากแอพ กด Shift และ Tab เพื่อกลับไปยัง ${value} ภายใน"
   },
   "panelHeader": {
     "foldWindow": "พับหน้าต่าง",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "จุด",
+    "arrow": "ลูกศร",
     "line": "เส้น",
     "polyline": "เส้นหลายรูปแบบ",
     "freehandPolyline": "วาดเส้นแบบฟรีแฮนด์",
@@ -222,7 +234,7 @@ define({
     "clear": "เคลียร์"
   },
   "popupConfig": {
-    "title": "ชื่อ",
+    "title": "คำนำหน้า",
     "add": "เพิ่ม",
     "fields": "ฟิลด์",
     "noField": "ไม่มีฟิลด์",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "ค่าที่ไม่ซ้ำทั้งหมดของข้อมูลนี้",
     "previousCascadeFilterTip": "ค่ากรองโดยสมการก่อนหน้านี้",
     "allCascadeFilterTip": "ค่ากรองโดยสมการอื่น ๆ ทั้งหมด",
+    "dateOptions": "ตัวเลือกวันที่",
+    "startDateOptions": "ตัวเลือกวันที่เริ่มต้น",
+    "endDateOptions": "ตัวเลือกวันที่สิ้นสุด",
     "custom": "วันที่...",
     "today": "วันนี้",
     "yesterday": "เมื่อวาน",
     "tomorrow": "พรุ่งนี้",
+    "atLeastOne": "ควรเลือกอย่างน้อยหนึ่งตัวเลือกวันที่",
+    "notUncheckedCurrent": "ไม่สามารถยกเลิกการเลือกตัวเลือกวันที่ที่เลือกได้",
     "theseDays": "ในปัจจุบัน",
     "thisWeek": "สัปดาห์นี้",
     "thisMonth": "เดือนนี้",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "แสดงเฉพาะข้อมูลที่ถูกเลือก",
     "ExportToFeatureCollection": "ส่งออกไปยังฟีเจอร์คอลเล็กชัน",
     "ExportToGeoJSON": "ส่งออกเป็น GeoJSON",
+    "ExportToFilegdb": "ส่งออกไปยังไฟล์ฐานข้อมูลภูมิศาสตร์",
+    "ExportToShapefile": "ส่งออกไปยัง shapefile",
     "EditAttributes": "แก้ไขตารางเชิงบรรยาย",
     "AddMarker": "เพิ่มเครื่องหมาย",
     "RemoveMarker": "นำเครื่องหมายออก",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "ปี",
     "years": "ปี",
+    "quarter": "ไตรมาส",
     "month": "เดือน",
     "months": "เดือน",
     "week": "สัปดาห์",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "การสร้างวิดเจ็ตมีข้อผิดพลาด",
     "createWidgetSettingPageError": "การสร้างหน้าการตั้งค่าวิดเจ็ตมีข้อผิดพลาด",
-    "loadWidgetResourceError": "การโหลดข้อมูลสำหรับวิดเจ็ตมีข้อผิดพลาด"
+    "loadWidgetResourceError": "ข้อผิดพลาดการโหลดทรัพยากรวิดเจ็ต"
   },
   "shareOptions": {
     "shareMap": "เลือกผู้ที่สามารถดูแอปนี้",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "กูเกิ้ล+",
     "EmbedTips": "ฝังแอปในเว็บไซต์",
     "shareEmailSubject": "แบ่งปันเว็บแอป:",
-    "shareEmailTxt1": "นี่คือเว็บแอปที่คุณแชร์โดยใช้ Web AppBuilder สำหรับ ArcGIS",
-    "shareEmailTxt2": "คุณสามารถสร้างและแบ่งปันเว็บแอปของคุณเองด้วย Web AppBuilder สำหรับ ArcGIS ของ Esri",
+    "shareEmailTxt1": "นี่คือเว็บแอพที่แชร์กับคุณโดยใช้ ArcGIS Web AppBuilder",
+    "shareEmailTxt2": "คุณสามารถสร้างและแชร์เว็บแอพของคุณเองได้ โดยใช้ Esri ArcGIS Web AppBuilder",
     "shareEmailTxt3": "ดูที่ http://www.esri.com/software/web-appbuilder สำหรับรายละเอียดเพิ่มเติม",
     "smallSize": "เล็ก",
     "mediumSize": "กลาง",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "สำรวจผลลัพธ์",
     "tooltip": "คลิกบนแผนที่เพื่อเพิ่มจุด"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "ลิงก์ไปยัง: ",
+    "previewLinkToolTipsSuffix": "ลิงก์นี้จะใช้งานได้เมื่อเปิดแอพ"
+  },
   "noEditPrivileges": "บัญชีของคุณไม่ได้รับอนุญาตให้สร้างหรือปรับเปลี่ยนข้อมูล",
   "noEditableLayers": "บัญชีของคุณไม่มีสิทธิ์ในการสร้างหรือแก้ไขข้อมูล หรือเว็บแมพนี้ไม่มีชั้นข้อมูลที่สามารถแก้ไขได้",
   "invalidConfiguration": "วิดเจ็ตอย่างใดอย่างหนึ่งไม่ได้กำหนดค่า หรือชั้นข้อมูลที่ใช้ในการกำหนดค่าที่ไม่ได้อยู่ในแผนที่ กรุณาเปิดแอปในโหมดผู้สร้างและกำหนดค่าวิดเจ็ต",
   "essentialAppsLicenseErrorForApp": "บัญชีผู้ใช้ของคุณไม่มีใบอนุญาตในการใช้งานแอปซึ่งไม่ใช่แบบสาธารณะ โปรดขอให้ผู้ดูแลองค์กรของคุณกำหนดประเภทผู้ใช้ที่มีใบอนุญาตแอป Essential หรือแอดออนแอป Essential ให้กับคุณ",
-  "essentialAppsLicenseErrorForBuilder": "บัญชีผู้ใช้ของคุณไม่มีใบอนุญาตในการใช้งาน Web AppBuilder โปรดขอให้ผู้ดูแลองค์กรของคุณกำหนดประเภทผู้ใช้ที่มีใบอนุญาตแอป Essential หรือแอดออนแอป Essential ให้กับคุณ"
+  "essentialAppsLicenseErrorForBuilder": "บัญชีผู้ใช้ของคุณไม่มีใบอนุญาตในการใช้งาน Web AppBuilder โปรดขอให้ผู้ดูแลองค์กรของคุณกำหนดประเภทผู้ใช้ที่มีใบอนุญาตแอป Essential หรือแอดออนแอป Essential ให้กับคุณ",
+  "blockedByAdminErrorForApp": "องค์กรของคุณบล็อกการเข้าใช้งานแอปพลิเคชันนี้ โปรดติดต่อผู้ดูแลระบบของคุณเพื่อสอบถามรายละเอียด",
+  "blockedByAdminErrorForBuilder": "องค์กรของคุณบล็อกการเข้าใช้งาน Web AppBuilder โปรดติดต่อผู้ดูแลระบบของคุณเพื่อสอบถามรายละเอียด",
+  "orgUrlMessage": "แอปพลิเคชันที่คุณพยายามเข้าใช้งาน ไม่ได้มีที่มาจาก URL ที่คุณระบุ",
+  "advancedOptions": "ตัวเลือกขั้นสูง",
+  "proceedTo": "ดำเนินการต่อไปยัง ${value}",
+  "setStyle": "ตั้งค่าสไตล์"
 });

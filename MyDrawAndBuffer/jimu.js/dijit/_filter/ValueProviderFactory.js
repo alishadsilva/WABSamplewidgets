@@ -383,7 +383,8 @@ define([
       dateOperatorIsOn: {
         value: {
           normalProviderType: SIMPLE_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         },
         field: {
           normalProviderType: LIST_VALUE_PROVIDER
@@ -397,7 +398,8 @@ define([
       dateOperatorIsNotOn: {
         value: {
           normalProviderType: SIMPLE_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         },
         field: {
           normalProviderType: LIST_VALUE_PROVIDER
@@ -423,7 +425,8 @@ define([
       dateOperatorIsBefore: {
         value: {
           normalProviderType: SIMPLE_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         },
         field: {
           normalProviderType: LIST_VALUE_PROVIDER
@@ -437,7 +440,8 @@ define([
       dateOperatorIsAfter: {
         value: {
           normalProviderType: SIMPLE_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         },
         field: {
           normalProviderType: LIST_VALUE_PROVIDER
@@ -451,7 +455,8 @@ define([
       dateOperatorIsOnOrBefore: {
         value: {
           normalProviderType: SIMPLE_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         },
         field: {
           normalProviderType: LIST_VALUE_PROVIDER
@@ -465,7 +470,8 @@ define([
       dateOperatorIsOnOrAfter: {
         value: {
           normalProviderType: SIMPLE_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         },
         field: {
           normalProviderType: LIST_VALUE_PROVIDER
@@ -491,13 +497,15 @@ define([
       dateOperatorIsBetween: {
         value: {
           normalProviderType: TWO_DATES_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         }
       },
       dateOperatorIsNotBetween: {
         value: {
           normalProviderType: TWO_DATES_VALUE_PROVIDER,
-          supportAskForValue: true
+          supportAskForValue: true,
+          customVirtualDates: true
         }
       },
       dateOperatorIsBlank: {
@@ -761,6 +769,16 @@ define([
     clazz.getOperatorInfo = function(operator) {
       var operatorInfo = lang.clone(relationship[operator]);
       return operatorInfo;
+    };
+
+    //only for date field & value type & special operators.
+    clazz.isSupportVirtualDates = function(operator){
+      var operatorInfo = relationship[operator];
+      if(operatorInfo && operatorInfo.value && operatorInfo.value.customVirtualDates){
+        var num = (operator === 'dateOperatorIsBetween' || operator === 'dateOperatorIsNotBetween') ? 2 : 1;
+        return {status: true, num: num};
+      }
+      return {status: false};
     };
 
     clazz.getOperatorsByShortType = function(shortType, isHosted){

@@ -31,6 +31,9 @@ define([
   'dojo/query',
   'dojo/store/Memory',
   'jimu/utils',
+  'jimu/filterUtils',
+  "dijit/Tooltip",
+  "dojo/mouse",
   'jimu/dijit/_filter/ValueProviderFactory',
   'dijit/popup',
   'jimu/dijit/CheckBox',
@@ -39,7 +42,8 @@ define([
   'dijit/form/ValidationTextBox'
 ],
 function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, lang,
-  html, array, on, keys, a11yclick, focusUtil, query, Memory, jimuUtils, ValueProviderFactory, esriPopup) {
+  html, array, on, keys, a11yclick, focusUtil, query, Memory,
+  jimuUtils, filterUtils, Tooltip, mouse, ValueProviderFactory, esriPopup) {
 
   return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Evented], {
     templateString:template,
@@ -59,9 +63,14 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
     isHosted: false,
     valueProviderFactory: null,
     valueProvider: null,
+    dateOptionsObj: {status: false}, //if display date options
+    allDates: [filterUtils.VIRTUAL_DATE_CUSTOM, filterUtils.VIRTUAL_DATE_TODAY,
+      filterUtils.VIRTUAL_DATE_YESTERDAY, filterUtils.VIRTUAL_DATE_TOMORROW],
+
 
     //optional, false: setting data logic, true: runtime data logic #12627
     runtime: false,
+    widgetId: '',
 
     //public methods:
     //toJson: UI->partsObj
@@ -137,10 +146,21 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
           return null;
         }
         part.interactiveObj = {
-          prompt: this.promptTB.get('value'),
-          hint: this.hintTB.get('value'),
+          prompt: jimuUtils.sanitizeHTML(this.promptTB.get('value')),
+          hint: jimuUtils.sanitizeHTML(this.hintTB.get('value')),
           cascade: "none"
         };
+
+        //add relative dates
+        if(this.dateOptionsObj.status){
+          if(this.dateOptionsObj.num === 1){
+            part.interactiveObj.virtualDates = this._getRelativeDatesByUI('start');
+          }else{ //2
+            part.interactiveObj.virtualDates1 = this._getRelativeDatesByUI('start');
+            part.interactiveObj.virtualDates2 = this._getRelativeDatesByUI('end');
+          }
+        }
+
         // if(this.uniqueRadio && this.uniqueRadio.checked){
         if(valueType === "unique" || valueType === "multiple"){
           part.interactiveObj.cascade = this.cascadeSelect.get("value");
@@ -169,6 +189,33 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
       part.valueObj = valueObj;
 
       return part;
+    },
+
+    _getRelativeDatesByUI: function(type){
+      var dates = [];
+      array.forEach(this.allDates,function(date){
+        var cbx = this[date + '_' + type + '_date'];
+        if(cbx.checked){
+          dates.push(date);
+        }
+      }, this);
+      return dates;
+    },
+
+    //remove virtual date events
+    _removeRelativeDateChangeEvents: function(){
+      array.forEach(this.allDates,function(date){
+        var cbx = this[date + '_start_date'];
+        if(cbx.changeEvent){
+          cbx.changeEvent.remove();
+        }
+        if(this.dateOptionsObj.num === 2){
+          var cbx2 = this[date + '_end_date'];
+          if(cbx2.changeEvent){
+            cbx2.changeEvent.remove();
+          }
+        }
+      }, this);
     },
 
     _getFieldObjByUI: function(){
@@ -272,15 +319,20 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
           setTimeout(lang.hitch(this, function(){
             //must setTimeout to bind events
             this._bindFieldsSelectChangeAndOperatorChangeEvents();
-          }), 10);
+          }), 0);
+
         }
       }
     },
 
     _bindFieldsSelectChangeAndOperatorChangeEvents: function(){
       this._removeFieldsSelectChangeAndOperatorChangeEvents();
-      this._handle1 = on(this.fieldsSelect, 'change', lang.hitch(this, this._onFieldsSelectChange));
-      this._handle2 = on(this.operatorsSelect, 'change', lang.hitch(this, this._onOperatorsSelectChange));
+      if(this.fieldsSelect){
+        this._handle1 = on(this.fieldsSelect, 'change', lang.hitch(this, this._onFieldsSelectChange));
+      }
+      if(this.operatorsSelect){
+        this._handle2 = on(this.operatorsSelect, 'change', lang.hitch(this, this._onOperatorsSelectChange));
+      }
     },
 
     _removeFieldsSelectChangeAndOperatorChangeEvents: function(){
@@ -408,7 +460,9 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
 
       //focus on fieldSelect
       setTimeout(lang.hitch(this, function(){
-        this.fieldsSelect.focusNode.focus();
+        if(this.fieldsSelect && this.fieldsSelect.focusNode){
+          this.fieldsSelect.focusNode.focus();
+        }
       }),2);
 
       // this.fieldsSelect.focusNode.focus();
@@ -440,6 +494,7 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
       if (!fieldItem) {
         return;
       }
+
       this.fieldsSelect.set('value', fieldItem.id);
 
       this._updateOperatorsByFieldsSelect();
@@ -519,7 +574,11 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
         }
 
         if(supportCascade){
-          this.cascadeSelect.set("value", "previous");
+          if (valueType === 'uniquePredefined' || valueType === 'multiplePredefined') {
+            this.cascadeSelect.set("value", "none");
+          } else {
+            this.cascadeSelect.set("value", "previous");
+          }
           html.addClass(this.domNode, 'support-cascade');
         }else{
           this.cascadeSelect.set("value", "none");
@@ -697,6 +756,7 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
         //operator
         partObj.operator = this._getOperatorByUI();//maybe null
       }
+      partObj.widgetId = this.widgetId;
 
       var valueTypes = [];
       var valueType = null;
@@ -743,6 +803,12 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
 
         if(valueType === 'value'){
           this._enableValueTypeOption(true);
+
+          this.dateOptionsObj.status = false;
+          html.removeClass(this.domNode, 'support-relative-start-date');
+          html.removeClass(this.domNode, 'support-relative-end-date');
+          this._initDateOptionsUI(partObj); //show date options
+
         }else if(valueType === 'field'){
           this._enableFieldTypeOption(true);
         }else if(valueType === 'unique'){
@@ -764,7 +830,10 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
         this.valueProvider = this.valueProviderFactory.getValueProvider(partObj, this.runtime);
         this.valueProvider.placeAt(this.valueProviderContainer);
         this.valueProvider.setValueObject(partObj.valueObj);
-        this.own(on(this.valueProvider, 'change', lang.hitch(this, function(){
+        this.own(on(this.valueProvider, 'change', lang.hitch(this, function(data, type){
+          if(data && this.dateOptionsObj.status){
+            this[data + '_' + type + '_date'].setValue(true); //update current options by value provider.
+          }
           this.emit('change');
         })));
         this.valueProvider.bindChangeEvents();
@@ -803,6 +872,101 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
     //     }
     //   });
     // },
+
+    //show relative date options if it supports
+    _initDateOptionsUI: function(partObj){
+      if(partObj.fieldObj.type === this.dateFieldType){
+        this.dateOptionsObj = ValueProviderFactory.isSupportVirtualDates(partObj.operator);
+        if(this.dateOptionsObj.status){
+          //one date
+          if(this.dateOptionsObj.num === 1){
+            this._initDateOptions(partObj.interactiveObj.virtualDates, 'start');
+            //use date string
+            this.startDateOptions.innerHTML = this.nls.dateOptions;
+          }
+          else { //two dates
+            this._initDateOptions(partObj.interactiveObj.virtualDates1, 'start');
+            this._initDateOptions(partObj.interactiveObj.virtualDates2, 'end');
+            html.addClass(this.domNode, 'support-relative-end-date');
+            //use start string
+            this.startDateOptions.innerHTML = this.nls.startDateOptions;
+          }
+          html.addClass(this.domNode, 'support-relative-start-date');
+        }
+      }
+    },
+
+    _initDateOptions: function(dates, type){
+      if(!dates){
+        dates = this.allDates;
+      }
+      array.forEach(this.allDates,function(date){
+        var cbx = this[date + '_' + type + '_date'];
+        if(cbx.changeEvent){
+          cbx.changeEvent.remove();//remove previous event
+        }
+        cbx.setValue(dates.indexOf(date) >= 0);
+        cbx.changeEvent = on(cbx, 'change', lang.hitch(this, this._onShowTooltipCBXsChange, cbx, date, type));
+      }, this);
+    },
+
+    _onShowTooltipCBXsChange: function(obj, date, type){
+      if (obj && false === obj.checked) {
+        var tips = '';
+        if(this._isCurrentDateOptIsSelected(date, type)){
+          tips = this.nls.notUncheckedCurrent;
+        }else if(this._isDateOptionsAllHide(type)){
+          tips = this.nls.atLeastOne;
+        }else{
+          return;
+        }
+        obj.check();
+        Tooltip.hide();
+        Tooltip.show(tips, obj.domNode);
+        this.own(on.once(obj.domNode, mouse.leave,
+          lang.hitch(this, function() {
+            Tooltip.hide(obj.domNode);
+          }))
+        );
+      }
+    },
+
+    _isDateOptionsAllHide: function(type) {
+      var isAllHide = true;
+      array.some(this.allDates, function(date){
+        var item = this[date + '_' + type + '_date'];
+        if (true === item.checked) {
+          isAllHide = false;
+          return true;
+        }
+      }, this);
+      return isAllHide;
+    },
+
+    //check if current date is selected by valueProvider
+    _isCurrentDateOptIsSelected: function(date, type){
+      var valueObj = this.valueProvider.getValueObject();
+      //For one date situation, valueObj is null when selecting empty option or (custom & no specific date)
+      //For two dates situation, valueObj is null when any of dates is null(follow rules above).
+      if(valueObj){
+        if(type === 'start'){//for start date
+          if(this.dateOptionsObj.num === 1){
+            if((!valueObj.virtualDate && date === filterUtils.VIRTUAL_DATE_CUSTOM) || valueObj.virtualDate === date){
+              return true;
+            }
+          }else{//2
+            if((!valueObj.virtualDate1 && date === filterUtils.VIRTUAL_DATE_CUSTOM) || valueObj.virtualDate1 === date){
+              return true;
+            }
+          }
+        }else{//for end date
+          if((!valueObj.virtualDate2 && date === filterUtils.VIRTUAL_DATE_CUSTOM) || valueObj.virtualDate2 === date){
+            return true;
+          }
+        }
+      }
+      return false;
+    },
 
     _updateWhenValueRadioChanged: function(){
       this._updatePrompt(false, true);
@@ -1078,6 +1242,9 @@ function(Evented, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin
 
     destroy: function(){
       this._removeFieldsSelectChangeAndOperatorChangeEvents();
+      if(this.dateOptionsObj.status){
+        this._removeRelativeDateChangeEvents();
+      }
       this._destroyEsriPopup();
       this.inherited(arguments);
     }

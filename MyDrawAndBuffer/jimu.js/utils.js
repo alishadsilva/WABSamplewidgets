@@ -52,8 +52,6 @@ define([
     'esri/tasks/query',
     'esri/tasks/QueryTask',
     'esri/graphicsUtils',
-    'esri/IdentityManager',
-    'esri/arcgis/OAuthInfo',
     'jimu/portalUrlUtils',
     './shared/utils',
     './accessibleUtils',
@@ -64,10 +62,10 @@ define([
 function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on, json, cookie,
   dojoNumber, dateLocale, nlsBundle, base64, esriLang, moment, arcgisUtils, PopupTemplate, SpatialReference,
   Extent, geometryEngine, Multipoint, Polyline, Polygon, webMercatorUtils, GeometryService, ProjectParameters,
-  FeatureSet, PictureMarkerSymbol, esriUrlUtils, esriRequest, EsriQuery, QueryTask, graphicsUtils, IdentityManager,
-  OAuthInfo, portalUrlUtils, sharedUtils, accessibleUtils, zoomToUtils
+  FeatureSet, PictureMarkerSymbol, esriUrlUtils, esriRequest, EsriQuery, QueryTask, graphicsUtils,
+  portalUrlUtils, sharedUtils, accessibleUtils, zoomToUtils
 ) {
-  /* global esriConfig, dojoConfig, ActiveXObject, testLoad */
+  /* global esriConfig, dojoConfig, ActiveXObject */
   var mo = {};
 
   nlt = null;
@@ -99,32 +97,6 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
 
       return base64.encode(bytes);
     };
-  }
-
-  var fileAPIJsStatus = 'unload'; // unload, loading, loaded
-  function _loadFileAPIJs(prePath, cb) {
-    prePath = prePath || "";
-    var loaded = 0,
-      completeCb = function() {
-        loaded++;
-        if (loaded === tests.length) {
-          cb();
-        }
-      },
-      tests = [{
-        test: window.File && window.FileReader && window.FileList && window.Blob ||
-          !mo.file.isEnabledFlash(),
-        failure: [
-          prePath + "libs/polyfills/fileAPI/FileAPI.js"
-        ],
-        callback: function() {
-          completeCb();
-        }
-      }];
-
-    for (var i = 0; i < tests.length; i++) {
-      testLoad(tests[i]);
-    }
   }
 
   //if no beforeId, append to head tag, or insert before the id
@@ -340,7 +312,7 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     for (var i = 0, len = contentImgs.length; i < len; i++) {
       var img = contentImgs[i];
       if ((oldWabLogoIds.indexOf(html.getAttr(img, "id")) > -1) && !html.getAttr(img, "alt")) {
-        html.setAttr(img, "alt", "Web AppBuilder for ArcGIS.png");//keep img's alt in English
+        html.setAttr(img, "alt", "ArcGIS Web AppBuilder.png");//keep img's alt in English
       }
     }
   };
@@ -639,25 +611,7 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
   mo.file = {
     loadFileAPI: function() {
       var def = new Deferred();
-      if (fileAPIJsStatus === 'unload') {
-        var prePath = !!window.isBuilder ? 'stemapp/' : "";
-        window.FileAPI = {
-          debug: false,
-          flash: true,
-          staticPath: prePath + 'libs/polyfills/fileAPI/',
-          flashUrl: prePath + 'libs/polyfills/fileAPI/FileAPI.flash.swf',
-          flashImageUrl: prePath + 'libs/polyfills/fileAPI/FileAPI.flash.image.swf'
-        };
-
-        _loadFileAPIJs(prePath, lang.hitch(this, function() {
-          fileAPIJsStatus = 'loaded';
-          def.resolve();
-        }));
-        fileAPIJsStatus = 'loading';
-      } else if (fileAPIJsStatus === 'loaded'){
-        def.resolve();
-      }
-
+      def.resolve();
       return def;
     },
     supportHTML5: function() {
@@ -827,9 +781,6 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
       }
       widgetJson.manifest = manifest;
       widgetJson.isRemote = manifest.isRemote;
-      if(widgetJson.isRemote){
-        widgetJson.itemId = manifest.itemId;
-      }
       if(manifest.featureActions){
         widgetJson.featureActions = manifest.featureActions;
       }
@@ -870,11 +821,12 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     };
 
     ret.getFolderUrlFromItem = function(item){
+      var url;
+
       if(!item.url){
         return null;
       }
 
-      var url;
       if(/manifest\.json$/.test(item.url)){
         url = item.url.substring(0, item.url.length - 'manifest.json'.length);
       }else if(/\/$/.test(item.url)){
@@ -886,6 +838,7 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
       if(window.location.protocol === "https:"){
         url = url.replace(/^http:\/\//, 'https://');
       }
+
       return url;
     };
 
@@ -1968,7 +1921,7 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
   *fractional (Boolean, optional):
   *If false, show no decimal places, overriding places and pattern settings.
   */
-  mo.localizeNumber = function(num, options){
+  mo._localizeNumber = function(num, options){
     var decimalStr = num.toString().split('.')[1] || "",
           decimalLen = decimalStr.length;
     var _pattern = "";
@@ -1981,9 +1934,9 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     }else {
       _pattern = "#,###,###,##0";
     }
-
+    var locale = (options && options.locale) || config.locale;
     var _options = {
-      locale: config.locale,
+      locale: locale,
       pattern: _pattern
     };
     lang.mixin(_options, options || {});
@@ -1994,6 +1947,54 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     } catch (err) {
       console.error(err);
       return num.toLocaleString();
+    }
+  };
+
+  mo.localizeNumber = function(number, options) {
+    if (!mo.isNumberOrNumberString(number)) {
+      return number;
+    }
+
+    number = Number(number);
+
+    var isNegative = false;
+    if (number < 0) {
+      isNegative = true;
+      number = Math.abs(number);
+    }
+
+    number = mo._localizeNumber(number, options);
+
+    //Under RTL, the browser will automatically flip the minus sign to the opposite position.
+    //In order to keep the minus sign always on the left, we need to flip it to the right
+    if (isNegative) {
+      number = window.isRTL ? number + '-' : '-' + number;
+    }
+
+    return number;
+  };
+
+  mo.isLocalizedNumber = function (number) {
+    var parsed = dojoNumber.parse(number, {
+      locale: config.locale
+    });
+
+    if (isNaN(parsed)) {
+      return false;
+    } else {
+      return !isNaN(parseFloat(parsed));
+    }
+  };
+
+  mo.parseNumberToUSENFormat = function (number) {
+    var parsedNum = dojoNumber.parse(number, {
+      locale: config.locale
+    });
+
+    if (isNaN(parsedNum)) {
+      return parseFloat((esriLang.isDefined(number) && number.replace) ? number.replace(",", ".") : number);
+    } else {
+      return parsedNum;
     }
   };
 
@@ -2198,8 +2199,8 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
   };
 
   //get valide date time string to save in config
-  mo.getDateTimeStr = function(d, format) {
-    format = format ? format : 'YYYY-MM-DD HH:mm:ss';
+  mo.getDateTimeStr = function(d, showTime) {
+    var format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
     var date = moment(d).format(format);
     return date;
   };
@@ -2984,10 +2985,6 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
       }
 
       if(webmapInfo){
-        // use default mapOptions of current webmap.
-        if(appConfig.map.mapOptions){
-          mo.deleteMapOptions(appConfig.map.mapOptions);
-        }
         appConfig.map.portalUrl = portalUrl;
 
         if (!templateAppConfig.values.app_title) {
@@ -3058,6 +3055,9 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
 
   mo.sanitizeHTML = function(snippet){
     /* global html_sanitize */
+    if (!snippet) {
+      return snippet;
+    }
 
     //https://code.google.com/p/google-caja/wiki/JsHtmlSanitizer
     return html_sanitize(snippet, function(url){
@@ -3205,6 +3205,10 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     //http://servicesdev1.arcgis.com/5uh3wwYLNzBuU0Eu/arcgis/rest/services/CarsandLivingThings/FeatureServer/0?f=pjson
     var fieldInfo = mo.getFieldInfoByFieldName(layerDefinition.fields, fieldName);
     var codedValues;
+    if (!fieldInfo) {
+      return codedValues;
+    }
+
     //query codedvalue from types-domain
     if(typeIdFieldValue !== undefined && typeIdFieldValue !== null){ //it can be 0(number)
       codedValues = mo._getCodedValueBySubTypeId(layerDefinition, fieldName, typeIdFieldValue, /*optional*/fieldInfo);
@@ -3580,6 +3584,9 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
 
     var codedValues = null ;
     fieldInfo = fieldInfo ? fieldInfo : mo.getFieldInfoByFieldName(layerDefinition.fields, fieldName);
+    if(!fieldInfo){ // for custom fields like x, y when exporting data.
+      return codedValues;
+    }
     if(layerDefinition[type] && layerDefinition[arrayType] && layerDefinition[arrayType].length > 0){
       array.map(layerDefinition[arrayType], lang.hitch(this, function(item){
         if(item.id === typeIdFieldValue){
@@ -3730,7 +3737,7 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
   };
 
   //get renderer from layerDef.drawingInfo
-  mo._getRendererFromLayerDef = function(layerDefinition){
+  mo.getUniqueRendererByLayerDefinition = function(layerDefinition){
     var render = null;
     if(layerDefinition.drawingInfo && layerDefinition.drawingInfo.renderer &&
       layerDefinition.drawingInfo.renderer.type === 'uniqueValue'){
@@ -3739,20 +3746,25 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     return render;
   };
 
-  //get renderer from layerObj which is configurated in webmap if it exists,
-  //otherwise use drawingInfo from layerDef.
+  // The priority of layerObject's renderer is higher than layerDefinition's drawingInfo.
+  mo.isUniqueReneredByLayerObject = function(renderInfo, _layerDefRender){
+    return renderInfo.type === 'uniqueValue' && (_layerDefRender && _layerDefRender.field1 === renderInfo.field1);
+  }
+
+  // get renderer from layerObj which is configurated in webmap if it exists,
+  // otherwise use drawingInfo from layerDef.
   mo._getRenderValueLabelsForUnique = function(layerDefinition){
     var valueLabels = null, uniqueValueInfos = null;
-    var layerDefRender = mo._getRendererFromLayerDef(layerDefinition);
+    var layerDefRender = mo.getUniqueRendererByLayerDefinition(layerDefinition);
     if(layerDefRender){//layerDefinition
       valueLabels = {};
       uniqueValueInfos = layerDefRender.uniqueValueInfos;
     }else if(layerDefinition.renderer){//layerObject
       var _layerDef = layerDefinition.toJson().layerDefinition; //get serviceLayerDef from layerObj
-      var _layerDefRender = mo._getRendererFromLayerDef(_layerDef);
+      var _layerDefRender = mo.getUniqueRendererByLayerDefinition(_layerDef);
       var renderInfo = layerDefinition.renderer.toJson();
       //only support uniqueRender and same field as layerDef
-      if(renderInfo.type === 'uniqueValue' && (_layerDefRender && _layerDefRender.field1 === renderInfo.field1)){
+      if(mo.isUniqueReneredByLayerObject(renderInfo, _layerDefRender)){
         valueLabels = {};
         uniqueValueInfos = renderInfo.uniqueValueInfos;
       }else if(_layerDefRender){
@@ -4664,7 +4676,7 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
       /^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/.test(value);
   };
 
-  //0.1234 --> 12.34% or %12.34(locale=ar or tr)
+  //https://devtopia.esri.com/WebGIS/arcgis-webappbuilder/issues/13559#issuecomment-2117722
   mo.convertNumberToPercentage = function(number, /*optional*/ decimalDigits, digitSeparator) {
     if (!mo.isNumberOrNumberString(number)) {
       return number;
@@ -4685,7 +4697,6 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
 
     var locale = config.locale;
     var percentLeft = locale === 'ar' || locale === 'tr';
-    var isRTL = locale === 'ar' || locale === 'he';
     number = Number(number);
     var isNegative = false;
     if (number < 0) {
@@ -4701,8 +4712,10 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
       number = '%' + number;
     }
 
+    //Under RTL, the browser will automatically flip the minus sign to the opposite position.
+    //In order to keep the minus sign always on the left, we need to flip it to the right
     if (isNegative) {
-      number = isRTL ? number + '-' : '-' + number;
+      number = window.isRTL ? number + '-' : '-' + number;
     }
 
     return number;
@@ -4815,31 +4828,6 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
     return (S4() + S4() + "_" + S4() + "_" + S4() + "_" + S4() + "_" + S4() + S4() + S4());
   };
 
-  mo.checkEssentialAppsLicense = function(appId, portal, isInBuilder) {
-    var portalUrl = portalUrlUtils.getStandardPortalUrl(window.portalUrl);
-    var sharingUrl = portalUrlUtils.getSharingUrl(portalUrl);
-    var oauthappid = "arcgisWebApps";
-    // register OAuthInfo with client ID 'arcgisWebApps'
-    var oAuthInfo = new OAuthInfo({
-      appId: "arcgisWebApps",
-      portalUrl: portalUrl
-    });
-    IdentityManager.registerOAuthInfos([oAuthInfo]);
-
-    //Determine if app is public or private
-    if(isInBuilder) {
-      return IdentityManager.checkAppAccess(sharingUrl, oauthappid);
-    } else {
-      return portal.getItemById(appId).then(function(appItem) {
-        if(appItem.access === "public") {
-          return;
-        } else {
-          return IdentityManager.checkAppAccess(sharingUrl, oauthappid);
-        }
-      });
-    }
-  };
-
   mo.getStyleColorInTheme = function(styleName) {
     var def = new Deferred();
     var appConfig, url;
@@ -4879,6 +4867,29 @@ function(lang, array, html, has, config, ioQuery, query, nlt, Deferred, all, on,
       def.reject(null);
     }));
     return def.promise;
+  };
+
+  //for 8.1 ,#16917
+  // nodes : {link, logo, icon}
+  mo.themesHeaderLogoA11y = function (appConfig, tabIndex, nodes) {
+    if (appConfig.logoLink) {
+      html.setAttr(nodes.link, 'href', appConfig.logoLink);
+      html.setAttr(nodes.link, 'tabIndex', tabIndex);
+      html.setAttr(nodes.link, 'target', '_blank');
+      html.setAttr(nodes.logo, 'alt', appConfig.logoLink);
+      html.setStyle(nodes.icon, 'cursor', 'pointer');
+    } else {
+      html.setAttr(nodes.link, 'href', 'javascript:void(0)'); //jshint ignore:line
+      html.setAttr(nodes.link, 'tabIndex', -1);
+      html.setAttr(nodes.link, 'target', '');
+      html.removeAttr(nodes.logo, 'alt');
+      html.setAttr(nodes.logo, 'role', 'presentation');
+      html.setStyle(nodes.icon, 'cursor', 'default');
+    }
+
+    if (appConfig.logoAlt) {
+      html.setAttr(nodes.logo, 'alt', appConfig.logoAlt);
+    }
   };
   return mo;
 });

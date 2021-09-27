@@ -98,19 +98,30 @@ define({
     "tooltipText": "Texto de dica da ferramenta",
     "findAddressOrPlace": "Encontrar endereço ou lugar",
     "expand": "Expandir ${value}",
-    "collapse": "Recolher ${value}"
+    "collapse": "Recolher ${value}",
+    "asc": "Crescente",
+    "desc": "Descendente"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Suporte de navegador limitado",
+    "onlineContent1": "Você está utilizando um navegador que está descontinuado. Algumas partes deste aplicativo podem não funcionar de maneira ideal ou totalmente neste navegador. O suporte para este navegador será descontinuado no futuro.",
+    "content2": "Utilize as versões mais recentes do <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, ou <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Para obter mais informações sobre o suporte do navegador, consulte nossa documentação. Forneça seu comentário pela <feedback-link>GeoNet, a Comunidade da Esri </feedback-link>.",
+    "enterpriseContent1": "Você está usando um navegador que não é mais suportado. Algumas partes deste aplicativo podem não funcionar de maneira ideal ou totalmente neste navegador."
   },
   "errorCode": "Código",
   "errorMessage": "Mensagem",
   "errorDetail": "Detalhe",
   "widgetPlaceholderTooltip": "Para configurar, siga até Widgets e clique no console correspondente",
+  "widgetToolTip": "${widgetLabel}. Pressione Enter para focar dentro deste widget. Quando o foco estiver dentro, pressione Esc para focar novamente no widget.",
   "skips": {
     "skips": "Ignorar Links",
     "skipTo": "Pular para ${value}",
     "headerController": "Pular para Controlador de Cabeçalho",
     "map": "Pular para Mapa",
     "sidePanel": "Pular para Painel Lateral",
-    "attributeTable": "Pular para Tabela de Atributos"
+    "attributeTable": "Pular para Tabela de Atributos",
+    "tabAway": "Pressione Tab para continuar e sair do aplicativo, pressione Shift e Tab para voltar para ${value} em"
   },
   "panelHeader": {
     "foldWindow": "Dobrar janela",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Ponto",
+    "arrow": "Seta",
     "line": "Linha",
     "polyline": "Polilinha",
     "freehandPolyline": "Polilinha à mão livre",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Todos os valores únicos deste campo",
     "previousCascadeFilterTip": "Valores filtrados por expressões anteriores",
     "allCascadeFilterTip": "Valores filtrados por todas as outras expressões",
+    "dateOptions": "Opções de data",
+    "startDateOptions": "Opções de data inicial",
+    "endDateOptions": "Opções de data final",
     "custom": "a data...",
     "today": "hoje",
     "yesterday": "ontem",
     "tomorrow": "amanhã",
+    "atLeastOne": "Pelo menos uma opção de data deve ser marcada.",
+    "notUncheckedCurrent": "A opção de data selecionada não poder ser desmarcada.",
     "theseDays": "estes dias",
     "thisWeek": "esta semana",
     "thisMonth": "este mês",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Mostrar feições selecionadas",
     "ExportToFeatureCollection": "Exportar para coleção de feição",
     "ExportToGeoJSON": "Exportar para GeoJSON",
+    "ExportToFilegdb": "Exportar para arquivo geodatabase",
+    "ExportToShapefile": "Exportar para shapefile",
     "EditAttributes": "Editar atributos",
     "AddMarker": "Adicionar um marcador",
     "RemoveMarker": "Remover marcador",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Ano",
     "years": "Anos",
+    "quarter": "Trimestre",
     "month": "Mês",
     "months": "Meses",
     "week": "Semana",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "Erro ao Criar widget",
     "createWidgetSettingPageError": "Erro da página de configuração Criar widget",
-    "loadWidgetResourceError": "Erro do recurso Carregar widget"
+    "loadWidgetResourceError": "Carregar erro de recurso do widget"
   },
   "shareOptions": {
     "shareMap": "Escolha quem pode visualizar este aplicativo",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Embutir este aplicativo em um site da web",
     "shareEmailSubject": "Compartilhando aplicativo da web:",
-    "shareEmailTxt1": "Aqui está um aplicativo da web compartilhado com você utilizando Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Você pode criar e compartilhar seu próprio aplicativo da web com Web AppBuilder for ArcGIS da Esri.",
+    "shareEmailTxt1": "Aqui está um aplicativo da web compartilhado com você utilizando o ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Você pode criar e compartilhar seu próprio aplicativo da web com Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Visite http://www.esri.com/software/web-appbuilder para detalhes.",
     "smallSize": "Pequeno",
     "mediumSize": "Médio",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Expandir Saída",
     "tooltip": "Clique no mapa para adicionar o ponto"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Link para: ",
+    "previewLinkToolTipsSuffix": "Este link funcionará quando o aplicativo for iniciado."
+  },
   "noEditPrivileges": "Sua conta não tem permissão para criar ou modificar dados.",
   "noEditableLayers": "Sua conta não tem permissão para criar ou modificar dados. Ou este mapa da web não contém camadas editáveis.",
   "invalidConfiguration": "O Widget não está configurado ou as camadas na configuração não estão mais no mapa.  Abra o aplicativo no modo do construtor e configure novamente o widget.",
   "essentialAppsLicenseErrorForApp": "Sua conta não está licenciada para utilizar um aplicativo que não seja público. Solicite ao administrador da sua organização que lhe atribua um tipo de usuário que inclua os Aplicativos Fundamentais ou uma licença complementar dos Aplicativos Fundamentais.",
-  "essentialAppsLicenseErrorForBuilder": "Sua conta não é licenciada para Web AppBuilder. Solicite ao administrador da sua organização que lhe atribua um tipo de usuário que inclua os Aplicativos Fundamentais ou uma licença complementar dos Aplicativos Fundamentais."
+  "essentialAppsLicenseErrorForBuilder": "Sua conta não é licenciada para Web AppBuilder. Solicite ao administrador da sua organização que lhe atribua um tipo de usuário que inclua os Aplicativos Fundamentais ou uma licença complementar dos Aplicativos Fundamentais.",
+  "blockedByAdminErrorForApp": "Sua organização bloqueou o acesso a este aplicativo. Entre em contato com seu administrador para detalhes adicionais.",
+  "blockedByAdminErrorForBuilder": "Sua organização bloqueou o acesso ao Web AppBuilder. Entre em contato com seu administrador para detalhes adicionais.",
+  "orgUrlMessage": "O aplicativo que você está tentando acessar não se origina da URL fornecida.",
+  "advancedOptions": "Opções avançadas",
+  "proceedTo": "Prossiga para ${value}",
+  "setStyle": "Definir estilo"
 });

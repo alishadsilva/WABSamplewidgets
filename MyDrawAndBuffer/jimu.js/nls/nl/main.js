@@ -98,19 +98,30 @@ define({
     "tooltipText": "Tekst knopinfo",
     "findAddressOrPlace": "Adres of plaats zoeken",
     "expand": "${value} uitklappen",
-    "collapse": "${value} inklappen"
+    "collapse": "${value} inklappen",
+    "asc": "Oplopend",
+    "desc": "Aflopend"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Beperkte browserondersteuning",
+    "onlineContent1": "U gebruikt een verouderde browser. Sommige onderdelen van deze applicatie werken mogelijk niet optimaal of helemaal niet in deze browser. Ondersteuning voor deze browser wordt stopgezet in de toekomst.",
+    "content2": "Gebruik de nieuwste versie van <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> of <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Zie onze documentatie voor meer informatie over browserondersteuning. Voer uw feedback in via <feedback-link>GeoNet, de Esri Community</feedback-link>.",
+    "enterpriseContent1": "U gebruikt een browser die niet meer wordt ondersteund. Sommige onderdelen van deze applicatie werken mogelijk niet optimaal of helemaal niet in deze browser."
   },
   "errorCode": "Code",
   "errorMessage": "Bericht",
   "errorDetail": "Detail",
   "widgetPlaceholderTooltip": "Om dit in te stellen, gaat u naar Widgets en klikt u op de overeenkomende tijdelijke aanduiding",
+  "widgetToolTip": "${widgetLabel}. Druk op Enter om de focus binnen deze widget te plaatsen. Als de focus binnen is, druk dan op Esc om weer op de widget te focussen.",
   "skips": {
     "skips": "Links overslaan",
     "skipTo": "Overslaan en verdergaan naar ${value}",
     "headerController": "Overslaan en verdergaan naar Header Controller",
     "map": "Overslaan en verdergaan naar kaart",
     "sidePanel": "Overslaan en verdergaan naar zijpaneel",
-    "attributeTable": "Overslaan en verdergaan naar attribuuttabel"
+    "attributeTable": "Overslaan en verdergaan naar attribuuttabel",
+    "tabAway": "Druk op Tab om verder te gaan en uit de app te gaan, druk op Shift en Tab om terug te gaan naar ${value} in de app"
   },
   "panelHeader": {
     "foldWindow": "Venster invouwen",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punt",
+    "arrow": "Pijl",
     "line": "Lijn",
     "polyline": "Polylijn",
     "freehandPolyline": "Polylijn in vrije stijl",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Alle unieke waarden van dit veld",
     "previousCascadeFilterTip": "Waarden gefilterd door vorige expressies",
     "allCascadeFilterTip": "Waarden gefilterd door alle andere expressies",
+    "dateOptions": "Datumopties",
+    "startDateOptions": "Opties startdatum",
+    "endDateOptions": "Opties einddatum",
     "custom": "de datum...",
     "today": "vandaag",
     "yesterday": "gisteren",
     "tomorrow": "morgen",
+    "atLeastOne": "Er moet minimaal één datumoptie worden geselecteerd.",
+    "notUncheckedCurrent": "De geselecteerde datumoptie kan niet worden uitgeschakeld.",
     "theseDays": "deze dagen",
     "thisWeek": "deze week",
     "thisMonth": "deze maand",
@@ -466,7 +483,7 @@ define({
     "cropImage": "Afbeelding bijsnijden",
     "exceed": "Bestandsgrootte mag niet groter zijn dan 1024 KB",
     "enableFlash": "Schakel Adobe Flash in alvorens te bladeren naar een afbeelding.",
-    "cropWaining": "Kies een foto die minstens ${breedte}x ${hoogte} pixels is.",
+    "cropWaining": "Kies een foto die minstens ${width}x ${height} pixels is.",
     "toolTip": "Voor de beste weergave moet de afbeelding ${width} pixels breed en ${height} pixels hoog zijn. Andere formaten worden passend gemaakt. Aanvaardbare afbeeldingsindelingen zijn: PNG, GIF en JPEG."
   },
   "simpleTable": {
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Geselecteerde objecten weergeven",
     "ExportToFeatureCollection": "Exporteren naar objectverzameling",
     "ExportToGeoJSON": "Exporteren naar GeoJSON",
+    "ExportToFilegdb": "Exporteren naar bestand geodatabase",
+    "ExportToShapefile": "Exporteren naar shapefile",
     "EditAttributes": "Attributen bewerken",
     "AddMarker": "Een markering toevoegen",
     "RemoveMarker": "Markering verwijderen",
@@ -517,7 +536,7 @@ define({
   },
   "searchDistance": {
     "applySearchDistance": "Een zoekafstand toepassen",
-    "applySearchDistanceToFeatures": "Pas een zoekopdracht toe op de geselecteerde objecten"
+    "applySearchDistanceToFeatures": "Pas een zoekafstand toe op de geselecteerde objecten"
   },
   "units": {
     "miles": "Mijl",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Jaar",
     "years": "Jaren",
+    "quarter": "Kwartaal",
     "month": "Maand",
     "months": "Maanden",
     "week": "Week",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Deze app inbedden in een website",
     "shareEmailSubject": "Een webapp delen:",
-    "shareEmailTxt1": "Hier is een webapp gedeeld met u via Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "U kunt uw eigen webapp maken en delen met Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Hier is een webapp gedeeld met u via ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "U kunt uw eigen webapp maken en delen met Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Ga naar http://www.esri.com/software/web-appbuilder voor details.",
     "smallSize": "Klein",
     "mediumSize": "Middel",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Output uitvouwen",
     "tooltip": "Op de kaart klikken om punt toe te voegen"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Linken naar: ",
+    "previewLinkToolTipsSuffix": "Deze link wordt actief als de app wordt gestart."
+  },
   "noEditPrivileges": "Uw account heeft geen machtigingen om gegevens te maken of te wijzigen.",
   "noEditableLayers": "Uw account is niet gemachtigd om data te maken of wijzigen. Of deze webmap bevat geen bewerkbare lagen.",
   "invalidConfiguration": "Widget is niet geconfigureerd of de lagen in de configuratie zijn niet langer in de kaart. Open de app in de bouwmodus en configureer de widget opnieuw.",
   "essentialAppsLicenseErrorForApp": "Uw account heeft geen licentie om een app te gebruiken die niet openbaar is. Vraag uw organisatiebeheerder om u een gebruikerstype toe te wijzen dat Essential Apps of een add-on Essential Apps-licentie bevat.",
-  "essentialAppsLicenseErrorForBuilder": "Uw account is niet gelicentieerd voor Web AppBuilder. Vraag uw organisatiebeheerder om u een gebruikerstype toe te wijzen dat Essential Apps of een add-on Essential Apps-licentie bevat."
+  "essentialAppsLicenseErrorForBuilder": "Uw account is niet gelicentieerd voor Web AppBuilder. Vraag uw organisatiebeheerder om u een gebruikerstype toe te wijzen dat Essential Apps of een add-on Essential Apps-licentie bevat.",
+  "blockedByAdminErrorForApp": "Uw organisatie heeft de toegang tot deze applicatie geblokkeerd. Neem contact op met uw beheerder voor details.",
+  "blockedByAdminErrorForBuilder": "Uw organisatie heeft de toegang tot Web AppBuilder geblokkeerd. Neem contact op met uw beheerder voor details.",
+  "orgUrlMessage": "De applicatie die u probeert te openen, is niet afkomstig van de URL die u hebt ingevoerd.",
+  "advancedOptions": "Geavanceerde opties",
+  "proceedTo": "Ga door naar ${value}",
+  "setStyle": "Stijl instellen"
 });

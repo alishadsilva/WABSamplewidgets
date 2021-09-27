@@ -83,6 +83,10 @@ define(['dojo/_base/declare',
         this.picker.initUI();
       },
 
+      isOpen: function () {
+        return this._isTooltipDialogOpened;
+      },
+
       _showTooltipDialog: function() {
         dojoPopup.open({
           parent: this.getParent(),

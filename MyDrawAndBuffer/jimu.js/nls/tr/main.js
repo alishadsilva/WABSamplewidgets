@@ -98,19 +98,30 @@ define({
     "tooltipText": "Araç ipucu metni",
     "findAddressOrPlace": "Adres veya yer bul",
     "expand": "${value} değerini genişlet",
-    "collapse": "${value} değerini daralt"
+    "collapse": "${value} değerini daralt",
+    "asc": "Artan",
+    "desc": "Azalan"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Sınırlı tarayıcı desteği",
+    "onlineContent1": "Artık kullanımdan kaldırılmış bir tarayıcı kullanıyorsunuz. Bu uygulamanın bazı bölümleri bu tarayıcıda en iyi şekilde veya hiç çalışmayabilir. Bu tarayıcı için destek yakın gelecekte sonlandırılacaktır.",
+    "content2": "Lütfen <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> veya <edge-link>Microsoft Edge</edge-link>'in en son sürümlerini kullanın.",
+    "onlineContent3": "Tarayıcı desteği hakkında daha fazla bilgi için belgelerimize bakın. Geri bildirimlerinizi <feedback-link>Esri Topluluğu GeoNet</feedback-link> üzerinden iletin.",
+    "enterpriseContent1": "Artık desteklenmeyen bir tarayıcı kullanıyorsunuz. Bu uygulamanın bazı bölümleri bu tarayıcıda en iyi şekilde veya hiç çalışmayabilir."
   },
   "errorCode": "Kod",
   "errorMessage": "İleti",
   "errorDetail": "Ayrıntı",
   "widgetPlaceholderTooltip": "Ayarlamak için Araçlar'a gidin ve karşılık gelen yer tutucuyu tıklayın",
+  "widgetToolTip": "${widgetLabel}. Bu gerecin içine odaklanmak için Enter tuşuna basın. Odak içerideyken, tekrar gerece odaklanmak için Esc tuşuna basın.",
   "skips": {
     "skips": "Bağlantıları Atla",
     "skipTo": "${value} değerine atla",
     "headerController": "Başlık Denetleyicisine Atla",
     "map": "Haritaya Atla",
     "sidePanel": "Yan Panele Atla",
-    "attributeTable": "Öznitelik Tablosuna Atla"
+    "attributeTable": "Öznitelik Tablosuna Atla",
+    "tabAway": "Devam etmek ve uygulamadan çıkmak için Tab tuşuna basın, içerisindeki ${value} değerine geri dönmek için Shift ve Tab tuşuna basın"
   },
   "panelHeader": {
     "foldWindow": "Pencereyi katla",
@@ -120,7 +131,7 @@ define({
     "closeWindow": "Pencereyi kapat",
     "expanded": "${value} aracı genişletildi",
     "collapsed": "${value} aracı daraltıldı",
-    "pressToFocus": "${Value} değerine odaklanmak için Enter tuşuna basın"
+    "pressToFocus": "${value} değerine odaklanmak için Enter tuşuna basın"
   },
   "toggleButton": {
     "toggleOn": "Etkinleştirmek için geçiş düğmesine basın",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Nokta",
+    "arrow": "Ok",
     "line": "Çizgi",
     "polyline": "Çoklu Çizgi",
     "freehandPolyline": "Serbest çizim çoklu çizgi",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Bu alana ait benzersiz değerlerin tümü",
     "previousCascadeFilterTip": "Önceki ifadeler tarafından filtrelenen değerler",
     "allCascadeFilterTip": "Diğer tüm ifadeler tarafından filtrelenen değerler",
+    "dateOptions": "Tarih seçenekleri",
+    "startDateOptions": "Başlangıç ​​tarihi seçenekleri",
+    "endDateOptions": "Bitiş tarihi seçenekleri",
     "custom": "tarih...",
     "today": "bugün",
     "yesterday": "dün",
     "tomorrow": "yarın",
+    "atLeastOne": "En az bir tarih seçeneği kontrol edilmelidir.",
+    "notUncheckedCurrent": "Seçilen tarih seçeneği kontrol edilemez.",
     "theseDays": "bu günler",
     "thisWeek": "bu hafta",
     "thisMonth": "bu ay",
@@ -483,7 +500,7 @@ define({
     "exportTo": "Dışa Aktar",
     "toCSV": "CSV dosyasına gönder",
     "toFeatureCollection": "Detay koleksiyonuna aktar",
-    "toGeoJSON": "GeoJSON//'a Aktar"
+    "toGeoJSON": "GeoJSON'a Aktar"
   },
   "appState": {
     "title": "Uygulama Durumu",
@@ -501,7 +518,9 @@ define({
     "ExportToCSV": "CSV dosyasına gönder",
     "ShowSelectedFeature": "Seçili detayları göster",
     "ExportToFeatureCollection": "Detay koleksiyonuna aktar",
-    "ExportToGeoJSON": "GeoJSON//'a Aktar",
+    "ExportToGeoJSON": "GeoJSON'a Aktar",
+    "ExportToFilegdb": "Dosya coğrafi veri tabanına gönder",
+    "ExportToShapefile": "shapefile'a gönder",
     "EditAttributes": "Öznitelikleri düzenle",
     "AddMarker": "İşaretleyici ekle",
     "RemoveMarker": "İşaretleyiciyi kaldır",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Yıl",
     "years": "Yıl",
+    "quarter": "Çeyrek",
     "month": "Ay",
     "months": "Aylar",
     "week": "Hafta",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Bu uygulamayı bir web sitesine yerleştir",
     "shareEmailSubject": "Web uygulamasını paylaşma:",
-    "shareEmailTxt1": "İşte karşınızda Web AppBuilder for ArcGIS kullanılarak sizinle paylaşılan bir web uygulaması.",
-    "shareEmailTxt2": "Esri Web AppBuilder for ArcGIS ile kendi web uygulamanızı oluşturabilir ve paylaşabilirsiniz.",
+    "shareEmailTxt1": "İşte karşınızda ArcGIS Web AppBuilder kullanılarak sizinle paylaşılan bir web uygulaması.",
+    "shareEmailTxt2": "Esri ArcGIS Web AppBuilder ile kendi web uygulamanızı oluşturabilir ve paylaşabilirsiniz.",
     "shareEmailTxt3": "Ayrıntılar için http://www.esri.com/software/web-appbuilder adresine gidin.",
     "smallSize": "Küçük",
     "mediumSize": "Orta",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Çıktıyı Genişlet",
     "tooltip": "Nokta eklemek için haritaya tıklayın"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Şuna bağla: ",
+    "previewLinkToolTipsSuffix": "Bu bağlantı, uygulama başlatıldığında çalışacaktır."
+  },
   "noEditPrivileges": "Hesabınızın veri oluşturma veya değiştirme izni yok.",
   "noEditableLayers": "Hesabınız veri oluşturmak ya da değiştirmek için gerekli izne sahip değil veya bu web haritası düzenlenebilir katman içermiyor.",
   "invalidConfiguration": "Araç yapılandırılmamış veya yapılandırmadaki katmanlar artık haritada değil. Uygulamayı oluşturucu modda açın ve aracı yeniden yapılandırın.",
   "essentialAppsLicenseErrorForApp": "Hesabınız herkese açık olmayan bir uygulama kullanmak için lisanslandırılmamış. Lütfen kuruluş yöneticinizden Temel Uygulamalar veya eklenti Temel Uygulamalar lisansı içeren bir kullanıcı türü atamasını isteyin.",
-  "essentialAppsLicenseErrorForBuilder": "Hesabınız Web AppBuilder için lisanslandırılmamış. Lütfen kuruluş yöneticinizden Temel Uygulamalar veya eklenti Temel Uygulamalar lisansı içeren bir kullanıcı türü atamasını isteyin."
+  "essentialAppsLicenseErrorForBuilder": "Hesabınız Web AppBuilder için lisanslandırılmamış. Lütfen kuruluş yöneticinizden Temel Uygulamalar veya eklenti Temel Uygulamalar lisansı içeren bir kullanıcı türü atamasını isteyin.",
+  "blockedByAdminErrorForApp": "Kuruluşunuz bu ankete erişimi engelledi. Ayrıntılar için lütfen yöneticiniz ile görüşün.",
+  "blockedByAdminErrorForBuilder": "Kuruluşunuz Web AppBuilder'a erişimi engelledi. Ayrıntılar için lütfen yöneticiniz ile görüşün.",
+  "orgUrlMessage": "Erişim sağlamaya çalıştığınız uygulama, sağladığınız URL'den kaynaklanmıyor.",
+  "advancedOptions": "Gelişmiş seçenekler",
+  "proceedTo": "${value}'e devam edin",
+  "setStyle": "Stil ayarla"
 });

@@ -41,8 +41,9 @@ define(['dojo/_base/declare',
       templateString:
         '<div data-dojo-attach-point="boxNode">' +
           '<div class="jimu-panel-title jimu-main-background" data-dojo-attach-point="titleNode">' +
-          '<div class="title-label jimu-vcenter-text jimu-float-leading jimu-leading-padding1"' +
-          'data-dojo-attach-point="titleLabelNode">${label}</div>' +
+          '<h2 class="title-label jimu-vcenter-text jimu-float-leading jimu-leading-padding1"' +
+          'data-dojo-attach-point="titleLabelNode" tabindex="-1" ' +
+          'data-dojo-attach-event="onkeydown:_onTitleLabelKeyDown">${label}</h2>' +
           '<div class="btns-container">' +
             '<div tabindex="0" class="foldable-btn jimu-vcenter" aria-label="${headerNls.foldWindow}" role="button"' +
               'data-dojo-attach-point="foldableNode"' +

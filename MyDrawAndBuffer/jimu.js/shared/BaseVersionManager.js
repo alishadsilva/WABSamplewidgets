@@ -44,7 +44,7 @@ define(function() {
       var newVersionIndex = this.getVersionIndex(_newVersion);
 
       if(oldVersionIndex > newVersionIndex){
-        throw Error('New version should higher than old version.');
+        throw Error('New version should be higher than the old version.');
       }
       var newConfig = config, i;
       for(i = oldVersionIndex + 1; i <= newVersionIndex; i++){

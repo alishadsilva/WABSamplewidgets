@@ -86,6 +86,9 @@ LabelClass, PopupTemplate, Legend, Graphic, Point, Query, RelationshipQuery, Que
         this.layerObject.name = this.title;
         // "arcgisProps.title" will be clear out if overwrites the "name".
         // reset the "arcgisProps.title" for print task to display the legend title.
+        if(this.layerObject.arcgisProps === undefined || this.layerObject.arcgisProps === null) {
+          this.layerObject.arcgisProps = {};
+        }
         lang.setObject('arcgisProps.title',
                        this.title,
                        this.layerObject);
@@ -507,11 +510,11 @@ LabelClass, PopupTemplate, Legend, Graphic, Point, Query, RelationshipQuery, Que
             }, legendInfo.legendDiv);
             legendInfo.labelDiv = domConstruct.create("div", {
               "class": "legend-label jimu-float-leading",
-              "innerHTML": legendInfo.label || " "
+              "innerHTML": jimuUtils.sanitizeHTML(legendInfo.label) || " "
             }, legendInfo.legendDiv);
 
             if(legendInfo.symbol.type === "textsymbol") {
-              domAttr.set(legendInfo.symbolDiv, "innerHTML", legendInfo.symbol.text);
+              domAttr.set(legendInfo.symbolDiv, "innerHTML", jimuUtils.sanitizeHTML(legendInfo.symbol.text));
             } else {
               var mySurface = gfx.createSurface(legendInfo.symbolDiv, 50, 50);
               var descriptors = jsonUtils.getShapeDescriptors(legendInfo.symbol);
@@ -735,24 +738,21 @@ LabelClass, PopupTemplate, Legend, Graphic, Point, Query, RelationshipQuery, Que
           def.resolve(relatedTableInfoArray);
         } else {
           this._getLayerInfosObj().traversalAll(lang.hitch(this, function(layerInfo) {
-            var relatedUrlIndex = -1;
             if(relatedUrls.length === 0) {
               // all were found
               return true;
             } else {
               array.forEach(relatedUrls, function(relatedUrl, index) {
                 if(lang.getObject("layerObject.url", false, layerInfo) &&
+                   relatedUrl &&
                    (portalUrlUtils.removeProtocol(relatedUrl.toString().toLowerCase()).replace(/\/+/g, '/') ===
                    portalUrlUtils.removeProtocol(
                                  layerInfo.layerObject.url.toString().toLowerCase()).replace(/\/+/g, '/'))
                 ) {
                   relatedTableInfoArray.push(layerInfo);
-                  relatedUrlIndex = index;
+                  relatedUrls[index] = '';
                 }
               }, this);
-              if(relatedUrlIndex >= 0) {
-                relatedUrls.splice(relatedUrlIndex, 1);
-              }
               return false;
             }
           }));
@@ -783,7 +783,7 @@ LabelClass, PopupTemplate, Legend, Graphic, Point, Query, RelationshipQuery, Que
       return orderByFields;
     },
 
-    _getOriRelationshipByDestLayer: function(originalLayerObject, relatedLayerObject, relationshipIndex) {
+    getOriRelationshipByDestLayer: function(originalLayerObject, relatedLayerObject, relationshipIndex) {
       var queryRelationship = null;
       // compatible with arcgis service 10.0.
       var queryRelationships = array.filter(originalLayerObject.relationships, function(relationship) {
@@ -810,7 +810,7 @@ LabelClass, PopupTemplate, Legend, Graphic, Point, Query, RelationshipQuery, Que
         if(!result.originalLayerObject || !result.relatedLayerObject) {
           def.resolve([]);
         }
-        var queryRelationship = this._getOriRelationshipByDestLayer(this.layerObject,
+        var queryRelationship = this.getOriRelationshipByDestLayer(this.layerObject,
                                                                     result.relatedLayerObject,
                                                                     relationshipIndex);
         relatedQuery.outFields = ["*"];

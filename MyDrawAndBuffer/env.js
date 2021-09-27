@@ -80,7 +80,7 @@ var
 
   //This version number will be appended to URL to avoid cache.
   //The reason we do not use wabVersion is to avoid force user to change wabVersion when they are customizing app.
-  deployVersion = '2.13';
+  deployVersion = '2.21';
 
 // console.time('before map');
 
@@ -100,11 +100,11 @@ var
 (function(global){
   //init API URL
   var queryObject = getQueryObject();
-  var apiVersion = '3.29';
+  var apiVersion = '3.37';
 
   ////////uncomment the following line when downloading the app
 
-  apiUrl = 'https://js.arcgis.com/3.29';
+  //apiUrl = 'https://js.arcgis.com/3.37';
 
   //////////////////////////////////////////////////////////////
   allCookies = getAllCookies();
@@ -122,7 +122,7 @@ var
       apiUrl = 'https://js.arcgis.com/' + apiVersion;
     } else {
       var portalUrl = getPortalUrlFromLocation();
-      if (portalUrl.indexOf('arcgis.com') > -1) {
+      if (portalUrl.indexOf('.arcgis.com') > -1) {
         if(portalUrl.indexOf('devext.arcgis.com') > -1){
           apiUrl = '//jsdev.arcgis.com/' + apiVersion;
         }else if(portalUrl.indexOf('qa.arcgis.com') > -1){

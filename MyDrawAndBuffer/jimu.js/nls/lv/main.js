@@ -98,19 +98,30 @@ define({
     "tooltipText": "Rīka padoma teksts",
     "findAddressOrPlace": "Atrast adresi vai vietu",
     "expand": "Izvērst ${value}",
-    "collapse": "Sakļaut ${value}"
+    "collapse": "Sakļaut ${value}",
+    "asc": "Augošā secībā",
+    "desc": "Dilstoši"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Ierobežots pārlūkprogrammas atbalsts",
+    "onlineContent1": "Jūs izmantojat novecojušu pārlūkprogrammu. Šajā pārlūkprogrammā dažas no lietotnes iespējām var nedarboties kā paredzēts vai nedarboties vispār. Drīzumā šīs pārlūkprogrammas atbalsts vairs netiks nodrošināts.",
+    "content2": "Lūdzu, izmantojiet jaunāko <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> vai <edge-link>Microsoft Edge</edge-link> versiju.",
+    "onlineContent3": "Plašāku informāciju par pārlūkprogrammu atbalstu skatiet dokumentācijā. Sniedziet savas atsauksmes, izmantojot <feedback-link>GeoNet, Esri kopienu</feedback-link>.",
+    "enterpriseContent1": "Jūs izmantojat pārlūkprogrammu, kas vairs netiek atbalstīta. Šajā pārlūkprogrammā dažas no lietotnes iespējām var nedarboties kā paredzēts vai nedarboties vispār."
   },
   "errorCode": "Kods",
   "errorMessage": "Ziņojums",
   "errorDetail": "Detalizēta informācija",
   "widgetPlaceholderTooltip": "Lai to iestatītu, pārejiet uz sadaļu Logrīki un noklikšķiniet uz atbilstošā viettura",
+  "widgetToolTip": "${widgetLabel} Nospiediet Enter, lai fokusētos uz šī logrīka iekšpusi. Kad fokuss ir iekšpusē, nospiediet Esc, lai atkal koncentrētos uz logrīku.",
   "skips": {
     "skips": "Izlaist saites",
     "skipTo": "Izlaist līdz ${value}",
     "headerController": "Izlaist līdz galvenes kontrolierim",
     "map": "Izlaist līdz kartei",
     "sidePanel": "Izlaist līdz sānu panelim",
-    "attributeTable": "Izlaist līdz atribūtu tabulai"
+    "attributeTable": "Izlaist līdz atribūtu tabulai",
+    "tabAway": "Lai turpinātu un izietu no lietotnes, nospiediet taustiņu Tab; lai atgrieztos pie vērtības ${value} lietotnē, nospiediet taustiņu Shift un Tab"
   },
   "panelHeader": {
     "foldWindow": "Aizvērt logu",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Virsotne",
+    "arrow": "Bulta",
     "line": "Līnija",
     "polyline": "Polilīnija",
     "freehandPolyline": "Brīvrokas līnija",
@@ -222,7 +234,7 @@ define({
     "clear": "Notīrīt"
   },
   "popupConfig": {
-    "title": "Virsraksts",
+    "title": "Nosaukums",
     "add": "Pievienot",
     "fields": "Lauki",
     "noField": "Nav lauka",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Visas šī lauka unikālās vērtības",
     "previousCascadeFilterTip": "Iepriekšējo izteiksmju filtrētās vērtības",
     "allCascadeFilterTip": "Visu citu izteiksmju filtrētās vērtības",
+    "dateOptions": "Datuma opcijas",
+    "startDateOptions": "Sākuma datuma opcijas",
+    "endDateOptions": "Beigu datuma opcijas",
     "custom": "datumā...",
     "today": "šodien",
     "yesterday": "vakar",
     "tomorrow": "rīt",
+    "atLeastOne": "Ir jāatzīmē vismaz viena datuma opcija.",
+    "notUncheckedCurrent": "Izvēlētā datuma opcija nedrīkst būt neatzīmēta.",
     "theseDays": "šīs dienas",
     "thisWeek": "šonedēļ",
     "thisMonth": "šomēnes",
@@ -416,7 +433,7 @@ define({
     "selectWebMap": "Izvēlēties tīmekļa karti",
     "addMapFromOnlineOrPortal": "Atrodiet un pievienojiet web karti lietotnē no ArcGIS Online publiskajiem resursiem vai sava privātā satura pakalpojumā ArcGIS Online vai Portal.",
     "searchMapName": "Meklēt pēc kartes nosaukuma...",
-    "searchNone": "Mums neizdevās atrast to, ko meklējāt. Lūdzu, mēģiniet vēlreiz.",
+    "searchNone": "Neizdevās atrast to, ko meklējāt. Mēģiniet vēlreiz.",
     "groups": "Grupas",
     "noneGroups": "Nav grupu",
     "signInTip": "Jūsu pieteikšanās sesija ir beigusies; lai vēlreiz pierakstītos savā portālā, atsvaidziniet pārlūku.",
@@ -439,14 +456,14 @@ define({
     "viewItemDetails": "Skatīt detalizētu informāciju par vienumu"
   },
   "featureLayerChooserFromPortal": {
-    "notSupportQuery": "Pakalpojums neatbalsta vaicājumu."
+    "notSupportQuery": "Serviss neatbalsta vaicājumu."
   },
   "basicLayerChooserFromMap": {
     "noLayersTip": "Kartē nav pieejams neviens piemērots slānis."
   },
   "layerInfosMenu": {
     "titleBasemap": "Pamatkartes",
-    "titleLayers": "Operacionālie slāņi",
+    "titleLayers": "Darbību slāņi",
     "labelLayer": "Slāņa nosaukums",
     "itemZoomTo": "Pietuvināt",
     "itemTransparency": "Caurspīdīgums",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Rādīt atlasītos elementus",
     "ExportToFeatureCollection": "Eksportēt uz elementu kolekciju",
     "ExportToGeoJSON": "Eksportēt uz GeoJSON",
+    "ExportToFilegdb": "Eksportēt uz faila ģeodatu bāzi",
+    "ExportToShapefile": "Eksportēt kā Shape failu",
     "EditAttributes": "Rediģēt atribūtus",
     "AddMarker": "Pievienot marķieri",
     "RemoveMarker": "Noņemt marķieri",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Gads",
     "years": "Gadi",
+    "quarter": "Ceturksnis",
     "month": "Mēnesis",
     "months": "Mēnesis",
     "week": "nedēļā",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Iegult šo lietotni tīmekļa vietnē",
     "shareEmailSubject": "Tīmekļa lietojumprogrammas kopīgošana:",
-    "shareEmailTxt1": "Šī tīmekļa lietojumprogramma tiek ar jums kopīgota, izmantojot Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Varat izveidot un kopīgot savu tīmekļa lietotni, izmantojot Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Šī tīmekļa lietotne tiek ar jums kopīgota, lietojot ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Varat izveidot un kopīgot savu tīmekļa lietotni, izmantojot Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Plašāku informāciju skatiet vietnē http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Mazs",
     "mediumSize": "Vidējs",
@@ -637,7 +657,7 @@ define({
     "currentMapExtent": "Pašreizējais kartes pārklājums",
     "chooseCenterWithLevel": "Noklikšķināt uz kartes, lai definētu kartes centru ar mērogmaiņas līmeni",
     "chooseCenterWithScale": "Noklikšķināt uz kartes, lai definētu kartes centru ar kartes mērogu",
-    "findLocation": "Atrast izvietojumu vai elementu un mērogojiet uz to",
+    "findLocation": "Atrast novietojumu vai elementu un mērogojiet uz to",
     "findLocation_inputPlaceholder": "Jūsu vieta vai elements",
     "queryFeature": "Izveidojiet elementa vaicājumu un mērogojiet uz to",
     "addMarker": "Pievienot kartē marķieri",
@@ -649,7 +669,7 @@ define({
     "overwirteMobileLayout": "Pārrakstīt mobilā izkārtojuma noklusējuma ekrāna izmēru",
     "language": "Iestatīt lietojumprogrammas attēlojuma valodu",
     "auth": "Automātiski autentificēt lietotāju",
-    "useOrg": "Izmantot organizācijas vietrādi (URL)",
+    "useOrg": "Izmantot organizācijas vietrādi URL",
     "layerVisibility": "Atcerēties slāņu redzamību",
     "linkPreview": "Saites priekšskatījums",
     "useShortenLink": "Īsā saite",
@@ -789,7 +809,7 @@ define({
     "latLongWarningMessage": "Tika konstatēts, ka ievades koordinātas platuma vai garuma vērtībai ir gan prefikss, gan sufikss. Atgrieztās koordinātas pamatā ir prefikss.",
     "cancelButtonLabel": "Atcelt",
     "applyButtonLabel": "Lietot",
-    "posNegPrefixLabel": "Pievienot prefiksu “+/-” pozitīviem un negatīviem skaitļiem",
+    "posNegPrefixLabel": "Pievienot prefiksu \"+/-\" pozitīviem un negatīviem skaitļiem",
     "editCoordinateDialogTitle": "Iestatīt koordinātu formātu virkni",
     "rememberDecisionLabel": "Atcerēties manu izvēli un vairs nejautāt.<br/>",
     "coordinateInputLabel": "Ievadiet koordinātas vai noklikšķiniet kartē",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Izvērst izvadi",
     "tooltip": "Noklikšķināt kartē, lai pievienot punktu"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Saite uz: ",
+    "previewLinkToolTipsSuffix": "Šī saite darbosies, kad tiks palaista lietotne."
+  },
   "noEditPrivileges": "Jūsu kontam nav piešķirta atļauja izveidot vai modificēt datus.",
   "noEditableLayers": "Jūsu kontam nav atļaujas veidot vai mainīt datus. Vai arī šajā tīmekļa kartē nav neviena rediģējama slāņa.",
   "invalidConfiguration": "Logrīks nav konfigurēts vai konfigurētie slāņi vairs nav kartē. Lūdzu, atveriet programmu veidotāja režīmā un konfigurējiet logrīku atkārtoti.",
   "essentialAppsLicenseErrorForApp": "Jūsu kontam nav licences, lai izmantotu lietotni, kas nav publiska. Pieprasiet savas organizācijas administratoram piešķirt jums lietotāja veidu, kurā iekļauts lietotņu komplekts Essential Apps vai papildinājumlietotņu Essential Apps licence.",
-  "essentialAppsLicenseErrorForBuilder": "Jūsu kontam nav licences, lai lietotu Web AppBuilder. Pieprasiet savas organizācijas administratoram piešķirt jums lietotāja veidu, kurā iekļauts lietotņu komplekts Essential Apps vai papildinājumlietotņu Essential Apps licence."
+  "essentialAppsLicenseErrorForBuilder": "Jūsu kontam nav licences, lai lietotu Web AppBuilder. Pieprasiet savas organizācijas administratoram piešķirt jums lietotāja veidu, kurā iekļauts lietotņu komplekts Essential Apps vai papildinājumlietotņu Essential Apps licence.",
+  "blockedByAdminErrorForApp": "Jūsu organizācija ir bloķējusi piekļuvi šai lietotnei. Lai saņemtu papildinformāciju, sazinieties ar administratoru.",
+  "blockedByAdminErrorForBuilder": "Jūsu organizācija ir bloķējusi piekļuvi Web AppBuilder. Lai saņemtu papildinformāciju, sazinieties ar administratoru.",
+  "orgUrlMessage": "Lietotnei, nevariet piekļūt no jūsu norādītā vietrāža URL.",
+  "advancedOptions": "Papildus iespējas",
+  "proceedTo": "Turpināt ar ${value}",
+  "setStyle": "Iestatīt stilu"
 });

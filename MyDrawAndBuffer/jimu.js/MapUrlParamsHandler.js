@@ -58,15 +58,9 @@ define([
   /* jshint maxlen: 500 */
   mo.postProcessUrlParams = function(urlParams, map){
     //urlParams have been decoded.
+
     //1.layersVisibilitys
-    var layersVisibilityParamArray = ["showLayers", "hideLayers", "showLayersEncoded", "hideLayersEncoded"];
-    for (var i = 0, len = layersVisibilityParamArray.length; i < len; i++) {
-      var param = layersVisibilityParamArray[i];
-      if (param in urlParams) {
-        layersVisibility(urlParams, param, map);
-        break;
-      }
-    }
+    setLayersVisibility(urlParams, map);
 
     //2.others
     if('extent' in urlParams){
@@ -600,16 +594,32 @@ define([
     return false;
   }
 
+  //Layers Visibility
+  function setLayersVisibility(urlParams, map) {
+    var layersVisibilityParamArray = ["showLayers", "hideLayers", "showLayersEncoded", "hideLayersEncoded"];
+    for (var i = 0, len = layersVisibilityParamArray.length; i < len; i++) {
+      var param = layersVisibilityParamArray[i];
+      var paramLowerCase = param.toLowerCase();
+
+      for (var key in urlParams) {
+        var keyLowerCase = key.toLowerCase();
+        if (paramLowerCase === keyLowerCase) {//ignore case for urlParams ,#16481
+          layersVisibility(urlParams, key, param, map);
+          return;
+        }
+      }
+    }
+  }
   //parameters: showlayers,hideLayers
-  function layersVisibility(queryObject, visibilityMode, map) {
+  function layersVisibility(queryObject, visibilityMode, param, map) {
     var layers = [];
     if (queryObject && queryObject[visibilityMode] && queryObject[visibilityMode].split) {
       layers = queryObject[visibilityMode].split(";");
     }
 
-    if (layers && layers.length > 0) {
+    if (layers && layers.length >= 0) {
       var options = {};
-      options[visibilityMode] = layers;
+      options[param] = layers;//just support CamelCase inside, like: "showLayers", "hideLayers"
       LayerInfos.getInstance(map, map.itemInfo).then(function (layerInfosObj) {
         layerInfosObj.setSimplificationState(options);
       });

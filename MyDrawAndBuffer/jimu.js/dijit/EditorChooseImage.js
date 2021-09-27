@@ -20,12 +20,12 @@ define([
   "jimu/dijit/ImageChooser",
   "dojo/_base/html",
   'dojo/_base/lang',
-  "dojo/sniff",
+  //"dojo/sniff",
   "dojo/i18n",
   "dojo/_base/connect",
   "dojo/_base/declare"
 ], function(
-  dojo, dijit, _Plugin, ImageChooser, html, lang, has, i18n
+  dojo, dijit, _Plugin, ImageChooser, html, lang, /*has, */i18n
 ) {
   dojo.experimental("dojox.editor.plugins.ChooseImage");
 
@@ -80,17 +80,8 @@ define([
     },
 
     _chooseImage: function () {
-      var mask = this.imageChooser.mask;
-      if (has('safari')) {
-        // # First create an event
-        var click_ev = document.createEvent("MouseEvents");
-        // # initialize the event
-        click_ev.initEvent("click", true /* bubble */, true /* cancelable */);
-        // # trigger the evevnt/
-        mask.dispatchEvent(click_ev);
-      } else {
-        mask.click();
-      }
+      html.setStyle(this.imageChooser.domNode, 'display', 'none');
+      this.imageChooser.triggerImgUpload();
     },
 
     onComplete: function(data /*,ioArgs,widgetRef*/ ) {

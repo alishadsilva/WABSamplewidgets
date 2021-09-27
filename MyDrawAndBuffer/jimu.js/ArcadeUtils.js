@@ -21,13 +21,15 @@ define([
   'dojo/string',
   'esri/arcade/arcade',
   'esri/arcade/Feature',
+  'esri/ArcadeExpression',
+  'esri/arcadeProfiles/popupProfile',
   'esri/tasks/RelationshipQuery',
   'jimu/utils',
   'jimu/LayerStructure'
 ],
 function(
   array, lang, Deferred, all, string,
-  Arcade, ArcadeFeature, RelationshipQuery, jimuUtils, LayerStructure) {
+  Arcade, ArcadeFeature, ArcadeExpression, popupProfile, RelationshipQuery, jimuUtils, LayerStructure) {
   var mo = {};
   /*------------------------------------------------------------------------------------------------------------------*/
   /********read arcade expr info*********/
@@ -251,6 +253,35 @@ function(
     return lyrArcadeExpr;
   };
 
+  // Compiles expressions and returns a dictionary with the compiled functions
+  mo.compileExpressions = function(expressionInfos) {
+    var cache = {};
+
+    array.forEach(expressionInfos, function(info) {
+      var returnType = info.returnType && info.returnType.toLowerCase();
+      cache[info.name] = new ArcadeExpression({
+        expression: info.expression,
+        returnType: (info.returnType === "number") ? "number" : "string",
+        profile: popupProfile
+      });
+    });
+
+    return cache;
+  };
+
+  // The callback is asyn way when `hasFeatureSetOperations`, like $datastore, $map, etc.
+  mo.isAsync = function(fieldName, expressionCache, /* optional */ expressionInfos) {
+    var currentInfoName = ''
+    for(var name in expressionCache) {
+      var isCurrent = fieldName.indexOf('expression/') >= 0 && name ===  fieldName.split('expression/')[1]
+      if(isCurrent){
+        currentInfoName = name
+        break;
+      }
+    };
+    var exprCacheItem = (expressionCache ? expressionCache : mo.compileExpressions(expressionInfos))[currentInfoName]
+    return exprCacheItem && popupProfile.isAsync(exprCacheItem);
+  };
 
   /********************custom arcade expression***********************/
   mo.customExpr = {};
@@ -265,6 +296,25 @@ function(
     var graphicAttrs = mo.InfoTemplate._combineFeatureAttributesAndExpressionResolutions(graphic, parsedExprs,
       layerDefinition);
     return graphicAttrs;
+  };
+
+  mo.customExpr.getAsynAttributesFromCustomArcadeExpr = function (expressionCache, graphic, layerDefinition, /* optional */map) {
+    var attributesAndExpressionResolutions = lang.mixin({}, graphic.attributes);
+    if (expressionCache) {
+      for (var name in expressionCache) {
+        attributesAndExpressionResolutions['expression/' + name] = graphic.evaluateExpression(
+          expressionCache[name],
+          popupProfile.getEvalOptions({
+            expression: expressionCache[name],
+            feature: graphic,
+            layer: layerDefinition,
+            map: map,
+            spatialReference: map && map.spatialReference
+          })
+        )
+      }
+    }
+    return attributesAndExpressionResolutions;
   };
 
   /**

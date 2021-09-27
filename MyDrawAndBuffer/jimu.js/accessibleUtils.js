@@ -17,9 +17,10 @@ define([
   'dojo/_base/lang',
   'dojo/_base/html',
   'dojo/query',
+  'esri/lang',
   'dojo/keys',
   'dojo/on'
-], function(lang, html, query, keys, on) {
+], function(lang, html, query, esriLang, keys, on) {
   var mo = {};
 
   mo.firstFocusNodeClass = 'firstFocusNode';
@@ -44,7 +45,18 @@ define([
     }
     mo.initFirstFocusNode(widgetObj.domNode, firstNode);
     mo.initLastFocusNode(widgetObj.domNode, lastNode);
+
+    mo.addLabelToWidgetDOM(widgetObj);
   };
+
+  //add user-friendly tips as aria-label when focusing on widget's DOM node.
+  mo.addLabelToWidgetDOM  = function(widgetObj){
+    var widgetList = ['ZoomSlider', 'AttributeTable', 'Search', 'ExtentNavigate', 'OverviewMap'];
+    if(widgetList.indexOf(widgetObj.name) >= 0){
+      var widgetLabel = esriLang.substitute({widgetLabel: widgetObj.name}, window.jimuNls.widgetToolTip);
+      html.setAttr(widgetObj.domNode, 'aria-label', widgetLabel);
+    }
+  }
 
   //There types of widgets:
   //1. on screen not closeable off panel, like HomeButton, ZoomSlider, Search(can't closeable), AT, ...
@@ -79,10 +91,10 @@ define([
   };
 
   //add role and label to widget for screen reader
-  //application role is used to resolve missing enter/space events in ff&nvda
+  //application role is used to resolve missing enter/space events in ff&nvda(add this role to 'main-page')
   mo._addAttrsOnWidgetDom = function(widgetObject){
     var btnWidgets = ['MyLocation', 'HomeButton', 'FullScreen'];
-    var widgetRole = btnWidgets.indexOf(widgetObject.name) >= 0 ? 'button' : 'application';
+    var widgetRole = btnWidgets.indexOf(widgetObject.name) >= 0 ? 'button' : '';
     if(!widgetObject.inPanel){//inPanel widgets use panel's role
       html.setAttr(widgetObject.domNode, 'role', widgetRole);
     }else{

@@ -64,17 +64,45 @@ td, th{
   clip-path: inset(50%);
   word-wrap: normal !important;
 }
-#trapLinkNode{
+.trapLinkNode{
   position: absolute;
   left: -100px;
   top: -100px;
   width: 1px;
   height: 1px;
 }
-.jimu-rtl #trapLinkNode{
+.jimu-rtl .trapLinkNode{
   position: absolute;
   left: unset;
   right: -100px;
+}
+
+.lastTrapLinkNode{
+  position: absolute;
+  left: unset;
+  top: unset;
+  right: -100px;
+  bottom: 10px;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  background-color: rgba(0,0,0,0.50);
+  background-image: url(images/jump_to_top.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1000;
+}
+.lastTrapLinkNode:focus{
+  right: 10px;
+}
+.jimu-rtl .lastTrapLinkNode{
+  position: absolute;
+  right: unset;
+  left: -100px;
+  transform: rotate(180deg);
+}
+.jimu-rtl .lastTrapLinkNode:focus{
+  left: 10px;
 }
 
 #skipContainer{
@@ -711,7 +739,7 @@ classes can be used in the html
 
 .add-with-icon.jimu-state-disabled{
   cursor: default;
-  color: #a0acbf;
+  color: #CCCCCC;
 }
 
 .add-with-icon .jimu-icon-add{
@@ -750,6 +778,11 @@ body > .app-error{
   padding-top: 60px;
   background: url(images/depressed.png) top center no-repeat;
 }
+
+body > .app-error .app-error-advanced-button:hover{
+  background-color: #eee !important;
+}
+
 
 /*put a group of jimu-icon-btn into a div as a navigation bar.
 Navigation bar can have selected button*/
@@ -1810,6 +1843,14 @@ widget:jimu-w
   display:none;
 }
 
+.jimu-symbol-chooser .symbol-section.fill-symbol-section .arrowWidthTr{
+  display: none;
+}
+
+.jimu-symbol-chooser .symbol-section.arrow-symbol-section .arrowWidthTr{
+  display: table-row;
+}
+
 .jimu-symbol-chooser .symbol-set-table{
   width:100%;
   border-collapse:collapse;
@@ -2419,6 +2460,11 @@ widget:jimu-w
   padding: 10px 20px 10px 10px;
   font-family: Avenir Medium;
 }
+
+.jimu-rtl .jimu-filter .desktop-add-section{
+  padding: 10px 10px 10px 20px;
+}
+
 .jimu-filter .desktop-add-section::after {
   content: "";
   clear: both;
@@ -2447,6 +2493,11 @@ widget:jimu-w
 
 .jimu-filter .desktop-add-section .add-with-icon{
   margin-right: 20px;
+}
+
+.jimu-rtl .jimu-filter .desktop-add-section .add-with-icon{
+  margin-right: 0;
+  margin-left: 20px;
 }
 
 .jimu-filter .desktop-add-section .add-tip-section > *{
@@ -2731,13 +2782,49 @@ html.hr .jimu-filter .allExpsBox > div{
   display: none;
 }
 
-.jimu-single-filter .cascade-tr{
+.jimu-single-filter .cascade-tr,
+.jimu-single-filter .relative-start-date-tr,
+.jimu-single-filter .relative-end-date-tr{
   display: none;
 }
 
-.jimu-single-filter.unique-type.support-cascade .cascade-tr{
+.jimu-single-filter.unique-type.support-cascade .cascade-tr,
+.jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr,
+.jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr{
   display: table-row;
 }
+
+.jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr .showItems,
+.jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr .showItems{
+  display: inline-block;
+  margin-left: 10px;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.jimu-rtl .jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr .showItems,
+.jimu-rtl .jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr .showItems{
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr .showItems:first-child,
+.jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr .showItems:first-child{
+  margin-left: 0;
+}
+
+.jimu-rtl .jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr .showItems:first-child,
+.jimu-rtl .jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr .showItems:first-child{
+  margin-right: 0;
+}
+
+.jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr .showItems .jimu-checkbox,
+.jimu-single-filter.value-type.support-relative-start-date .relative-start-date-tr .showItems > span,
+.jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr .showItems .jimu-checkbox,
+.jimu-single-filter.value-type.support-relative-end-date .relative-end-date-tr .showItems > span {
+  vertical-align: middle;
+}
+
 
 .jimu-filter-valueTypePopup .value-type-popup{
   background: #FFFFFF;
@@ -2825,6 +2912,9 @@ html.hr .jimu-filter .allExpsBox > div{
 }
 .jimu-filter-valueTypePopup .value-type-popup li.selected span:nth-child(2){
   display: inline-block;
+}
+.jimu-rtl .jimu-filter-valueTypePopup .value-type-popup li.selected span:nth-child(2){
+  transform: scaleX(1); /* not flip tick icon in rtl */
 }
 
 /*
@@ -3903,6 +3993,10 @@ html.hr .jimu-filter .allExpsBox > div{
   /* width: 66%; */
   flex-grow: 1;
   padding: 0 10px;
+  margin: 0;
+}
+.jimu-on-screen-widget-panel>.jimu-panel-title>.title-label:focus{
+  outline: none !important;
 }
 .jimu-on-screen-widget-panel>.jimu-panel-title>.btns-container{
   min-width: 35px;
@@ -5075,13 +5169,87 @@ html.hr .jimu-filter .allExpsBox > div{
 .share-container .shareLink .optionsRow .optionsMore span {
   width: 100px;
   display: table-cell;
-  height: 30px;
-  line-height: 30px;
+  /* height: 30px;
+  line-height: 30px; */
   word-break: break-all;
 }
 
 .share-container .shareLink .optionsRow .optionsMore .queryFeature_layer{
   margin-bottom: 4px;
+}
+.share-container .shareLink .optionsRow .queryFeature_value_filter{
+  background-color: transparent;
+}
+.share-container .shareLink .optionsRow .query-wapper {
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+.share-container .shareLink .optionsRow .query-wapper .t-row {
+  vertical-align: top;
+}
+.share-container .shareLink .optionsRow .queryFeature_value_filter,
+.share-container .shareLink .optionsRow .queryFeature_value_filter table,
+.share-container .shareLink .optionsRow .queryFeature_value_filter tr,
+.share-container .shareLink .optionsRow .queryFeature_value_filter th,
+.share-container .shareLink .optionsRow .queryFeature_value_filter td{
+  border-collapse:collapse;
+  border:none;
+}
+.share-container .shareLink .optionsRow .queryFeature_value_filter th,
+.share-container .shareLink .optionsRow .queryFeature_value_filter td {
+  padding: 0;
+}
+.share-container .shareLink .optionsRow .jimu-filter-parameters {
+  height: 100%;
+}
+.share-container .shareLink .optionsRow .jimu-filter-parameters .checkedNameDiv {
+  width: 100%;
+}
+.share-container .shareLink .optionsRow .jimu-filter-parameters .jimu-single-filter-parameter > table > tbody > .third-tr > td {
+  padding-bottom: 0;
+}
+.share-container .shareLink .optionsRow .jimu-filter-parameters .jimu-single-filter-parameter .first-tr{
+  display: none;
+}
+.share-container .shareLink .optionsRow .jimu-filter-parameters .jimu-single-filter-parameter>table {
+  width: 100%;
+  table-layout: fixed;
+}
+.share-container .shareLink .optionsRow .optionsMore .sort-btn-wapper {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px #999999 solid;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  /*margin-bottom: 5px;*/
+}
+.share-container .shareLink .optionsRow .optionsMore .sort-btn{
+  width: 100%;
+  height: 100%;
+}
+.share-container .shareLink .optionsRow .optionsMore .sort-btn.ASC{
+  background: url("images/share/sort_asc.svg") no-repeat;
+  background-position: 50% 50%;
+}
+.share-container .shareLink .optionsRow .optionsMore .sort-btn.ASC:hover{
+  background: url("images/share/sort_asc_hover.svg") no-repeat;
+  background-position: 50% 50%;
+}
+.share-container .shareLink .optionsRow .optionsMore .sort-btn.DESC{
+  background: url("images/share/sort_desc.svg") no-repeat;
+  background-position: 50% 50%;
+}
+.share-container .shareLink .optionsRow .optionsMore .sort-btn.DESC:hover{
+  background: url("images/share/sort_desc_hover.svg") no-repeat;
+  background-position: 50% 50%;
+}
+/*.share-container .shareLink .optionsRow .optionsMore .dijitSelect .dijitButtonContents {
+  background-color: #fff;
+}*/
+.share-container .shareLink .optionsRow .optionsMore .dijitSelect .dijitButtonContents .dijitButtonText {
+  text-align: start;
 }
 
 .share-layerChooser-dropbox .jimu-icon-error{
@@ -5103,12 +5271,10 @@ html.hr .jimu-filter .allExpsBox > div{
 }
 
 .share-container .shareLink .optionsRow .optionsMore .dijitSelect{
-  min-width: 110px;
-  line-height: 30px;
-  height: 30px;
+  min-width: 120px;
+  height: 31px;
   font-size: 12px;
   display: inline-table !important;
-  margin-bottom: 5px;
 }
 
 /*.share-container .shareLink .optionsRow .optionsMore .longinput{
@@ -5901,7 +6067,7 @@ body:not(.ie-gte-10) .jimu-dijit-statistics-chart{
   height: calc(100% - 48px);
 }
 
-.jimu-dijit-statistics-chart .chart-section.render-faild .chart-container {
+.jimu-dijit-statistics-chart .chart-section.render-faild .chart-container .chart-real-container {
   display: none !important;
 }
 
@@ -6736,7 +6902,7 @@ body:not(.ie-gte-10) .jimu-dijit-statistics-chart{
 }
 
 .jimu-coordinate-control .add-with-icon.coordLabel {
-  width: 75px;  
+  width: 75px;
 }
 
 .jimu-coordinate-control .add-output {
@@ -7198,7 +7364,7 @@ body:not(.ie-gte-10) .jimu-dijit-statistics-chart{
 .jimu-multiple-items-list .item{
   line-height: 30px;
   height: 30px;
-  overflow-y: hidden;
+  overflow: hidden;
   cursor: pointer;
   padding-left: 10px;
   /* border-bottom: 1px solid #d9dde0; */

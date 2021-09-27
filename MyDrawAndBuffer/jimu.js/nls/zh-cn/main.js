@@ -98,19 +98,30 @@ define({
     "tooltipText": "工具提示文本",
     "findAddressOrPlace": "查找地址或地点",
     "expand": "展开 ${value}",
-    "collapse": "折叠 ${value}"
+    "collapse": "折叠 ${value}",
+    "asc": "升序",
+    "desc": "降序"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "有限的浏览器支持",
+    "onlineContent1": "您正在使用已弃用的浏览器。 此应用程序的某些部分可能无法在此浏览器中以最佳状态运行或完全无法运行。 未来将停止对此浏览器的支持。",
+    "content2": "请使用最新版本的 <chrome-link>Google Chrome</chrome-link>、<firefox-link>Mozilla Firefox</firefox-link>、<safari-link>Apple Safari</safari-link> 或 <edge-link>Microsoft Edge</edge-link>。",
+    "onlineContent3": "有关浏览器支持的详细信息，请参阅我们的文档。 请通过 <feedback-link>Esri 社区 GeoNet</feedback-link> 提供您的反馈。",
+    "enterpriseContent1": "您正在使用不受支持的浏览器。 此应用程序的某些部分可能无法在此浏览器中以最佳状态运行或完全无法运行。"
   },
   "errorCode": "代码",
   "errorMessage": "消息",
   "errorDetail": "详细信息",
   "widgetPlaceholderTooltip": "要进行设置，请转到微件并单击相应占位控件",
+  "widgetToolTip": "${widgetLabel}。 按 Enter 键以聚焦此微件内部。 当焦点位于内部时，按 Esc 键可聚焦回微件。",
   "skips": {
     "skips": "跳过链接",
     "skipTo": "跳转至 ${value}",
     "headerController": "跳转至标头控制器",
     "map": "跳转至地图",
     "sidePanel": "跳转至侧面板",
-    "attributeTable": "跳转至属性表"
+    "attributeTable": "跳转至属性表",
+    "tabAway": "按 Tab 键可继续并移出应用程序，按 Shift 和 Tab 键可返回到 ${value}"
   },
   "panelHeader": {
     "foldWindow": "折叠窗口",
@@ -118,8 +129,8 @@ define({
     "maxWindow": "最大化窗口",
     "restoreWindow": "将窗口恢复到默认大小",
     "closeWindow": "关闭窗口",
-    "expanded": "${Value} 微件已展开",
-    "collapsed": "${Value} 微件已折叠",
+    "expanded": "${value} 微件已展开",
+    "collapsed": "${value} 微件已折叠",
     "pressToFocus": "按 Enter 键以聚焦 ${value} 内部"
   },
   "toggleButton": {
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "点",
+    "arrow": "箭头",
     "line": "线",
     "polyline": "折线",
     "freehandPolyline": "手绘折线",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "此字段的所有唯一值",
     "previousCascadeFilterTip": "按上一表达式过滤的值",
     "allCascadeFilterTip": "按所有其他表达式过滤的值",
+    "dateOptions": "日期选项",
+    "startDateOptions": "开始日期选项",
+    "endDateOptions": "结束日期选项",
     "custom": "日期...",
     "today": "今天",
     "yesterday": "昨天",
     "tomorrow": "明天",
+    "atLeastOne": "至少应选中一个日期选项。",
+    "notUncheckedCurrent": "无法取消选中所选日期选项。",
     "theseDays": "现在",
     "thisWeek": "本周",
     "thisMonth": "本月",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "显示所选要素",
     "ExportToFeatureCollection": "导出至要素集合",
     "ExportToGeoJSON": "导出至 GeoJSON",
+    "ExportToFilegdb": "导出到文件地理数据库",
+    "ExportToShapefile": "导出到 shapefile",
     "EditAttributes": "编辑属性",
     "AddMarker": "添加标记",
     "RemoveMarker": "移除标记",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "年",
     "years": "年",
+    "quarter": "季度",
     "month": "月",
     "months": "月",
     "week": "周",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "将此应用程序嵌入到网站中",
     "shareEmailSubject": "共享 Web 应用程序：",
-    "shareEmailTxt1": "这是通过使用 Web AppBuilder for ArcGIS 与您共享的 Web 应用程序。",
-    "shareEmailTxt2": "可以使用 Esri Web AppBuilder for ArcGIS 创建和共享自己的 Web 应用程序。",
+    "shareEmailTxt1": "这是通过使用 ArcGIS Web AppBuilder 与您共享的 web 应用程序。",
+    "shareEmailTxt2": "您可以使用 Esri ArcGIS Web AppBuilder 创建和共享自己的 web 应用程序。",
     "shareEmailTxt3": "详细信息请访问 http://www.esri.com/software/web-appbuilder。",
     "smallSize": "小型",
     "mediumSize": "中型",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "扩展输出",
     "tooltip": "单击地图添加点"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "链接至： ",
+    "previewLinkToolTipsSuffix": "此链接将在启动应用程序时生效。"
+  },
   "noEditPrivileges": "您的帐户不具备创建或修改数据的权限。",
   "noEditableLayers": "您的帐户无权创建或修改数据。或者此 web 地图不包含任何可编辑图层。",
   "invalidConfiguration": "微件尚未配置或配置中的图层已不在地图中。请在构建器模式下打开应用程序，然后重新配置微件。",
   "essentialAppsLicenseErrorForApp": "您的帐户无权使用非公共的应用程序。 请联系您的组织管理员为您分配包含基本应用程序或附加基本应用程序许可的用户类型。",
-  "essentialAppsLicenseErrorForBuilder": "您的帐户未获得 Web AppBuilder 许可。 请联系您的组织管理员为您分配包含基本应用程序或附加基本应用程序许可的用户类型。"
+  "essentialAppsLicenseErrorForBuilder": "您的帐户未获得 Web AppBuilder 许可。 请联系您的组织管理员为您分配包含基本应用程序或附加基本应用程序许可的用户类型。",
+  "blockedByAdminErrorForApp": "您的组织已阻止访问此应用程序。 请联系您的管理员以了解详细信息。",
+  "blockedByAdminErrorForBuilder": "您的组织已阻止访问 Web AppBuilder。 请联系您的管理员以了解详细信息。",
+  "orgUrlMessage": "您正在尝试访问的应用程序并非源自您已提供的 URL。",
+  "advancedOptions": "高级选项",
+  "proceedTo": "跳转至 ${value}",
+  "setStyle": "设置样式"
 });

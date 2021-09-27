@@ -56,6 +56,8 @@ define([
       updateWhenLayerInfosIsShowInMapChanged: false,
       onlyShowWebMapLayers: false,
       displayTooltipForTreeNode: false,
+      // when click the item, the filter only take effect on current layer, does not take effect on sublayers.
+      onlyFilterCurrentLayerWhenAddItem: false,
 
       //public methods:
       //getSelectedItems
@@ -250,7 +252,12 @@ define([
 
             var hasChildren = true;
 
-            if(isLeaf){
+            if(this.onlyFilterCurrentLayerWhenAddItem) {
+              if(isLeaf) {
+                hasChildren = false;
+              }
+              callback(isLeaf, hasChildren);
+            } else if(isLeaf){
               hasChildren = false;
               callback(isLeaf, hasChildren);
             }else{

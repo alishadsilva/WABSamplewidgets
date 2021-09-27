@@ -47,14 +47,11 @@ define([
       '<input tabindex="0" type="text" data-dojo-attach-point="frmtVal" class="formatInput"></input>' +
       '<div class="settingsContainer" data-dojo-attach-point="prefixContainer">' +
       '<div class="formatText" data-dojo-attach-point="addSignChkBox" label="${nls.posNegPrefixLabel}" ' +
-      'data-dojo-type="jimu/dijit/CheckBox"/>' +
-      '</div><div class="btnContainer"><div tabindex="0" role="button" aria-label="${nls.applyButtonLabel}" ' +
-      'data-dojo-attach-point="applyButton" class="jimu-btn">' +
-      '${nls.applyButtonLabel}</div>' +
+      'data-dojo-type="jimu/dijit/CheckBox"/></div></div><div class="btnContainer">' +
+      '<div tabindex="0" role="button" aria-label="${nls.applyButtonLabel}" data-dojo-attach-point="applyButton" ' +
+      'class="jimu-btn">${nls.applyButtonLabel}</div>' +
       '<div data-dojo-attach-point="cancelButton" tabindex="0" role="button" aria-label="${nls.cancelButtonLabel}" ' +
-      'class="jimu-btn formatCoordCancelButton">' +
-      '${nls.cancelButtonLabel}</div>' +
-      '</div></div>',
+      'class="jimu-btn formatCoordCancelButton">${nls.cancelButtonLabel}</div></div></div></div>',
     isCanceled: false,
     formats: {},
 

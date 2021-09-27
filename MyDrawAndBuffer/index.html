@@ -39,6 +39,84 @@
       height: 100%;
       position: absolute;
     }
+
+    #unsupported-browser-message{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: rgba(0,0,0,0.6);
+
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .browser-message {
+        width: 700px;
+        max-width: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+        background: #fff;
+        color: #333;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .browser-button-container {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .browser-button-container button{
+        cursor: pointer;
+        border: none;
+        background: transparent;
+      }
+
+      .browser-button-container img{
+        width: 20px;
+        height: 20px;
+      }
+
+      .browser-message-title {
+        color: #002625;
+        font-weight: 300;
+        margin: 1.5rem auto;
+        font-size: 2.5rem;
+        line-height: 2rem;
+      }
+
+      .browser-message-content {
+        color: #3d6665;
+        font-weight: 400;
+        font-size: 1.1rem;
+        line-height: 2rem;
+      }
+
+      #browser-logo-list {
+        display: flex;
+        align-items: center;
+        margin: 2rem 1rem 0 1rem;
+        padding: 0;
+      }
+
+      .browser-logo {
+        display: inline-block;
+        margin: 0 auto;
+      }
+
+      .browser-logo img {
+        width: 3rem;
+        height: auto;
+      }
+
+      @media (min-width:700px) {
+        .browser-logo img {
+          width: 4rem;
+        }
+      }
   </style>
   <link rel="stylesheet" type="text/css" href="configs/loading/loading.css" />
   <script>
@@ -89,13 +167,34 @@
     </div>
     <![endif]-->
   </div>
-  <div id="main-page">
-    <a role="link" id="trapLinkNode" tabindex="0"></a>
+  <div id="main-page" role="application">
+    <div class="trapLinkNode" tabindex="0"></div>
     <div id="jimu-layout-manager"></div>
     <div id="skipContainer"></div>
+    <div class="trapLinkNode lastTrapLinkNode" tabindex="0"></div>
   </div>
 
-  <script src="env.js"></script>
+  <div id="unsupported-browser-message">
+    <div class="browser-message">
+      <div class="browser-button-container">
+        <button><img src="./browser-message/close.png"></button>
+      </div>
+      <h1 class="browser-message-title" id="message-title"></h1>
+      <p class="browser-message-content" id="message-content-1"></p>
+      <p class="browser-message-content" id="message-content-2"></p>
+      <p class="browser-message-content" id="message-content-3"></p>
+      <ul id="browser-logo-list">
+        <li class="browser-logo"><a href="https://www.google.com/chrome/"><img alt="Chrome" src="./browser-message/chrome.png"></a></li>
+        <li class="browser-logo"><a href="https://www.mozilla.org/firefox/"><img alt="Firefox" src="./browser-message/firefox.png"></a></li>
+        <li class="browser-logo"><a href="https://www.apple.com/safari/"><img alt="Safari" src="./browser-message/safari.png"></a></li>
+        <li class="browser-logo"><a href="https://www.microsoft.com/edge"><img alt="Edge" src="./browser-message/edge.png"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./service-worker-registration.js"></script>
+  <script type="text/javascript" src="env.js"></script>
+  <script type="text/javascript" src="browser-message/limited-unsupported-browser.js"></script>
   <script type="text/javascript" src="simpleLoader.js"></script>
   <script type="text/javascript" src="init.js"></script>
 </body>

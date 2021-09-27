@@ -98,23 +98,34 @@ define({
     "tooltipText": "Tekst for verktøytips",
     "findAddressOrPlace": "Finn adresse eller sted",
     "expand": "Vis ${value}",
-    "collapse": "Skjul ${value}"
+    "collapse": "Skjul ${value}",
+    "asc": "Stigende",
+    "desc": "Synkende"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Begrenset nettleserstøtte",
+    "onlineContent1": "Du bruker en nettleser som er avskrevet. Enkelte deler av denne applikasjonen fungerer kanskje ikke optimalt eller i det hele tatt i denne nettleseren. Det vil ikke være støtte for denne nettleseren i fremtiden.",
+    "content2": "Bruk de nyeste versjonene av <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> eller <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Se vår dokumentasjon hvis du vil ha mer informasjon om nettleserstøtte. Gi tilbakemelding via <feedback-link>GeoNet, Esri Community</feedback-link>.",
+    "enterpriseContent1": "Du bruker en nettleser som ikke støttes lenger. Enkelte deler av denne applikasjonen fungerer kanskje ikke optimalt eller i det hele tatt i denne nettleseren."
   },
   "errorCode": "Kode",
   "errorMessage": "Melding",
   "errorDetail": "Detaljer",
   "widgetPlaceholderTooltip": "For å konfigurere går du til Miniprogrammer og klikker på tilsvarende plassholder",
+  "widgetToolTip": "${widgetLabel}. Trykk på Enter for å fokusere inni miniprogrammet. Når fokus er inni, trykker du på Esc for å fokusere på miniprogrammet igjen.",
   "skips": {
     "skips": "Hopp over koblinger",
     "skipTo": "Hopp til ${value}",
     "headerController": "Hopp til topptekstkontroller",
     "map": "Hopp til kart",
     "sidePanel": "Hopp til sidepanel",
-    "attributeTable": "Hopp til attributtabell"
+    "attributeTable": "Hopp til attributtabell",
+    "tabAway": "Trykk på Tab-tasten for å fortsette og gå ut av appen. Trykk på Skift- og Tab-tastene for å gå tilbake til ${value} innenfor"
   },
   "panelHeader": {
-    "foldWindow": "Brett sammen vindu",
-    "unfoldWindow": "Brett ut vindu",
+    "foldWindow": "Fold sammen vindu",
+    "unfoldWindow": "Fold ut vindu",
     "maxWindow": "Maksimer vindu",
     "restoreWindow": "Gjenopprett vindu til standardstørrelse",
     "closeWindow": "Lukk vindu",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punkt",
+    "arrow": "Pil",
     "line": "Linje",
     "polyline": "Polylinje",
     "freehandPolyline": "Frihåndspolylinje",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Alle unike verdier i dette feltet",
     "previousCascadeFilterTip": "Verdier filtrert etter tidligere uttrykk",
     "allCascadeFilterTip": "Verdier filtrert etter alle andre uttrykk",
+    "dateOptions": "Datoalternativer",
+    "startDateOptions": "Alternativer for startdato",
+    "endDateOptions": "Alternativer for sluttdato",
     "custom": "datoen...",
     "today": "i dag",
     "yesterday": "i går",
     "tomorrow": "i morgen",
+    "atLeastOne": "Du må krysse av for minst ett datoalternativ.",
+    "notUncheckedCurrent": "Du kan ikke fjerne merket for valgt datoalternativ.",
     "theseDays": "disse dagene",
     "thisWeek": "denne uken",
     "thisMonth": "denne måneden",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Vis valgte geoobjekter",
     "ExportToFeatureCollection": "Eksporter til geoobjektssamling",
     "ExportToGeoJSON": "Eksporter til GeoJSON",
+    "ExportToFilegdb": "Eksporter til filgeodatabase",
+    "ExportToShapefile": "Eksporter til shapefil",
     "EditAttributes": "Rediger attributter",
     "AddMarker": "Legg til en markør",
     "RemoveMarker": "Fjern markør",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "År",
     "years": "År",
+    "quarter": "Kvartal",
     "month": "Måned",
     "months": "Måneder",
     "week": "Uke",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Bygg inn denne appen på et webområde",
     "shareEmailSubject": "Deler webapp:",
-    "shareEmailTxt1": "Her er en webapp som er delt med deg ved hjelp av Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Du kan opprette og dele din egen webapp med Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Her er en webapp som er delt med deg ved hjelp av ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Du kan opprette og dele din egen webapp med Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Du finner detaljert informasjon på http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Liten",
     "mediumSize": "Middels",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Utvid utdata",
     "tooltip": "Klikk på kartet for å legge til punkt"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Opprett lenke til: ",
+    "previewLinkToolTipsSuffix": "Denne lenken fungerer når appen startes."
+  },
   "noEditPrivileges": "Kontoen har ikke rettigheter til å opprette eller endre data.",
   "noEditableLayers": "Kontoen din har ikke tillatelse til å opprette eller endre data, eller det kan hende dette webkartet ikke inneholder lag som kan redigeres.",
   "invalidConfiguration": "Miniprogrammet er ikke konfigurert eller lagene i konfigurasjonen finnes ikke i kartet lenger. Åpne appen i byggemodus, og konfigurer miniprogrammet på nytt.",
   "essentialAppsLicenseErrorForApp": "Kontoen din er ikke lisensiert til å bruke apper som ikke er offentlige. Be administratoren for organisasjonen om å tilordne deg en brukertype som omfatter Essential Apps eller en tilleggslisens for Essential Apps.",
-  "essentialAppsLicenseErrorForBuilder": "Kontoen din er ikke lisensiert for Web AppBuilder. Be administratoren for organisasjonen om å tilordne deg en brukertype som omfatter Essential Apps eller en tilleggslisens for Essential Apps."
+  "essentialAppsLicenseErrorForBuilder": "Kontoen din er ikke lisensiert for Web AppBuilder. Be administratoren for organisasjonen om å tilordne deg en brukertype som omfatter Essential Apps eller en tilleggslisens for Essential Apps.",
+  "blockedByAdminErrorForApp": "Organisasjonen din har sperret tilgangen til dette programmet. Kontakt administratoren hvis du vil vite mer.",
+  "blockedByAdminErrorForBuilder": "Organisasjonen din har sperret tilgangen til Web AppBuilder. Kontakt administratoren hvis du vil vite mer.",
+  "orgUrlMessage": "Programmet du prøver å åpne, skriver seg ikke fra den URL-en du har oppgitt.",
+  "advancedOptions": "Avanserte alternativer",
+  "proceedTo": "Fortsett til ${value}",
+  "setStyle": "Angi stil"
 });

@@ -25,11 +25,13 @@
 .jimu-widget-header-controller .jimu-title{
   text-align: center;
   height: 100%;
+  margin-top: 0;
 }
 
 .jimu-widget-header-controller .jimu-subtitle{
   text-align: center;
   height: 100%;
+  margin-top: 0;
 }
 
 .jimu-widget-header-controller .links{

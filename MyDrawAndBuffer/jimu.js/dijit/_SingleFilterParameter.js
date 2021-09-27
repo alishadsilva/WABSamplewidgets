@@ -23,10 +23,11 @@ define([
   'dijit/_TemplatedMixin',
   'dijit/_WidgetsInTemplateMixin',
   'dojo/text!./templates/_SingleFilterParameter.html',
-  'dojo/_base/lang'
+  'dojo/_base/lang',
+  '../utils'
 ],
   function(on, Evented, Deferred, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template,
-    lang) {
+    lang, jimuUtils) {
 
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Evented], {
       baseClass: 'jimu-single-filter-parameter',
@@ -74,8 +75,8 @@ define([
         var interactiveObj = part.interactiveObj;
 
         if(interactiveObj){
-          this.promptNode.innerHTML = interactiveObj.prompt || '';
-          this.hintNode.innerHTML = interactiveObj.hint || '';
+          this.promptNode.innerHTML = jimuUtils.sanitizeHTML(interactiveObj.prompt || '');
+          this.hintNode.innerHTML = jimuUtils.sanitizeHTML(interactiveObj.hint || '');
         }
 
         var def = this.valueProvider.setValueObject(this.part.valueObj);

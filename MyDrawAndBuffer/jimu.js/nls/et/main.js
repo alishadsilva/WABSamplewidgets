@@ -98,19 +98,30 @@ define({
     "tooltipText": "Kohtspikri tekst",
     "findAddressOrPlace": "Otsi aadressi või kohta",
     "expand": "Laienda ${value}",
-    "collapse": "Kitsenda ${value}"
+    "collapse": "Kitsenda ${value}",
+    "asc": "Kasvav",
+    "desc": "Kahanev"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Brauseri tugi on piiratud",
+    "onlineContent1": "Kasutate iganenud brauserit. Selle rakenduse mõned osad ei pruugi selles brauseris optimaalselt või üldse toimida. Selle brauseri tugi lõpetatakse tulevikus.",
+    "content2": "Kasutage <chrome-link>Google Chrome'i</chrome-link>, <firefox-link>Mozilla Firefoxi</firefox-link>, <safari-link>Apple Safari</safari-link> või <edge-link>Microsoft Edge'i</edge-link> uusimaid versioone.",
+    "onlineContent3": "Lisateavet brauserite toe kohta leiate meie dokumentatsioonist. Andke meile tagasisidet <feedback-link>Esri kogukonna GeoNet</feedback-link> kaudu.",
+    "enterpriseContent1": "Kasutate brauserit, mida enam ei toetata. Selle rakenduse mõned osad ei pruugi selles brauseris optimaalselt või üldse toimida."
   },
   "errorCode": "Kood",
   "errorMessage": "Sõnum",
   "errorDetail": "Detail",
   "widgetPlaceholderTooltip": "Seadistamiseks valige vidinad ning klikkige vastavat kohatäidet",
+  "widgetToolTip": "${widgetLabel}. Vajutage sisestusklahvi Enter, et viia fookus vidina sisule. Kui fookus on vidina sisul, vajutage paoklahvi Esc, et viia fookus tagasi vidinale.",
   "skips": {
     "skips": "Jäta lingid vahele",
     "skipTo": "Jäta ${value}",
     "headerController": "Jätka päise kontrollerist",
     "map": "Jätka kaardist",
     "sidePanel": "Jätka külgpaneelist",
-    "attributeTable": "Jätka atribuuditabelist"
+    "attributeTable": "Jätka atribuuditabelist",
+    "tabAway": "Jätkamiseks ja rakendusest lahkumiseks vajutage tabeldusklahvi; tagasi kuvale ${value} liikumiseks vajutage tõstuklahvi (Shift) koos tabeldusklahviga"
   },
   "panelHeader": {
     "foldWindow": "Sule aken",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punkt",
+    "arrow": "Nool",
     "line": "Joon",
     "polyline": "Murdjoon",
     "freehandPolyline": "Vabakäeline murdjoon",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Sellel välja kõik kordumatud väärtused",
     "previousCascadeFilterTip": "Eelmiste avaldiste alusel filtreeritud väärtused",
     "allCascadeFilterTip": "Kõigi muude avaldiste alusel filtreeritud väärtused",
+    "dateOptions": "Kuupäeva suvandid",
+    "startDateOptions": "Alguskuupäeva suvandid",
+    "endDateOptions": "Lõppkuupäeva suvandid",
     "custom": "kuupäev...",
     "today": "täna",
     "yesterday": "eile",
     "tomorrow": "homme",
+    "atLeastOne": "Valida tuleb vähemalt üks kuupäeva suvand.",
+    "notUncheckedCurrent": "Valitud kuupäeva suvandit ei saa tühistada.",
     "theseDays": "need päevad",
     "thisWeek": "see nädal",
     "thisMonth": "see kuu",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Kuva valitud objektid",
     "ExportToFeatureCollection": "Ekspordi objektide kogumisse",
     "ExportToGeoJSON": "Eksport GeoJSON formaati",
+    "ExportToFilegdb": "Eksport faili geoandmebaasi",
+    "ExportToShapefile": "Eksport Shape-faili",
     "EditAttributes": "Muuda atribuute",
     "AddMarker": "Lisa tähis",
     "RemoveMarker": "Eemalda tähis",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Aasta",
     "years": "Aastat",
+    "quarter": "Kvartal",
     "month": "Kuu",
     "months": "Kuud",
     "week": "Nädal",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "Vidina loomise viga",
     "createWidgetSettingPageError": "Vidina seadistuslehe loomise viga",
-    "loadWidgetResourceError": "Vidina ressursi laadimise viga"
+    "loadWidgetResourceError": "Vidina ressursi laadimise tõrge"
   },
   "shareOptions": {
     "shareMap": "Valige, kes saavad seda rakendust vaadata",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Manusta see rakendus veebisaidile",
     "shareEmailSubject": "Ühiskasutusse antud veebirakendus:",
-    "shareEmailTxt1": "Siin on veebirakendus, mis on antud rakenduse Web AppBuilder for ArcGIS abil Teile ühiskasutusse.",
-    "shareEmailTxt2": "Esri rakenduse Web AppBuilder for ArcGIS abil saate luua oma veebirakenduse ja anda selle ühiskasutusse.",
+    "shareEmailTxt1": "Siin on veebirakendus, mis on antud rakenduse ArcGIS Web AppBuilder abil teile ühiskasutusse.",
+    "shareEmailTxt2": "Esri rakenduse ArcGIS Web AppBuilder abil saate luua oma veebirakenduse ja anda selle ühiskasutusse.",
     "shareEmailTxt3": "Üksikasjalikku teavet leiate veebilehelt http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Väike",
     "mediumSize": "Keskmine",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Laienda väljund",
     "tooltip": "Punkti lisamiseks klõpsake kaardile"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Linkimine: ",
+    "previewLinkToolTipsSuffix": "See link toimib rakenduse käivitamisel."
+  },
   "noEditPrivileges": "Teie kontol puudub andmete loomise või muutmise õigus.",
   "noEditableLayers": "Teie kontol pole õigust andmeid luua või muuta või see veebikaart ei sisalda muudetavaid kihte.",
   "invalidConfiguration": "Vidin on konfigureerimata või pole konfiguratsioonis sisalduvad kihid enam kaardil. Avage rakendus koosturirežiimis ja konfigureerige vidin uuesti.",
   "essentialAppsLicenseErrorForApp": "Teie kontol puudub litsents töölaua kasutamiseks, mis ei ole avalik. Paluge oma organisatsiooni administraatoril määrata teile kasutajatüüp, mis sisaldab olulisi rakendusi või oluliste rakenduse lisalitsentsi.",
-  "essentialAppsLicenseErrorForBuilder": "Teie kontol puudub litsents Web AppBuilderi jaoks. Paluge oma organisatsiooni administraatoril määrata teile kasutajatüüp, mis sisaldab olulisi rakendusi või oluliste rakenduse lisalitsentsi."
+  "essentialAppsLicenseErrorForBuilder": "Teie kontol puudub litsents Web AppBuilderi jaoks. Paluge oma organisatsiooni administraatoril määrata teile kasutajatüüp, mis sisaldab olulisi rakendusi või oluliste rakenduse lisalitsentsi.",
+  "blockedByAdminErrorForApp": "Teie organisatsioon on blokeerinud juurdepääsu sellele rakendusele. Teabe saamiseks pöörduge oma administraatori poole.",
+  "blockedByAdminErrorForBuilder": "Teie organisatsioon on blokeerinud juurdepääsu Web AppBuilderile. Teabe saamiseks pöörduge oma administraatori poole.",
+  "orgUrlMessage": "Rakendus, mida proovite avada, pole pärit teie esitatud URL-ilt.",
+  "advancedOptions": "Täiendavad võimalused",
+  "proceedTo": "Kas soovite liikuda kohta ${value}",
+  "setStyle": "Määra laad"
 });

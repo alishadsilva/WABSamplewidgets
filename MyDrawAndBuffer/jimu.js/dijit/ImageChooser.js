@@ -122,7 +122,7 @@ define([
         this.fileProperty = {};
 
         if (this.label && typeof this.label === 'string') {
-          this.displayText.innerHTML = this.label;
+          this.displayText.innerHTML = utils.sanitizeHTML(this.label);
           html.setStyle(this.hintText, 'display', 'block');
         }
         if (this.showSelfImg) {
@@ -204,6 +204,12 @@ define([
             html.setStyle(this.fileInput, 'display', 'block');
           }), 200);
         }));
+      },
+
+      triggerImgUpload: function() {
+        var evt = document.createEvent("MouseEvents");
+        evt.initEvent("click", true, false);
+        this.mask.dispatchEvent(evt);
       },
 
       _addTip: function() {

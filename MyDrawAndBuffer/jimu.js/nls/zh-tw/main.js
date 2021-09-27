@@ -98,19 +98,30 @@ define({
     "tooltipText": "工具提示文字",
     "findAddressOrPlace": "尋找位址或地點",
     "expand": "展開 ${value}",
-    "collapse": "收合 ${value}"
+    "collapse": "收合 ${value}",
+    "asc": "遞增",
+    "desc": "降冪"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "有限的瀏覽器支援",
+    "onlineContent1": "您正在使用已淘汰的瀏覽器。 此應用程式的部分組件可能無法在此瀏覽器中正常運作或完全無法運作。 未來將中斷支援此瀏覽器。",
+    "content2": "請使用最新版的 <chrome-link>Google Chrome</chrome-link>、<firefox-link>Mozilla Firefox</firefox-link>、<safari-link>Apple Safari</safari-link> 或 <edge-link>Microsoft Edge</edge-link>。",
+    "onlineContent3": "有關瀏覽器支援的詳細資訊，請參閱我們的文件。 請透過 <feedback-link>Esri 社群 (即 GeoNet)</feedback-link> 提供您的回饋意見。",
+    "enterpriseContent1": "您正在使用不再支援的瀏覽器。 此應用程式的部分組件可能無法在此瀏覽器中正常運作或完全無法運作。"
   },
   "errorCode": "代碼",
   "errorMessage": "訊息",
   "errorDetail": "詳細資訊",
   "widgetPlaceholderTooltip": "要進行設置，請轉到 widget 並按一下相應占位符",
+  "widgetToolTip": "${widgetLabel}。 按下 Enter 以聚焦於此 widget 的內部。 當焦點位於內部時，按下 Esc 可重新聚焦於 widget。",
   "skips": {
     "skips": "略過連結",
     "skipTo": "跳至 ${value}",
     "headerController": "跳至頁首控制器",
     "map": "跳至地圖",
     "sidePanel": "跳至側面板",
-    "attributeTable": "跳至屬性表"
+    "attributeTable": "跳至屬性表",
+    "tabAway": "按 Tab 以繼續並離開應用程式，按 Shift 和 Tab 可返回其中的 ${value}"
   },
   "panelHeader": {
     "foldWindow": "折疊視窗",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "點",
+    "arrow": "箭頭",
     "line": "線",
     "polyline": "折線",
     "freehandPolyline": "手繪折線",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "此欄位的所有唯一值",
     "previousCascadeFilterTip": "先前的表達式所篩選的值",
     "allCascadeFilterTip": "其他所有表達式所篩選的值",
+    "dateOptions": "日期選項",
+    "startDateOptions": "開始日期選項",
+    "endDateOptions": "結束日期選項",
     "custom": "日期...",
     "today": "今天",
     "yesterday": "昨天",
     "tomorrow": "明天",
+    "atLeastOne": "至少必須勾選一個日期選項。",
+    "notUncheckedCurrent": "無法取消勾選已選擇的日期選項。",
     "theseDays": "這些日期",
     "thisWeek": "本週",
     "thisMonth": "本月",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "顯示所選圖徵",
     "ExportToFeatureCollection": "匯出至圖徵集合",
     "ExportToGeoJSON": "匯出至 GeoJSON",
+    "ExportToFilegdb": "匯出至檔案地理資料庫",
+    "ExportToShapefile": "匯出至 shapefile",
     "EditAttributes": "編輯屬性",
     "AddMarker": "新增標記",
     "RemoveMarker": "移除標記",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "年",
     "years": "年",
+    "quarter": "四分之一",
     "month": "月",
     "months": "月",
     "week": "週",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "將此應用程式嵌入到網站中",
     "shareEmailSubject": "正在分享 Web 應用程式:",
-    "shareEmailTxt1": "這裡是使用 Web AppBuilder for ArcGIS 與您分享的 Web 應用程式。",
-    "shareEmailTxt2": "您可以使用 Esri Web AppBuilder for ArcGIS 來建立和分享您自己的 Web 應用程式。",
+    "shareEmailTxt1": "這裡是使用 ArcGIS Web AppBuilder 與您分享的 Web 應用程式。",
+    "shareEmailTxt2": "您可以使用 Esri ArcGIS Web AppBuilder 來建立和分享您自己的 Web 應用程式。",
     "shareEmailTxt3": "如需詳細資訊，請造訪 http://www.esri.com/software/Web-AppBuilder。",
     "smallSize": "小",
     "mediumSize": "中",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "展開輸出",
     "tooltip": "按一下地圖以新增點"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "連結至: ",
+    "previewLinkToolTipsSuffix": "啟動應用程式時將使用此連結。"
+  },
   "noEditPrivileges": "您的帳號沒有建立或修改資料的權限。",
   "noEditableLayers": "您的帳號沒有建立或修改資料的權限。或此 Web 地圖不含任何可編輯圖層。",
   "invalidConfiguration": "未配置 widget，或配置中的圖層已從地圖中消失。請在建構器模式中開啟應用程式，並重新配置 widget。",
   "essentialAppsLicenseErrorForApp": "您的帳號沒有使用非公開應用程式的權限。 請聯繫您的組織管理員，請其將包含基礎應用程式或附加元件基礎應用程式授權的使用者類型指派給您。",
-  "essentialAppsLicenseErrorForBuilder": "您的帳號沒有 Web AppBuilder 授權。 請聯繫您的組織管理員，請其將包含基礎應用程式或附加元件基礎應用程式授權的使用者類型指派給您。"
+  "essentialAppsLicenseErrorForBuilder": "您的帳號沒有 Web AppBuilder 授權。 請聯繫您的組織管理員，請其將包含基礎應用程式或附加元件基礎應用程式授權的使用者類型指派給您。",
+  "blockedByAdminErrorForApp": "您的組織已封鎖此應用程式的存取。 請聯絡您的管理員以取得詳細資訊。",
+  "blockedByAdminErrorForBuilder": "您的組織已封鎖 Web AppBuilder 存取。 請聯絡您的管理員以取得詳細資訊。",
+  "orgUrlMessage": "您正在嘗試存取的應用程式並非源自您提供的 URL。",
+  "advancedOptions": "進階選項",
+  "proceedTo": "繼續執行 ${value}",
+  "setStyle": "設定樣式"
 });

@@ -98,19 +98,30 @@ define({
     "tooltipText": "Văn bản Chú giải công cụ",
     "findAddressOrPlace": "Tìm địa chỉ hoặc địa điểm",
     "expand": "Mở rộng ${value}",
-    "collapse": "Thu gọn ${value}"
+    "collapse": "Thu gọn ${value}",
+    "asc": "Tăng dần",
+    "desc": "Giảm dần"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Hỗ trợ trình duyệt có giới hạn",
+    "onlineContent1": "Bạn đang sử dụng trình duyệt không được chấp nhận. Một số phần của ứng dụng này có thể không hoạt động tối ưu hoặc không hoạt động trong trình duyệt này. Hỗ trợ cho trình duyệt này sẽ bị ngừng trong tương lai.",
+    "content2": "Vui lòng sử dụng phiên bản <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, hoặc <edge-link>Microsoft Edge</edge-link> mới nhất.",
+    "onlineContent3": "Để biết thêm thông tin về hỗ trợ trình duyệt, xem tài liệu của chúng tôi. Cung cấp ý kiến phản hồi của bạn qua <feedback-link>GeoNet, Cộng đồng Esri</feedback-link>.",
+    "enterpriseContent1": "Bạn đang sử dụng trình duyệt không còn được hỗ trợ. Một số phần của ứng dụng này có thể không hoạt động tối ưu hoặc không hoạt động trong trình duyệt này."
   },
   "errorCode": "Mã",
   "errorMessage": "Thông báo",
   "errorDetail": "Chi tiết",
   "widgetPlaceholderTooltip": "Để thiết lập, đi tới Tiện ích và bấm vào trình giữ chỗ tương ứng",
+  "widgetToolTip": "${widgetLabel}. Nhấn Enter để tập trung vào bên trong tiện ích. Khi tập trung vào bên trong, nhấn Esc để tập trung trở lại tiện ích.",
   "skips": {
     "skips": "Bỏ qua Liên kết",
     "skipTo": "Bỏ qua đến ${value}",
     "headerController": "Bỏ qua đến Trình điều khiển Đầu trang",
     "map": "Bỏ qua đến Bản đồ",
     "sidePanel": "Bỏ qua đến Bảng điều khiển bên",
-    "attributeTable": "Bỏ qua đến Bảng thuộc tính"
+    "attributeTable": "Bỏ qua đến Bảng thuộc tính",
+    "tabAway": "Nhấn Tab để tiếp tục và ra khỏi ứng dụng, nhấn Shift và Tab để quay lại ${value} trong"
   },
   "panelHeader": {
     "foldWindow": "Thu nhỏ cửa sổ",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Điểm",
+    "arrow": "Mũi tên",
     "line": "Đường",
     "polyline": "Đa tuyến",
     "freehandPolyline": "Đa tuyến vẽ tay",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Tất cả các giá trị riêng của trường này",
     "previousCascadeFilterTip": "Các giá trị được lọc bởi các biểu thức trước đó",
     "allCascadeFilterTip": "Các giá trị được lọc bởi tất cả các biểu thức khác",
+    "dateOptions": "Tùy chọn ngày",
+    "startDateOptions": "Tùy chọn ngày bắt đầu",
+    "endDateOptions": "Tùy chọn ngày kết thúc",
     "custom": "ngày...",
     "today": "hôm nay",
     "yesterday": "hôm qua",
     "tomorrow": "ngày mai",
+    "atLeastOne": "Phải đánh dấu ít nhất một tùy chọn ngày.",
+    "notUncheckedCurrent": "Không thể đánh dấu tùy chọn ngày đã chọn.",
     "theseDays": "những ngày này",
     "thisWeek": "tuần này",
     "thisMonth": "tháng này",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Hiển thị đối tượng được chọn",
     "ExportToFeatureCollection": "Xuất ra bộ sưu tập đối tượng",
     "ExportToGeoJSON": "Xuất ra GeoJSON",
+    "ExportToFilegdb": "Xuất sang tệp geodatabase",
+    "ExportToShapefile": "Xuất sang shapefile",
     "EditAttributes": "Chỉnh sửa thuộc tính",
     "AddMarker": "Thêm điểm đánh dấu",
     "RemoveMarker": "Xóa điểm đánh dấu",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Năm",
     "years": "Các năm",
+    "quarter": "Quý",
     "month": "Tháng",
     "months": "Các Tháng",
     "week": "Tuần",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Nhúng ứng dụng này vào trang web",
     "shareEmailSubject": "Chia sẻ ứng dụng web:",
-    "shareEmailTxt1": "Đây là ứng dụng web được chia sẻ với bạn bằng cách sử dụng Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Bạn có thể tạo và chia sẻ ứng dụng web của riêng mình bằng Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Đây là ứng dụng web được chia sẻ với bạn bằng ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Bạn có thể tạo và chia sẻ ứng dụng web của riêng mình bằng Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Hãy truy cập http://www.esri.com/software/web-appbuilder để biết thêm chi tiết.",
     "smallSize": "Nhỏ",
     "mediumSize": "Trung bình",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Mở rộng đầu ra",
     "tooltip": "Nhấp vào bản đồ để thêm điểm"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Liên kết đến: ",
+    "previewLinkToolTipsSuffix": "Liên kết này sẽ hoạt động khi ứng dụng được khởi chạy."
+  },
   "noEditPrivileges": "Tài khoản của bạn không có quyền tạo hoặc sửa đổi dữ liệu.",
   "noEditableLayers": "Tài khoản của bạn không có quyền tạo hoặc sửa đổi dữ liệu. Hoặc bản đồ web này không chứa bất kỳ lớp nào có thể chỉnh sửa.",
   "invalidConfiguration": "Tiện ích chưa được cấu hình hoặc lớp trong cấu hình không còn trong bản đồ. Vui lòng mở ứng dụng trong chế độ bộ thiết lập và cấu hình lại tiện ích.",
   "essentialAppsLicenseErrorForApp": "Tài khoản của bạn không được cấp phép để sử dụng ứng dụng không được công khai. Vui lòng yêu cầu quản trị viên của tổ chức bạn gán cho bạn loại người dùng nào có bao gồm các ứng dụng thiết yếu hoặc có giấy phép sử dụng các ứng dụng thiết yếu bổ trợ.",
-  "essentialAppsLicenseErrorForBuilder": "Tài khoản của bạn không được cấp phép để sử dụng ứng dụng Web AppBuilder. Vui lòng yêu cầu quản trị viên của tổ chức bạn gán cho bạn loại người dùng nào có bao gồm các ứng dụng thiết yếu hoặc có giấy phép sử dụng các ứng dụng thiết yếu bổ trợ."
+  "essentialAppsLicenseErrorForBuilder": "Tài khoản của bạn không được cấp phép để sử dụng ứng dụng Web AppBuilder. Vui lòng yêu cầu quản trị viên của tổ chức bạn gán cho bạn loại người dùng nào có bao gồm các ứng dụng thiết yếu hoặc có giấy phép sử dụng các ứng dụng thiết yếu bổ trợ.",
+  "blockedByAdminErrorForApp": "Tổ chức của bạn đã chặn quyền truy cập vào ứng dụng này. Vui lòng liên hệ với quản trị viên của bạn để biết chi tiết.",
+  "blockedByAdminErrorForBuilder": "Tổ chức của bạn đã chặn quyền truy cập vào Web AppBuilder. Vui lòng liên hệ với quản trị viên của bạn để biết chi tiết.",
+  "orgUrlMessage": "Ứng dụng bạn đang cố gắng truy cập không có nguồn gốc từ URL bạn đã cung cấp.",
+  "advancedOptions": "Tùy chọn nâng cao",
+  "proceedTo": "Tiếp tục tới ${value}",
+  "setStyle": "Thiết lập kiểu"
 });

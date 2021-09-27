@@ -33,6 +33,7 @@ define([
   'esri/arcgis/utils',
   'esri/geometry/Extent',
   'esri/geometry/Point',
+  'esri/layers/FeatureLayer',
   'require',
   './utils',
   'jimu/LayerInfos/LayerInfos',
@@ -43,7 +44,7 @@ define([
   './PopupManager',
   './FilterManager'
 ], function(declare, lang, array, html, query, topic, on, aspect, keys, i18n, dojoConfig, InfoWindow,
-  PopupMobile, InfoTemplate, esriRequest, arcgisUtils, Extent, Point, require, jimuUtils,
+  PopupMobile, InfoTemplate, esriRequest, arcgisUtils, Extent, Point, FeatureLayer, require, jimuUtils,
   LayerInfos, Message, AppStatePopup, MapUrlParamsHandler, AppStateManager, PopupManager, FilterManager) {
   var instance = null,
     clazz = declare(null, {
@@ -238,11 +239,14 @@ define([
         //   var url = portalUrlUtils.getStandardPortalUrl(appConfig.portalUrl);
         //   agolUtils.arcgisUrl = url + "/sharing/content/items/";
         // }
+
+        this._increasePointCount(appConfig);
+
         if(!appConfig.map.mapOptions){
           appConfig.map.mapOptions = {};
         }
         var mapOptions = this._processMapOptions(appConfig.map.mapOptions) || {};
-        mapOptions.isZoomSlider = false;
+        mapOptions.slider = false;
 
         var webMapPortalUrl = appConfig.map.portalUrl;
         var webMapItemId = appConfig.map.itemId;
@@ -322,6 +326,24 @@ define([
           this._showError(error);
           topic.publish('mapCreatedFailed');
         }));
+      },
+
+      // This is a temp fix, we should remove this in future release
+      _increasePointCount: function(appConfig){
+        if(window.queryObject.disableLargePointCountForTimeSlider === '1' ||
+          window.queryObject.disableLargePointCountForTimeSlider === 'true'){
+          return;
+        }
+        var hasTimeSlider = false;
+        jimuUtils.visitElement(appConfig, function(e){
+          if(e.uri === 'widgets/TimeSlider/Widget'){
+            hasTimeSlider = true;
+          }
+        });
+
+        if(hasTimeSlider){
+          FeatureLayer.prototype.maxPointCountForAuto = 35000; // default = 4000
+        }
       },
 
       _handleRefreshLayer: function(featureLayer){

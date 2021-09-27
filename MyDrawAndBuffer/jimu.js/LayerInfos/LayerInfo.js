@@ -31,12 +31,13 @@ define([
   'jimu/portalUtils',
   'jimu/LayerNode',
   'jimu/utils',
+  'jimu/privilegeUtils',
   './RequestBuffer',
   'esri/kernel',
   'esri/tasks/query',
   'esri/request'
 ], function(declare, array, lang, Deferred, all, /*NlsStrings,*/ domConstruct, topic, aspect,
-Evented, /*xhr,*/ scriptRequest, portalUrlUtils, portalUtils, LayerNode, jimuUtils, RequestBuffer, esriNS,
+Evented, /*xhr,*/ scriptRequest, portalUrlUtils, portalUtils, LayerNode, jimuUtils, privilegeUtils, RequestBuffer, esriNS,
 Query, esriRequest) {
   var clazz = declare([Evented], {
     declaredClass:            "jimu.LayerInfo",
@@ -216,8 +217,8 @@ Query, esriRequest) {
     //  }
     resetLayerObjectVisibility: function(layerOptions) {
       //dos not have the capability to reset visiblility for sublayers.
-      var layerOption  = layerOptions ? layerOptions[this.id]: null;
-      if(this.isRootLayer() && layerOption) {
+      //var layerOption  = layerOptions ? layerOptions[this.id]: null;
+      if(this.isRootLayer()) {
         this._resetLayerObjectVisiblity(layerOptions);
       }
     },
@@ -751,6 +752,13 @@ Query, esriRequest) {
       return isMapNotesLayerInfo;
     },
 
+    getMSShipFeatures: function(/*MSLFeatures*/) {
+      // implemented by sub class.
+      var def = new Deferred();
+      def.resolve(null);
+      return def;
+    },
+
     /********************************************
      * methods for control extent and scale range
      ********************************************/
@@ -1176,9 +1184,36 @@ Query, esriRequest) {
       return retDef;
     },
 
+    _checkUserLicense: function(portal) {
+      var itemId = "";
+      if (!window.isXT && window.queryObject) {
+        if (window.queryObject.id && !(/^(stemapp|stemapp3d)$/gi).test(window.queryObject.id)) {
+          itemId = window.queryObject.id;
+        } else {
+          if (window.queryObject.appid) {
+            itemId = window.queryObject.appid;
+          }
+        }
+      }
+
+      if(window.isXT || !itemId) {
+        var def = new Deferred();
+        def.resolve(true);
+        return def;
+      } else {
+        return privilegeUtils.checkEssentialAppsLicense(itemId, portal, false)
+        .then(lang.hitch(this, function(response) {
+          return !(response && response.viewOnly);
+        }), lang.hitch(this, function() {
+          return false;
+        }));
+      }
+    },
+
     isEditable: function() {
       var isEditable = false;
       var hasEditPrivilege = true;
+      var hasLicense = true;
 
       var portalUrl = getAppConfig().portalUrl; //jshint ignore: line
       var portal = portalUtils.getPortal(portalUrl);
@@ -1190,19 +1225,22 @@ Query, esriRequest) {
       }), lang.hitch(this, function() {
         userDef.resolve(null);
       }));
+      var licenseDef = this._checkUserLicense(portal);
 
       all({
         user: userDef,
-        isPublicService: isPublicServiceDef
+        isPublicService: isPublicServiceDef,
+        license: licenseDef
       }).then(lang.hitch(this, function(result) {
         var userPrivileges = result.user && result.user.privileges;
         var isPublicService = result.isPublicService;
+        var license = result.license;
 
         if (userPrivileges &&
             array.indexOf(userPrivileges, "features:user:edit") === -1 &&
             esriNS.id &&
             !isPublicService) {
-          // user no 'edit-privilige' doesn't have permission to edit non-public layers
+          // no 'edit-privilige' means the user doesn't have permission to edit non-public layers
           // other all conditions have permission to edit layers, this logic same as js-api, but it
           // cannot addrees the below situation:
           // for a non-public layer (layer has credential):
@@ -1211,8 +1249,12 @@ Query, esriRequest) {
           hasEditPrivilege = false;
         }
 
+        if(!isPublicService && !license) {
+          hasLicense = false;
+        }
+
         if(this.layerObject && this.layerObject.isEditable) {
-          if(this.layerObject.isEditable() && hasEditPrivilege) {
+          if(this.layerObject.isEditable() && hasEditPrivilege && hasLicense) {
             isEditable = true;
           } else {
             isEditable = false;

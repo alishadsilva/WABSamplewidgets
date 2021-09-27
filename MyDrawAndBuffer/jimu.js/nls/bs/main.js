@@ -98,19 +98,30 @@ define({
     "tooltipText": "Tekst opisa elementa",
     "findAddressOrPlace": "Pronađi adresu ili mjesto",
     "expand": "Proširi ${value}",
-    "collapse": "Sažmi ${value}"
+    "collapse": "Sažmi ${value}",
+    "asc": "Uzlazno",
+    "desc": "Silazno"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Ograničena podrška za preglednik",
+    "onlineContent1": "Koristite zastarjeli preglednik. Neki dijelovi ove aplikacije možda neće funkcionirati optimalno ili uopće neće funkcionirati u ovom pregledniku. Podrška za ovaj preglednik ubuduće će biti prekinuta.",
+    "content2": "Koristite najnovije verzije preglednika <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> ili <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Za više informacija o podršci za preglednika pogledajte našu dokumentaciju. Pošaljite svoje povratne informacije kroz <feedback-link>GeoNet, Esrijevu zajednicu</feedback-link>.",
+    "enterpriseContent1": "Upotrebljavate preglednik koji više nije podržan. Neki dijelovi ove aplikacije možda neće funkcionirati optimalno ili uopće neće funkcionirati u ovom pregledniku."
   },
   "errorCode": "Kod",
   "errorMessage": "Poruka",
   "errorDetail": "Pojedinost",
   "widgetPlaceholderTooltip": "Za postavljanje idite u Widgete i kliknite na odgovarajuće mjesto",
+  "widgetToolTip": "${widgetLabel}. Pritisnite tipku \"Enter\" za fokus unutar ovog widgeta. Kada je fokus unutar, pritisnite tipku \"Esc\" za fokusiranje natrag na widget",
   "skips": {
     "skips": "Preskoči poveznice",
     "skipTo": "Preskoči na ${value}",
     "headerController": "Preskoči na kontroler zaglavlja",
     "map": "Preskoči na kartu",
     "sidePanel": "Preskoči na bočnu ploču",
-    "attributeTable": "Preskoči na atributnu tablicu"
+    "attributeTable": "Preskoči na atributnu tablicu",
+    "tabAway": "Pritisnite Tab za nastavak i izlaz iz app-a, pritisnite Shift i Tab za povratak do ${value} unutra"
   },
   "panelHeader": {
     "foldWindow": "Preklopi prozor",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Točka",
+    "arrow": "Strelica",
     "line": "Linija",
     "polyline": "Polilinija",
     "freehandPolyline": "Prostoručna polilinija",
@@ -222,7 +234,7 @@ define({
     "clear": "Očisti"
   },
   "popupConfig": {
-    "title": "Naslov",
+    "title": "Naziv",
     "add": "Dodaj",
     "fields": "Polja",
     "noField": "Nema polja",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Sve jedinstvene vrijednosti ovog polja",
     "previousCascadeFilterTip": "Vrijednosti filtrirane prethodnim izrazima",
     "allCascadeFilterTip": "Vrijednosti filtrirane svim ostalim izrazima",
+    "dateOptions": "Opcije datuma",
+    "startDateOptions": "Opcije datuma početka",
+    "endDateOptions": "Opcije datuma kraja",
     "custom": "datum...",
     "today": "danas",
     "yesterday": "jučer",
     "tomorrow": "sutra",
+    "atLeastOne": "Treba označiti barem jednu opciju datuma.",
+    "notUncheckedCurrent": "Odabrana opcija datuma ne može se odznačiti.",
     "theseDays": "ovi dani",
     "thisWeek": "ovaj tjedan",
     "thisMonth": "ovaj mjesec",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Prikaži odabrane geoobjekte",
     "ExportToFeatureCollection": "Izvezi u kolekciju geoobjekata",
     "ExportToGeoJSON": "Izvezi u GeoJSON",
+    "ExportToFilegdb": "Izvezi u geobazu podataka datoteke",
+    "ExportToShapefile": "Izvezi u shapefile",
     "EditAttributes": "Uredi atribute",
     "AddMarker": "Dodaj oznaku",
     "RemoveMarker": "Ukloni oznaku",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Godina",
     "years": "Godine",
+    "quarter": "Četvrt",
     "month": "Mjesec",
     "months": "Mjeseci",
     "week": "Tjedan",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "Pogreška pri stvaranju widgeta",
     "createWidgetSettingPageError": "Pogreška stranice za postavke za stvaranje widgeta",
-    "loadWidgetResourceError": "Pogreška učitavanja izvora widgeta"
+    "loadWidgetResourceError": "Pogreška učitavanja resursa widgeta"
   },
   "shareOptions": {
     "shareMap": "Izaberite tko može vidjeti ovaj app",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Ugradi ovaj app u web-mjesto",
     "shareEmailSubject": "Dijeljenje web-appa:",
-    "shareEmailTxt1": "Ovdje je web-app koji se dijeli s vama pomoću alata Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Možete stvoriti i podijeliti svoj web-app a Esrijevim alatom Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Ovdje je web-app podijeljen s vama putem programa ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Možete stvoriti i podijeliti svoj web-app pomoću programa Esri Web AppBuilder.",
     "shareEmailTxt3": "Posjetite http://www.esri.com/software/web-appbuilder za pojedinosti.",
     "smallSize": "Malo",
     "mediumSize": "Srednje",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Proširi izlaz",
     "tooltip": "Kliknite na kartu za dodavanje točke"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Poveznica na: ",
+    "previewLinkToolTipsSuffix": "Ova će poveznica raditi kada se pokrene app."
+  },
   "noEditPrivileges": "Vaš račun nema dopuštenje za stvaranje ili mijenjanje podataka.",
   "noEditableLayers": "Vaš račun nema dozvolu za stvaranje ili izmjenu podataka. Ili ova web-karta ne sadrži nikakve slojeve koji se mogu uređivati.",
   "invalidConfiguration": "Widget nije konfiguriran ili slojevi u konfiguraciji više nisu u karti. Otvorite app u načinu sastavljača i ponovo konfigurirajte widget.",
   "essentialAppsLicenseErrorForApp": "Vaš račun nije licenciran za upotrebu appa koji nije javan. Obratite se administratoru svoje organizacije da vam dodijeli vrstu korisnika koja sadrži licencu za osnovne appove ili za dodatke za osnovne appove.",
-  "essentialAppsLicenseErrorForBuilder": "Vaš račun nije licenciran za Web AppBuilder. Obratite se administratoru svoje organizacije da vam dodijeli vrstu korisnika koja sadrži licencu za osnovne appove ili za dodatke za osnovne appove."
+  "essentialAppsLicenseErrorForBuilder": "Vaš račun nije licenciran za Web AppBuilder. Obratite se administratoru svoje organizacije da vam dodijeli vrstu korisnika koja sadrži licencu za osnovne appove ili za dodatke za osnovne appove.",
+  "blockedByAdminErrorForApp": "Vaša je organizacija blokirala pristup ovoj aplikaciji. Obratite se svom administratoru za pojedinosti.",
+  "blockedByAdminErrorForBuilder": "Vaša je organizacija blokirala pristup programu Web AppBuilder. Obratite se svom administratoru za pojedinosti.",
+  "orgUrlMessage": "Aplikacija kojoj pokušavate pristupiti ne potječe s URL-a koji ste naveli.",
+  "advancedOptions": "Napredne opcije",
+  "proceedTo": "Nastavite do ${value}",
+  "setStyle": "Postavi stil"
 });

@@ -98,19 +98,30 @@ define({
     "tooltipText": "Текст подсказки",
     "findAddressOrPlace": "Найти адрес или место",
     "expand": "Развернуть ${value}",
-    "collapse": "Свернуть ${value}"
+    "collapse": "Свернуть ${value}",
+    "asc": "По возрастанию",
+    "desc": "По убыванию"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Ограниченная поддержка браузера",
+    "onlineContent1": "Вы используете устаревший браузер. Некоторые части приложения могут работать не оптимально, или не работать вовсе в этом браузере. Поддержка этих браузеров будет прекращена в будущем.",
+    "content2": "Пожалуйста, используйте последние версии <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> или <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Для дополнительной информации по поддержке браузеров см. в документации. Предоставьте обратную связь с помощью <feedback-link>GeoNet, Esri Community</feedback-link>.",
+    "enterpriseContent1": "Вы используете не поддерживающийся браузер. Некоторые части приложения могут работать не оптимально, или не работать вовсе в этом браузере."
   },
   "errorCode": "Код",
   "errorMessage": "Сообщение",
   "errorDetail": "Подробности",
   "widgetPlaceholderTooltip": "Чтобы настроить его, перейдите в Виджеты и щелкните соответствующий ограничитель",
+  "widgetToolTip": "${widgetLabel}. Нажмите Enter для фокусировки внутри виджета. Если фокус находится внутри, нажмите Esc, чтобы выйти из фокуса в виджете.",
   "skips": {
     "skips": "Пропустить ссылки",
     "skipTo": "Перейти к ${value}",
     "headerController": "Перейти к контроллеру заголовка",
     "map": "Перейти к карте",
     "sidePanel": "Перейти к боковой панели",
-    "attributeTable": "Перейти к таблице атрибутов"
+    "attributeTable": "Перейти к таблице атрибутов",
+    "tabAway": "Нажмите Tab, чтобы продолжить и выйти из приложения, нажмите Shift и Tab, чтобы вернуться к ${value} в нем"
   },
   "panelHeader": {
     "foldWindow": "Сложить окно",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Точка",
+    "arrow": "Стрелка",
     "line": "Линия",
     "polyline": "Линия",
     "freehandPolyline": "Произвольная полилиния",
@@ -222,7 +234,7 @@ define({
     "clear": "Сброс"
   },
   "popupConfig": {
-    "title": "Заголовок",
+    "title": "Название",
     "add": "Добавить",
     "fields": "Поля",
     "noField": "Нет поля",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Все уникальные значения этого поля",
     "previousCascadeFilterTip": "Значения предыдущих выражений фильтра",
     "allCascadeFilterTip": "Значения всех остальных выражений фильтра",
+    "dateOptions": "Опции даты",
+    "startDateOptions": "Опции начальной даты",
+    "endDateOptions": "Опции конечной даты",
     "custom": "дата...",
     "today": "сегодня",
     "yesterday": "вчера",
     "tomorrow": "завтра",
+    "atLeastOne": "Необходимо выбрать по крайней мере одну опцию даты.",
+    "notUncheckedCurrent": "Выбранная опция даты не может быть отключена.",
     "theseDays": "эти дни",
     "thisWeek": "эта неделя",
     "thisMonth": "этот месяц",
@@ -416,7 +433,7 @@ define({
     "selectWebMap": "Выбор веб-карты",
     "addMapFromOnlineOrPortal": "Найти и добавить в приложение веб-карты из открытых ресурсов ArcGIS Online или собственных частных ресурсов ArcGIS Online или Portal.",
     "searchMapName": "Поиск по названию карты...",
-    "searchNone": "Мы не смогли найти то, что вы искали. Повторите попытку еще раз.",
+    "searchNone": "Мы не смогли найти то, что вы искали. Пожалуйста, попробуйте снова.",
     "groups": "Группы",
     "noneGroups": "Нет групп",
     "signInTip": "Ваш сеанс работы под данной учетной записью истек, обновите свой браузер, чтобы войти в портал снова.",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Показывать выбранные объекты",
     "ExportToFeatureCollection": "Экспорт в Коллекцию объектов",
     "ExportToGeoJSON": "Экспорт в GeoJSON",
+    "ExportToFilegdb": "Экспорт в файловую базу геоданных",
+    "ExportToShapefile": "Экспорт в шейп-файл",
     "EditAttributes": "Редактирование атрибутов",
     "AddMarker": "Добавить маркер",
     "RemoveMarker": "Удалить маркер",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Год",
     "years": "Годы",
+    "quarter": "Квартал",
     "month": "Месяц",
     "months": "Месяцы",
     "week": "Неделя",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Встроить это приложение в веб-сайт",
     "shareEmailSubject": "Публикация веб-приложения:",
-    "shareEmailTxt1": "Доступное для вас веб-приложение, опубликованное с помощью Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Вы можете создать и опубликовать собственное веб-приложение с помощью Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Доступное для вас веб-приложение, опубликованное с помощью ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Вы можете создать и опубликовать собственное веб-приложение с помощью Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Посетите http://www.esri.com/software/web-appbuilder, чтобы получить дополнительные сведения.",
     "smallSize": "Малая",
     "mediumSize": "Средняя",
@@ -713,7 +733,7 @@ define({
   },
   "snapping": {
     "pressStr": "Нажмите ",
-    "ctrlStr": " CTRL+= ",
+    "ctrlStr": " CTRL ",
     "snapStr": " чтобы включить замыкание"
   },
   "snapshot": {
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Развернуть выходные данные.",
     "tooltip": "Щелкните на карте, чтобы добавить точку"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Ссылка на: ",
+    "previewLinkToolTipsSuffix": "Эта ссылка будет работать, когда приложение запущено."
+  },
   "noEditPrivileges": "У вашей учетной записи нет прав на создание или изменение данных.",
   "noEditableLayers": "У вашей учетной записи нет прав на создание или изменение данных. Или на этой веб-карте нет слоев, доступных для редактирования.",
   "invalidConfiguration": "Виджет не настроен, или на карте больше нет слоёв из конфигурации. Откройте приложение в режиме конструктора и настройте виджет.",
   "essentialAppsLicenseErrorForApp": "Ваша учетная запись не лицензирована на использование не публичных приложений. Обратитесь к администратору организации, чтобы получить тип пользователя, в который входит Essential Apps или лицензия дополнительного модуля Essential Apps.",
-  "essentialAppsLicenseErrorForBuilder": "Ваша учетная запись не лицензирована на использование Web AppBuilder. Обратитесь к администратору организации, чтобы получить тип пользователя, в который входит Essential Apps или лицензия дополнительного модуля Essential Apps."
+  "essentialAppsLicenseErrorForBuilder": "Ваша учетная запись не лицензирована на использование Web AppBuilder. Обратитесь к администратору организации, чтобы получить тип пользователя, в который входит Essential Apps или лицензия дополнительного модуля Essential Apps.",
+  "blockedByAdminErrorForApp": "Ваша организация заблокировала доступ к этому приложению. Свяжитесь с администратором для получения дополнительной информации.",
+  "blockedByAdminErrorForBuilder": "Ваша организация заблокировала доступ к Web AppBuilder. Свяжитесь с администратором для получения дополнительной информации.",
+  "orgUrlMessage": "Приложение, к которому вы пытаетесь получить доступ, не соответствует источнику по URL.",
+  "advancedOptions": "Дополнительные опции",
+  "proceedTo": "Продолжить до ${value}",
+  "setStyle": "Задать стиль"
 });

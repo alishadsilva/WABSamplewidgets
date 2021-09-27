@@ -117,6 +117,29 @@ define([
         this.user = null;
       },
 
+      getSigninSettingsOfSelfInfo: function() {
+        this.updateCredential();
+        var def = new Deferred();
+
+        var url = this.selfUrl + '/signinSettings';
+        if (this.isValidCredential()) {
+          var args = {
+            url: url,
+            handleAs: 'json',
+            content: {
+              f: 'json',
+              token: this.credential.token
+            },
+            callbackParamName: 'callback'
+          };
+          def = esriRequest(args);
+        } else {
+          // Anonymous user will always be allowed to access blocked app.
+          def.resolve({});
+        }
+        return def;
+      },
+
       getUser: function() {
         this.updateCredential();
 
@@ -361,7 +384,7 @@ define([
         if (this.isValidCredential()) {
           this.getUser().then(lang.hitch(this, function(user) {
             var args = {
-              title: "Web AppBuilder for ArcGIS",
+              title: "ArcGIS Web AppBuilder",
               type: "Web Mapping Application",
               //typeKeywords: "Web AppBuilder",
               text: '',
@@ -491,6 +514,18 @@ define([
         }
 
         return userRole.canCreateItem();
+      },
+
+      canCreateNotebooks: function() {
+        var userRole = new Role({
+          id: this.roleId ? this.roleId : this.role,
+          role: this.role
+        });
+
+        if (this.privileges) {
+          userRole.setPrivileges(this.privileges);
+        }
+        return userRole.canCreateNotebooks();
       },
 
       getGroups: function() {
@@ -1134,43 +1169,84 @@ define([
           var data = {
             "operationalLayers": [],
             "baseMap": {
-              "id": "basemap",
-              "title": "Topographic",
               "baseMapLayers": [
                 {
-                  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer",
-                  "id": "worldTopoBase",
-                  "layerType": "ArcGISTiledMapServiceLayer",
-                  "title": "Topo"
+                  "id": "World_Hillshade_3805",
+                  "title": "World Hillshade",
+                  "url": "https://services.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer",
+                  "layerType": "ArcGISTiledMapServiceLayer"
+                },
+                {
+                  "id": "VectorTile_2333",
+                  "title": "World Topographic Map",
+                  "layerType": "VectorTileLayer",
+                  "styleUrl": "https://cdn.arcgis.com/sharing/rest/content/items/7dc6cea0b1764a1f9af2e679f642f0f5/resources/styles/root.json"
                 }
               ],
+              "id": "17a1cc0ee7a-basemap-1",
+              "title": "Topographic",
               "elevationLayers": [
                 {
-                  "url": "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
                   "id": "globalElevation",
-                  "layerType": "ArcGISTiledElevationServiceLayer",
-                  "title": "Elevation"
+                  "listMode": "hide",
+                  "title": "Terrain3D",
+                  "url": "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
+                  "layerType": "ArcGISTiledElevationServiceLayer"
                 }
               ]
             },
             "ground": {
               "layers": [
                 {
-                  "url": "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
                   "id": "globalElevation",
-                  "layerType": "ArcGISTiledElevationServiceLayer",
-                  "title": "Elevation"
+                  "listMode": "hide",
+                  "title": "Terrain3D",
+                  "url": "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
+                  "layerType": "ArcGISTiledElevationServiceLayer"
                 }
-              ]
+              ],
+              "transparency": 0,
+              "navigationConstraint": {
+                "type": "stayAbove"
+              }
             },
-            "viewingMode": "global",
+            "heightModelInfo": {
+              "heightModel": "gravity_related_height",
+              "heightUnit": "meter"
+            },
+            "version": "1.24",
+            "initialState": {
+              "environment": {
+                "lighting": {
+                  "datetime": 1615833035000,
+                  "displayUTCOffset": -7
+                },
+                "atmosphereEnabled": true,
+                "starsEnabled": true
+              },
+              "viewpoint": {
+                "camera": {
+                  "position": {
+                    "spatialReference": {
+                      "latestWkid": 3857,
+                      "wkid": 102100
+                    },
+                    "x": -10869958.65772979,
+                    "y": 4493721.602777163,
+                    "z": 16004013.90515196
+                  },
+                  "heading": 0,
+                  "tilt": 0.14248100298775884
+                }
+              }
+            },
             "spatialReference": {
               "latestWkid": 3857,
               "wkid": 102100
             },
-            "version": "1.16",
+            "viewingMode": "global",
             "authoringApp": "WebAppBuilder",
-            "authoringAppVersion": "2.13"
+            "authoringAppVersion": "2.21"
           };
           var text = dojoJson.stringify(data);
           var args = {

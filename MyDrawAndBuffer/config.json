@@ -2,76 +2,35 @@
   "theme": {
     "name": "FoldableTheme",
     "styles": [
-      "yellow",
       "default",
       "black",
       "blue",
       "cyan",
       "green",
       "purple",
-      "red"
+      "red",
+      "yellow"
     ],
-    "version": "2.13",
+    "version": "2.21",
     "sharedTheme": {
       "isPortalSupport": true,
-      "useHeader": true,
+      "useHeader": false,
       "useLogo": false
-    },
-    "customStyles": {
-      "mainBackgroundColor": "#004da8"
     }
   },
-  "portalUrl": "https://ess.maps.arcgis.com",
+  "portalUrl": "https://wsask.maps.arcgis.com",
   "appId": "",
   "authorizedCrossOriginDomains": [
-    "csslsystem-579.cybertech.com",
-    "csslsystem-579.cybertech.com",
-    "csslsystem-278.cybertech.com:6443",
-    "csslsystem-621.cybertech.com",
-    "csslsystem-621.cybertech.com:6443",
-    "CSSLSYSTEM-256.cybertech.com",
-    "csslsystem-562.cybertech.com",
-    "supt0007868.esri.com",
-    "supt0005580.esri.com",
-    "supt0008296.esri.com",
-    "supt0008296.esri.com",
-    "csc-bburn10d.esri.com",
-    "secure.asitvd.ch",
-    "gis.notlhydro.com:444",
-    "supt0005673.esri.com",
-    "csc-amills10.esri.com",
-    "csc-wbarrios10d.esri.com",
-    "supt0008938.esri.com",
-    "supt0008938.esri.com",
-    "webmap.cloudpointgeo.com",
-    "services2.arcgis.com",
-    "www.valtus.com",
-    "sampleserver6.arcgisonline.com",
-    "supt0009098.esri.com",
-    "supt0009276.esri.com",
-    "supt0009276.esri.com",
-    "kklrgm.kkl.org.il",
-    "kklrgm.kkl.org.il",
-    "gisservices.its.ny.gov",
-    "supt0009693.esri.com:6443",
-    "supt0009693.esri.com:6080",
-    "supt0009728.esri.com",
-    "supt0009728.esri.com",
-    "supt0009565.esri.com",
-    "supt0009565.esri.com",
-    "open.govmap.gov.il",
-    "wms.swisstopo.admin.ch",
-    "gis.gjcity.go.kr",
-    "geo.ede.nl",
-    "geo.ede.nl",
-    "geo.ede.nl",
-    "geo.ede.nl",
-    "ltc-test.andes.nl",
-    "ltc-test.andes.nl",
-    "wfs.geonorge.no"
+    "gis.wsask.ca",
+    "gis.wsask.ca",
+    "www.flysask2.ca",
+    "www.flysask2.ca",
+    "www.flysask2.ca",
+    "gis.saskatchewan.ca",
+    "gis.wsask.ca"
   ],
-  "title": "MyDrawV1",
-  "subtitle": "with Web AppBuilder for ArcGIS",
+  "title": "V2",
+  "subtitle": "with ArcGIS Web AppBuilder",
   "keepAppState": true,
   "logo": "images/app-logo.png",
   "geometryService": "https://utility.arcgisonline.com/arcgis/rest/services/Geometry/GeometryServer",
@@ -87,7 +46,7 @@
           "height": 40,
           "relativeTo": "browser"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "themes_FoldableTheme_widgets_HeaderController_Widget_1",
         "name": "HeaderController"
       },
@@ -98,7 +57,7 @@
           "bottom": 25,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_Scalebar_Widget_2",
         "name": "Scalebar"
       },
@@ -109,7 +68,7 @@
           "top": 5,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_Search_Widget_3",
         "name": "Search"
       },
@@ -120,7 +79,7 @@
           "bottom": 5,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_Coordinate_Widget_4",
         "name": "Coordinate"
       },
@@ -132,10 +91,11 @@
         },
         "placeholderIndex": 1,
         "id": "_5",
-        "version": "2.13",
+        "name": "MyDraw",
+        "label": "MyDraw",
+        "version": "2.21",
         "closeable": true,
         "uri": "widgets/MyDraw/Widget",
-        "name": "MyDraw",
         "config": "configs/MyDraw/config__5.json"
       },
       {
@@ -182,7 +142,7 @@
           "zIndex": 1,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_OverviewMap_Widget_10",
         "name": "OverviewMap"
       },
@@ -193,7 +153,7 @@
           "top": 75,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_HomeButton_Widget_11",
         "name": "HomeButton"
       },
@@ -204,7 +164,7 @@
           "top": 110,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_MyLocation_Widget_12",
         "name": "MyLocation"
       },
@@ -213,7 +173,7 @@
         "position": {
           "relativeTo": "browser"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_AttributeTable_Widget_13",
         "name": "AttributeTable"
       },
@@ -223,7 +183,7 @@
         "position": {
           "relativeTo": "browser"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_Splash_Widget_14",
         "name": "Splash"
       },
@@ -234,7 +194,7 @@
           "left": 7,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_ZoomSlider_Widget_15",
         "name": "ZoomSlider"
       },
@@ -248,7 +208,7 @@
         },
         "id": "widgets_ExtentNavigate_Widget_16",
         "name": "ExtentNavigate",
-        "version": "2.13"
+        "version": "2.21"
       },
       {
         "uri": "widgets/FullScreen/Widget",
@@ -258,7 +218,7 @@
           "left": 7,
           "relativeTo": "map"
         },
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_FullScreen_Widget_17",
         "name": "FullScreen"
       }
@@ -279,10 +239,10 @@
       "right": 0,
       "bottom": 0
     },
-    "itemId": "be8c35653b1643de8d972028c839c68d",
+    "itemId": "3ecfad5330784ef7b3d5548ee4a32698",
     "mapOptions": {},
     "id": "map",
-    "portalUrl": "https://ess.maps.arcgis.com",
+    "portalUrl": "https://wsask.maps.arcgis.com",
     "mapRefreshInterval": {
       "useWebMapRefreshInterval": true
     }
@@ -301,14 +261,14 @@
     "widgets": [
       {
         "uri": "widgets/Legend/Widget",
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_Legend_Widget_18",
         "name": "Legend",
         "index": 0
       },
       {
         "uri": "widgets/LayerList/Widget",
-        "version": "2.13",
+        "version": "2.21",
         "id": "widgets_LayerList_Widget_19",
         "name": "LayerList",
         "index": 1
@@ -347,14 +307,12 @@
       "height": 29
     }
   },
-  "wabVersion": "2.13",
+  "wabVersion": "2.21",
   "isTemplateApp": true,
   "isWebTier": false,
   "httpProxy": {
     "useProxy": true,
-    "alwaysUseProxy": false,
-    "url": "",
-    "rules": []
+    "url": "https://x216940.h2o.saskwater.com:3344/proxy.js"
   },
   "dataSource": {
     "dataSources": {},

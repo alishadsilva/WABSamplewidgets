@@ -98,19 +98,30 @@ define({
     "tooltipText": "Testo descrizione comandi",
     "findAddressOrPlace": "Trova indirizzo o posizione",
     "expand": "Espandi ${value}",
-    "collapse": "Comprimi ${value}"
+    "collapse": "Comprimi ${value}",
+    "asc": "Crescente",
+    "desc": "Decrescente"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Supporto browser limitato",
+    "onlineContent1": "Si sta utilizzando un browser deprecato. Alcune parti di questa applicazione potrebbero funzionare in modo non ottimale o non funzionare affatto in questo browser. Il supporto per questo browser sarà sospeso in futuro.",
+    "content2": "Usare le versioni più recenti di <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> o <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Per maggiori informazioni sul supporto del browser, consultare la nostra documentazione. Fornire un feedback tramite <feedback-link>GeoNet, la community Esri</feedback-link>.",
+    "enterpriseContent1": "Si sta utilizzando un browser non più supportato. Alcune parti di questa applicazione potrebbero funzionare in modo non ottimale o non funzionare affatto in questo browser."
   },
   "errorCode": "Codice",
   "errorMessage": "Messaggio",
   "errorDetail": "Dettagli",
   "widgetPlaceholderTooltip": "Per configurarlo, passare a Widget e fare clic sul segnaposto corrispondente",
+  "widgetToolTip": "${widgetLabel}. Premere Invio per focalizzarsi all'interno di questo widget. Quando il focus è all'interno, premere Esc per focalizzarsi nuovamente sul widget.",
   "skips": {
     "skips": "Salta collegamenti",
     "skipTo": "Salta a ${value}",
     "headerController": "Salta a Controller intestazione",
     "map": "Salta a Mappa",
     "sidePanel": "Salta a Pannello laterale",
-    "attributeTable": "Salta a Tabella attributi"
+    "attributeTable": "Salta a Tabella attributi",
+    "tabAway": "Premere Tab per continuare e uscire dall'app, premere Maiusc e Tab per tornare a ${value} al suo interno"
   },
   "panelHeader": {
     "foldWindow": "Riduci finestra",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punto",
+    "arrow": "Freccia",
     "line": "Linea",
     "polyline": "Polilinea",
     "freehandPolyline": "Polilinea a mano libera",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Tutti i valori univoci di questo campo",
     "previousCascadeFilterTip": "Valori filtrati in base a espressioni precedenti",
     "allCascadeFilterTip": "Valori filtrati in base a tutte le altre espressioni",
+    "dateOptions": "Opzioni data",
+    "startDateOptions": "Opzioni data di inizio",
+    "endDateOptions": "Opzioni data di fine",
     "custom": "data...",
     "today": "oggi",
     "yesterday": "ieri",
     "tomorrow": "domani",
+    "atLeastOne": "È necessario spuntare almeno un'opzione data.",
+    "notUncheckedCurrent": "La spunta dell'opzione data selezionata non può essere rimossa.",
     "theseDays": "questi giorni",
     "thisWeek": "questa settimana",
     "thisMonth": "questo mese",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Mostra feature selezionate",
     "ExportToFeatureCollection": "Esporta in raccolta di feature",
     "ExportToGeoJSON": "Esporta in GeoJSON",
+    "ExportToFilegdb": "Esporta in un geodatabase di file",
+    "ExportToShapefile": "Esporta in uno shapefile",
     "EditAttributes": "Modifica attributi",
     "AddMarker": "Aggiungi un marcatore",
     "RemoveMarker": "Rimuovi marcatore",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Anno",
     "years": "Anni",
+    "quarter": "Quarter",
     "month": "Mese",
     "months": "Mesi",
     "week": "Settimana",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Incorpora questa app in un sito Web",
     "shareEmailSubject": "Condivisione app Web:",
-    "shareEmailTxt1": "App Web condivisa con l'utente utilizzando Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "È possibile creare e condividere proprie app Web con Web AppBuilder for ArcGIS di Esri.",
+    "shareEmailTxt1": "Ecco un'applicazione Web condivisa con l'utente utilizzando ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "È possibile creare e condividere proprie app Web con ArcGIS Web AppBuilder di Esri.",
     "shareEmailTxt3": "Per ulteriori dettagli, visitare http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Piccolo",
     "mediumSize": "Media",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Espandi output",
     "tooltip": "Fare clic sulla mappa per aggiungere il punto"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Link a: ",
+    "previewLinkToolTipsSuffix": "Questo link funzionerà una volta avviata l'applicazione."
+  },
   "noEditPrivileges": "L'account non dispone dell'autorizzazione per creare o modificare dati.",
   "noEditableLayers": "L'account non dispone dell'autorizzazione per creare o modificare dati oppure la Web Map non contiene layer modificabili.",
   "invalidConfiguration": "Il widget non è configurato o i layer nella configurazione non sono più presenti nella mappa. Aprire l'app nella modalità generatore e riconfigurare il widget.",
   "essentialAppsLicenseErrorForApp": "L’account non dispone della licenza per l’uso di un’app non pubblica. È necessario richiedere all’amministratore dell'organizzazione l’assegnazione di un tipo di utente che includa le app essenziali o una licenza aggiuntiva per le app essenziali.",
-  "essentialAppsLicenseErrorForBuilder": "L’account non dispone della licenza per Web AppBuilder. È necessario richiedere all’amministratore dell'organizzazione l’assegnazione di un tipo di utente che includa le app essenziali o una licenza aggiuntiva per le app essenziali."
+  "essentialAppsLicenseErrorForBuilder": "L’account non dispone della licenza per Web AppBuilder. È necessario richiedere all’amministratore dell'organizzazione l’assegnazione di un tipo di utente che includa le app essenziali o una licenza aggiuntiva per le app essenziali.",
+  "blockedByAdminErrorForApp": "L'organizzazione ha negato l'accesso a questa applicazione. Per ulteriori informazioni, contattare l'amministratore.",
+  "blockedByAdminErrorForBuilder": "L'organizzazione ha negato l'accesso a Web AppBuilder. Per ulteriori informazioni, contattare l'amministratore.",
+  "orgUrlMessage": "L'applicazione a cui si sta tentando di accedere non ha origine dall'URL fornito.",
+  "advancedOptions": "Opzioni avanzate",
+  "proceedTo": "Procedere a ${value}",
+  "setStyle": "Imposta stile"
 });

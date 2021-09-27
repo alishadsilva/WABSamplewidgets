@@ -17,6 +17,8 @@
 define([
   'dojo/_base/html',
   'dojo/_base/declare',
+  'dojo/_base/lang',
+  'dojo/on',
   'dojo/keys',
   'jimu/utils',
   './ValueProvider',
@@ -24,7 +26,8 @@ define([
   'dijit/form/NumberTextBox',
   './DateValueSelector'
 ],
-  function(html, declare, keys, jimuUtils, ValueProvider, ValidationTextBox, NumberTextBox, DateValueSelector) {
+  function(html, declare, lang, on,
+    keys, jimuUtils, ValueProvider, ValidationTextBox, NumberTextBox, DateValueSelector) {
 
     return declare([ValueProvider], {
 
@@ -81,11 +84,19 @@ define([
             popupInfo: this.popupInfo,
             _fieldInfo: this.fieldInfo
           };
+          if(this.runtime){
+            options.virtualDates = this.partObj.interactiveObj.virtualDates;
+          }
           if(this.customId){
             options.customId = this.customId;
             options.prompt = this.partObj.interactiveObj.prompt + ' ' + this.partObj.interactiveObj.hint;
           }
           this._dijit = new DateValueSelector(options);
+
+          //bind change event
+          this.own(on(this._dijit, 'change', lang.hitch(this, function(date){
+            this.emit('change', date, 'start');
+          })));
         }
         //use id&for to read label
         if(this.customId && (this.shortType === 'string' || this.shortType === 'number')){

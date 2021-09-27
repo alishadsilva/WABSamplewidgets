@@ -40,6 +40,7 @@ define([
     'esri/IdentityManager',
     'jimu/portalUrlUtils',
     './utils',
+    './portalUtils',
     'require',
     'dojo/i18n',
     'dojo/i18n!./nls/main',
@@ -49,7 +50,7 @@ define([
   function(ConfigManager, LayoutManager, DataManager, WidgetManager, FeatureActionManager, SelectionManager,
     DataSourceManager, FilterManager, html, lang, array, on, keys, mouse,
     topic, cookie, Deferred, all, ioquery, esriConfig, esriRequest, urlUitls, IdentityManager,
-    portalUrlUtils, jimuUtils, require, i18n, mainBundle, esriMain, dojoReady) {
+    portalUrlUtils, jimuUtils, portalUtils, require, i18n, mainBundle, esriMain, dojoReady) {
     /* global jimuConfig:true */
     var mo = {}, appConfig;
 
@@ -77,6 +78,12 @@ define([
 
     IdentityManager.setProtocolErrorHandler(function() {
       return true;
+    });
+
+    IdentityManager.setOAuthRedirectionHandler(function(info) {
+      window.location = info.authorizeUrl +
+                        '?canHandleCrossOrgSignin=true&' +
+                        ioquery.objectToQuery(info.authorizeParams);
     });
 
     var ancestorWindow = jimuUtils.getAncestorWindow();
@@ -184,6 +191,23 @@ define([
       }
     });
 
+    if(navigator.serviceWorker){
+      window.postMessageToSw({type: 'to_sw_credential', credential: null});
+
+      navigator.serviceWorker.onmessage = function(evt) {
+        var message = evt.data;
+        if(evt.origin === window.location.origin && message.type === 'to_window_get_credential' && window.portalUrl){
+          var portalUrl = portalUrlUtils.getStandardPortalUrl(window.portalUrl);
+          var portal = portalUtils.getPortal(portalUrl);
+          if(portal.credential){
+            window.postMessageToSw({type: 'to_sw_credential', credential: portal.credential.toJson()});
+          }else if(window.isCredentialSettled){
+            window.postMessageToSw({type: 'to_sw_no_credential'});
+          }
+        }
+      }
+    }
+
     String.prototype.startWith = function(str) {
       if (this.substr(0, str.length) === str) {
         return true;
@@ -222,10 +246,10 @@ define([
     }, jimuConfig);
 
 
-    window.wabVersion = '2.13';
-    // window.productVersion = 'Online 7.2';
-    window.productVersion = 'Web AppBuilder for ArcGIS (Developer Edition) 2.13';
-    // window.productVersion = 'Portal for ArcGIS 10.7';
+    window.wabVersion = '2.21';
+    // window.productVersion = 'Online 9.2';
+    window.productVersion = 'ArcGIS Web AppBuilder (Developer Edition) 2.21';
+    // window.productVersion = 'ArcGIS Enterprise 10.9';
 
     function initApp() {
       var urlParams, configManager, layoutManager;
@@ -276,7 +300,8 @@ define([
         p;
       // params that don't need to `sanitizeHTML`
       var exceptUrlParams = {
-        query: true
+        query: true,
+        find: true
       };
       if (s === '') {
         return {};

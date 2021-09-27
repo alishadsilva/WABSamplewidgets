@@ -99,19 +99,30 @@ define({
       tooltipText: "Tooltip text",
       findAddressOrPlace: "Find address or place",
       expand: "Expand ${value}",
-      collapse: "Collapse ${value}"
+      collapse: "Collapse ${value}",
+      asc: "Ascending",
+      desc: "Descending"
+    },
+    limitedUnsupportedBrowser:{
+      title: 'Limited browser support',
+      onlineContent1: 'You are using a browser that is deprecated. Some parts of this application may not work optimally or at all in this browser. Support for this browser will be discontinued in the future.',
+      content2: 'Please use the latest versions of <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, or <edge-link>Microsoft Edge</edge-link>.',
+      onlineContent3:'For more information on browser support, see our documentation. Provide your feedback through <feedback-link>GeoNet, the Esri Community</feedback-link>.',
+      enterpriseContent1: 'You are using a browser that is no longer supported. Some parts of this application may not work optimally or at all in this browser.',
     },
     errorCode: "Code",
     errorMessage: "Message",
     errorDetail: "Detail",
     widgetPlaceholderTooltip: "To set it up, go to Widgets and click corresponding placeholder",
+    widgetToolTip: "${widgetLabel}. Press Enter to focus inside this widget. When the focus is inside, press Esc to focus back on the widget.",
     skips:{
       'skips': 'Skip Links',
       'skipTo': "Skip to ${value}",
       'headerController': 'Skip to Header Controller',
       'map': 'Skip to Map',
       'sidePanel': 'Skip to Side Panel',
-      'attributeTable': 'Skip to Attribute Table'
+      'attributeTable': 'Skip to Attribute Table',
+      'tabAway': 'Press Tab to continue and move out of the app, press Shift and Tab to go back to ${value} in within'
     },
     panelHeader:{
       foldWindow: 'Fold window',
@@ -210,6 +221,7 @@ define({
     },
     drawBox: {
       point: "Point",
+      arrow: "Arrow",
       line: "Line",
       polyline: "Polyline",
       freehandPolyline: "Freehand polyline",
@@ -366,10 +378,15 @@ define({
       noneCascadeFilterTip: "All unique values of this field",
       previousCascadeFilterTip: "Values filtered by previous expressions",
       allCascadeFilterTip: "Values filtered by all other expressions",
+      dateOptions: "Date options",
+      startDateOptions: "Start date options",
+      endDateOptions: "End date options",
       custom: "the date...",
       today: "today",
       yesterday: "yesterday",
       tomorrow: "tomorrow",
+      atLeastOne: "At least one date option should be checked.",
+      notUncheckedCurrent: "Selected date option cannot be unchecked.",
       theseDays: "these days",
       thisWeek: "this week",
       thisMonth: "this month",
@@ -504,6 +521,8 @@ define({
       ShowSelectedFeature: "Show selected features",
       ExportToFeatureCollection: "Export to feature collection",
       ExportToGeoJSON: "Export to GeoJSON",
+      ExportToFilegdb: "Export to file geodatabase",
+      ExportToShapefile: "Export to shapefile",
       EditAttributes: "Edit attributes",
       AddMarker: "Add a marker",
       RemoveMarker: "Remove marker",
@@ -566,6 +585,7 @@ define({
     timeUnit: {
       year: "Year",
       years: "Years",
+      quarter: "Quarter",
       month: "Month",
       months: "Months",
       week: "Week",
@@ -604,7 +624,7 @@ define({
     widgetManager: {
       createWidgetError: "Create widget error",
       createWidgetSettingPageError: "Create widget setting page error",
-      loadWidgetResourceError: "Load widget resouce error"
+      loadWidgetResourceError: "Load widget resource error"
     },
     shareOptions: {
       shareMap: "Choose who can view this app",
@@ -623,8 +643,8 @@ define({
       shareGooglePlus: "Google+",
       EmbedTips: "Embed this app in a website",
       shareEmailSubject: "Sharing web app:",
-      shareEmailTxt1: "Here is a web app shared with you by using Web AppBuilder for ArcGIS.",
-      shareEmailTxt2: "You can create and share your own web app with Esri Web AppBuilder for ArcGIS.",
+      shareEmailTxt1: "Here is a web app shared with you by using ArcGIS Web AppBuilder.",
+      shareEmailTxt2: "You can create and share your own web app with Esri ArcGIS Web AppBuilder.",
       shareEmailTxt3: "Visit http://www.esri.com/software/web-appbuilder for details.",
       smallSize: "Small",
       mediumSize: "Medium",
@@ -808,12 +828,23 @@ define({
       expandOutput: "Expand Output",
       tooltip: "Click on map to add point"
     },
+    richTextEditor: {
+      previewLinkToolTipsPrefix: "Link to: ",
+      previewLinkToolTipsSuffix: "This link will work when the app is launched.",
+    },
     //we put these strings in here instead of in common because these strings are not translated.
     noEditPrivileges: "Your account does not have permission to create or modify data.",
     noEditableLayers: "Your account does not have permission to create or modify data. Or this web map does not contain any editable layers.",
     invalidConfiguration: "Widget is either not configured or the layers in the configuration are no longer in the map.  Please open the app in the builder mode and reconfigure the widget.",
     essentialAppsLicenseErrorForApp: "Your account is not licensed to use an app that is not public. Please ask your organization administrator to assign you a user type that includes Essential Apps or an add-on Essential Apps license.",
     essentialAppsLicenseErrorForBuilder: "Your account is not licensed for Web AppBuilder. Please ask your organization administrator to assign you a user type that includes Essential Apps or an add-on Essential Apps license.",
+    blockedByAdminErrorForApp: 'Your organization has blocked access to this application. Please contact your administrator for details.',
+    blockedByAdminErrorForBuilder: 'Your organization has blocked access to Web AppBuilder. Please contact your administrator for details.',
+    orgUrlMessage: 'The application you are trying to access does not originate from the URL you provided.',
+    advancedOptions: 'Advanced options',
+    proceedTo: 'Proceed to ${value}',
+
+    setStyle: "Set style"
   }),
   "ar": 1,
   "bs": 1,
@@ -827,7 +858,6 @@ define({
   "fi": 1,
   "fr": 1,
   "he": 1,
-  "hi": 1,
   "hr": 1,
   "hu": 1,
   "it": 1,
@@ -843,6 +873,7 @@ define({
   "pt-pt": 1,
   "ro": 1,
   "ru": 1,
+  "sk": 1,
   "sl": 1,
   "sr": 1,
   "sv": 1,

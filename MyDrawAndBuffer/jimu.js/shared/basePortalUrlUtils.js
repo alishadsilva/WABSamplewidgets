@@ -729,5 +729,17 @@ define(function() {
       return url;
     };
 
+    mo.getArcgisOnlineUrl = function(portalUrl){
+      var originUrl;
+      if(portalUrl.endsWith('mapsdevext.arcgis.com') || portalUrl.endsWith('mapsdevext.arcgis.com/')){
+        originUrl = 'https://devext.arcgis.com';
+      }else if(portalUrl.endsWith('mapsqa.arcgis.com') || portalUrl.endsWith('mapsqa.arcgis.com/')){
+        originUrl = 'https://qaext.arcgis.com';
+      }else{
+        originUrl = 'https://www.arcgis.com';
+      }
+      return originUrl;
+    };
+
     return mo;
   });

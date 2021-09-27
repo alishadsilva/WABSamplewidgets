@@ -123,19 +123,15 @@ define(['dojo/_base/declare',
       var valueFields = options.valueFields;
       var operation = options.operation;
       var features = options.features;
-      this.cacheDecimalPlace(valueFields, features, this.popupInfo);
-      var places = null;
+      var hasStatisticsed = options.hasStatisticsed;
+      this.cacheDecimalPlace(valueFields, features, this.popupInfo, operation, hasStatisticsed);
+
       if (mode === 'feature' || mode === 'category') {
         data.forEach(lang.hitch(this, function(item) {
           item.originalValues = lang.clone(item.values);
           valueFields.forEach(lang.hitch(this, function(fieldName, index) {
             var value = item.values[index];
-            if (this.isIntegerNumberField(fieldName) && operation === 'average') {
-              value = this.getBestValueForIntegerFieldAverage(value, 6);
-            } else {
-              places = this._getFieldDecimalPlaceFromCache(fieldName);
-              value = this.formatValuePlaces(value, places);
-            }
+            value = this.formatedValueDecimalplace(fieldName, value, operation, hasStatisticsed);
             item.values[index] = value;
           }));
         }));
@@ -144,12 +140,7 @@ define(['dojo/_base/declare',
           data.some(lang.hitch(this, function(item) {
             if (item.label === fieldName) {
               var value = item.values[0];
-              if (this.isIntegerNumberField(fieldName) && operation === 'average') {
-                value = this.getBestValueForIntegerFieldAverage(value, 6);
-              } else {
-                places = this._getFieldDecimalPlaceFromCache(fieldName);
-                value = this.formatValuePlaces(value, places);
-              }
+              value = this.formatedValueDecimalplace(fieldName, value, operation, hasStatisticsed);
               item.values[0] = value;
               return true;
             }
@@ -159,6 +150,19 @@ define(['dojo/_base/declare',
       }
 
       return data;
+    },
+
+    formatedValueDecimalplace: function(fieldName, value, operation, hasStatisticsed){
+      if (this.isIntegerNumberField(fieldName) && operation === 'average') {
+        value = this.handleValueMaxDecimalplaces(value, 6);
+      } else if(this.isFloatNumberField(fieldName)) {
+        var places = this.getFieldDecimalPlaceFromCache(fieldName);
+        value = this.formatValuePlaces(value, places);
+        if(hasStatisticsed && !this.popupInfo) {
+          value = this.handleValueMaxDecimalplaces(value, 6);
+        }
+      }
+      return value;
     },
 
     isIntegerNumberField: function(fieldName) {
@@ -183,7 +187,7 @@ define(['dojo/_base/declare',
       return str;
     },
 
-    getBestValueForIntegerFieldAverage: function(value, maxDecimalPlaces) {
+    handleValueMaxDecimalplaces: function(value, maxDecimalPlaces) {
       value = Number(value);
       if (typeof value !== 'number') {
         return value;
@@ -209,7 +213,7 @@ define(['dojo/_base/declare',
       }
     },
 
-    _getFieldDecimalPlaceFromCache: function(field) {
+    getFieldDecimalPlaceFromCache: function(field) {
       var decimalPlace;
       if (this._cachePlaces) {
         var value = this._cachePlaces[field];
@@ -220,7 +224,26 @@ define(['dojo/_base/declare',
       return decimalPlace;
     },
 
-    cacheDecimalPlace: function(fields, features, popupInfo) {
+    getValueFromAttributes: function(attributes, fieldName, operation, hasStatisticsed){
+      if (!attributes) {
+        return;
+      }
+      operation = operation === 'average' ? 'avg' : operation;
+      var value;
+      if (!hasStatisticsed) {
+        value = attributes[fieldName];
+      } else {
+        var key = jimuUtils.upperCaseString(fieldName + '_' + operation);
+        value = attributes[key];
+        if (typeof value === 'undefined') {
+          key = jimuUtils.lowerCaseString(fieldName + '_' + operation);
+          value = attributes[key];
+        }
+      }
+      return value;
+    },
+
+    cacheDecimalPlace: function(fields, features, popupInfo, operation, hasStatisticsed) {
       this._cachePlaces = {}; //{fieldName: decimal place,...}
       var fieldNames = fields;
       if (!fields || !fields.length) {
@@ -240,7 +263,7 @@ define(['dojo/_base/declare',
           var attributes = feature.attributes;
           if (attributes) {
             floatNumberFields.forEach(lang.hitch(this, function(fieldName) {
-              var value = attributes[fieldName];
+              var value = this.getValueFromAttributes(attributes, fieldName, operation, hasStatisticsed);
               if (typeof value === 'number') {
                 floatNumberFieldValues[fieldName].push(value);
               }
@@ -248,6 +271,7 @@ define(['dojo/_base/declare',
           }
         }));
       }
+
       floatNumberFields.forEach(lang.hitch(this, function(fieldName) {
         var fieldInfo = this.getFieldInfoFromPopupInfo(popupInfo, fieldName);
         this._cachePlaces[fieldName] = 0;
@@ -532,7 +556,7 @@ define(['dojo/_base/declare',
     _getFormatteredDate: function(time, dateUnit) {
       var timePattern = this._getDateTemplate(dateUnit);
       var dateTime, date, times;
-      if (['year', 'month', 'day'].indexOf(dateUnit) >= 0) {
+      if (['year', 'quarter', 'month', 'day'].indexOf(dateUnit) >= 0) {
         dateTime = jimuUtils.localizeDate(new Date(time), {
           selector: 'date',
           datePattern: timePattern.date
@@ -587,6 +611,8 @@ define(['dojo/_base/declare',
 
       if (dateFormatter === 'year') {
         dateTemplate.date = 'y';
+      } else if (dateFormatter === 'quarter') {
+        dateTemplate.date = 'y q';
       } else if (dateFormatter === 'month') {
         dateTemplate.date = langFormat.date.sNoDay;
       } else if (dateFormatter === 'day') {

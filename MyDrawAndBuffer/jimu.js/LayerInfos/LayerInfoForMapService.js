@@ -24,9 +24,10 @@ define([
   'dojo/topic',
   './LayerInfo',
   'esri/request',
+  'esri/layers/FeatureLayer',
   'esri/lang'
 ], function(declare, array, lang, Deferred, Json, aspect, topic, LayerInfo,
-esriRequest, esriLang) {
+esriRequest, FeatureLayer, esriLang) {
   return declare(LayerInfo, {
 
     _legendInfo: null,
@@ -57,12 +58,21 @@ esriRequest, esriLang) {
 
       this.inherited(arguments);
 
+      this._initAfterRootLayerInfo();
       this._needToRefresh().then(lang.hitch(this, function(result) {
         if(result) {
           this.update();
           this._getLayerInfosObj()._onLayersUpdated(this, this);
         }
       }));
+    },
+
+    _initAfterRootLayerInfo: function() {
+      this.traversal(function(layerInfo) {
+        if(!layerInfo.isRootLayer() && layerInfo._initAfterRootLayerInfo) {
+          layerInfo._initAfterRootLayerInfo();
+        }
+      });
     },
 
     _needToRefresh: function() {
@@ -366,7 +376,7 @@ esriRequest, esriLang) {
       // 2, reset sublayers visibility.
       var subLayersVisible = {};
       this.traversal(function(layerInfo) {
-        if (layerInfo.getSubLayers().length === 0) {
+        if (layerInfo.getSubLayers().length === 0 && !layerInfo.isRootLayer()) {
           subLayersVisible[layerInfo.originOperLayer.mapService.subId] =
             layerInfo._isAllSubLayerVisibleOnPath();
         }
@@ -398,33 +408,23 @@ esriRequest, esriLang) {
       }
 
       array.forEach(this._jsapiLayerInfos, function(layerInfo) {
-        var featureLayer = null;
-        var url = layer.url + "/" + layerInfo.id;
+        var suburl = layer.url + "/" + layerInfo.id;
         var featureLayerId = layer.id + "_" + layerInfo.id;
+        var _serviceLayerType;
 
         // It is a group layer.
         if (layerInfo.subLayerIds && layerInfo.subLayerIds.length > 0) {
-          // it's a fake layerObject, only has a url;
-          featureLayer = {
-            url: url,
-            empty: true
-          };
-          this._addNewSubLayer(newSubLayers,
-                               featureLayer,
-                               featureLayerId,
-                               layerInfo,
-                               serviceLayerType + '_group');
+          _serviceLayerType = serviceLayerType + '_group';
         } else {
-          featureLayer = {
-            url: url,
-            empty: true
-          };
-          this._addNewSubLayer(newSubLayers,
-                               featureLayer,
-                               featureLayerId,
-                               layerInfo,
-                               serviceLayerType);
+          _serviceLayerType = serviceLayerType;
         }
+
+        this._addNewSubLayer(newSubLayers,
+                             suburl,
+                             featureLayerId,
+                             layerInfo,
+                             _serviceLayerType);
+
       }, this);
 
       var finalNewSubLayerInfos = [];
@@ -471,7 +471,7 @@ esriRequest, esriLang) {
     },
 
     _addNewSubLayer: function(newSubLayers,
-                              featureLayer,
+                              suburl,
                               featureLayerId,
                               layerInfo,
                               serviceLayerType) {
@@ -479,6 +479,26 @@ esriRequest, esriLang) {
       if(mapServiceSubId === undefined || mapServiceSubId === null) {
         mapServiceSubId = layerInfo.id;
       }
+
+      var selfType;
+      var featureLayer;
+      var msShipFLayerObj = this.getMSShipFeatureLayer(suburl, layerInfo.id);
+      if(msShipFLayerObj) {
+        selfType = 'mapservice_' + serviceLayerType + '_ship_featurelayer';
+        //featureLayer = {
+        //  url: msShipFLayerObj.url,
+        //  empty: true
+        //};
+      } else {
+        selfType = 'mapservice_' + serviceLayerType;
+      }
+
+      // it's a fake layerObject, only has a url;
+      featureLayer = {
+        url: suburl,
+        empty: true
+      };
+
       newSubLayers.push({
         layerObject: featureLayer,
         title: layerInfo.name || layerInfo.id || " ",
@@ -490,7 +510,8 @@ esriRequest, esriLang) {
           "subId": layerInfo.id,
           "mapServiceSubId": mapServiceSubId
         },
-        selfType: 'mapservice_' + serviceLayerType,
+        selfType: selfType,
+        msShipFLayerId: msShipFLayerObj && msShipFLayerObj.id,
         parentLayerInfo: this
       });
     },
@@ -509,6 +530,30 @@ esriRequest, esriLang) {
           "subId": subId
         }
       };
+    },
+
+    getMSShipFeatureLayer: function(msLayerUrl, subId) {
+      var featureLayerObj = null;
+      var index = msLayerUrl.indexOf("/MapServer");
+      if(index > -1) {
+        var graphicsLayers = this.map.graphicsLayerIds.map(lang.hitch(this, function(layerId) {
+          return this.map.getLayer(layerId);
+        }));
+        var baseUrl = msLayerUrl.substring(0, index + 1);
+        graphicsLayers.some(lang.hitch(this, function(layerObject) {
+          var url = layerObject.url;
+          if(url && url.indexOf(baseUrl + "FeatureServer/" + subId) > -1 &&
+            layerObject && !layerObject.empty && layerObject.mode === FeatureLayer.MODE_SELECTION &&
+            !lang.getObject("_wabProperties.isMSOwnedFeatureLayer", false, layerObject)) {
+            featureLayerObj = layerObject;
+            return true;
+          } else {
+            return false;
+          }
+        }));
+      }
+
+      return featureLayerObj;
     },
 
     /***************************************************

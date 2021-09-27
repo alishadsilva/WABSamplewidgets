@@ -98,19 +98,30 @@ define({
     "tooltipText": "טקסט הסבר לכלי",
     "findAddressOrPlace": "חיפוש כתובת או מקום",
     "expand": "הרחב את ${value}",
-    "collapse": "כווץ את ${value}"
+    "collapse": "כווץ את ${value}",
+    "asc": "עולה",
+    "desc": "יורד"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "תמיכה מוגבלת בדפדפן",
+    "onlineContent1": "אתה משתמש בדפדפן שכבר יצא משימוש. ייתכן שכמה מחלקי האפליקציה הזו לא יעבדו בצורה אופטימלית או בכלל בדפדפן הזה. בעתיד לא תהיה יותר תמיכה בדפדפן הזה.",
+    "content2": "השתמש בגרסה העדכנית ביותר של <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, או <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "למידע נוסף על תמיכה בדפדפן, ראה את התיעוד שלנו. הוסף משוב דרך <feedback-link>GeoNet, קהילת Esri</feedback-link>.",
+    "enterpriseContent1": "אתה משתמש בדפדפן שאינו נתמך. ייתכן שכמה מחלקי האפליקציה הזו לא יעבדו בצורה אופטימלית או בכלל בדפדפן הזה."
   },
   "errorCode": "קוד",
   "errorMessage": "הודעה",
   "errorDetail": "פרט",
   "widgetPlaceholderTooltip": "כדי להגדיר זאת, עבור ללשונית:\"ווידג'ט\" ולחץ על מספר המיקום המתאים",
+  "widgetToolTip": "${widgetLabel}. לחץ על Enter כדי להתמקד בתוך וידג'ט זה. כאשר המוקד בפנים, לחץ על Esc להחזיר את המוקד לווידג'ט.",
   "skips": {
     "skips": "דלג על קישורים",
     "skipTo": "דלג אל ${value}",
     "headerController": "דלג לבקר הכותרות",
     "map": "דלג למפה",
     "sidePanel": "דלג ללוח הצדי",
-    "attributeTable": "דלג לטבלת המאפיינים"
+    "attributeTable": "דלג לטבלת המאפיינים",
+    "tabAway": "לחץ על Tab כדי להמשיך ולצאת מהאפליקציה, לחץ על Shift ועל Tab כדי לחזור ל-T${value} בתוך"
   },
   "panelHeader": {
     "foldWindow": "קפל חלון",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "נקודה",
+    "arrow": "חץ",
     "line": "קו",
     "polyline": "פולי קו",
     "freehandPolyline": "קו בשרטוט חופשי",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "כל הערכים היחודיים של שדה זה",
     "previousCascadeFilterTip": "ערכים שסוננו לפי ביטויים קודמים",
     "allCascadeFilterTip": "ערכים שסוננו לפי כל הביטויים האחרים",
+    "dateOptions": "אפשרויות תאריך",
+    "startDateOptions": "אפשרויות תאריך התחלה",
+    "endDateOptions": "אפשרויות תאריך סיום",
     "custom": "התאריך...",
     "today": "היום",
     "yesterday": "אתמול",
     "tomorrow": "מחר",
+    "atLeastOne": "יש לבחור לפחות אפשרות תאריך אחת.",
+    "notUncheckedCurrent": "לא ניתן לבטל את הבחירה באפשרות תאריך שנבחרה.",
     "theseDays": "ימים אלה",
     "thisWeek": "שבוע זה",
     "thisMonth": "חודש זה",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "הצג ישויות נבחרות",
     "ExportToFeatureCollection": "ייצא לאוסף ישויות",
     "ExportToGeoJSON": "ייצא אל GeoJSON",
+    "ExportToFilegdb": "יצא לקובץ geodatabase",
+    "ExportToShapefile": "יצא ל-shapefile",
     "EditAttributes": "ערוך מאפיינים",
     "AddMarker": "הוסף סמן",
     "RemoveMarker": "הסר סמן",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "שנה",
     "years": "שנים",
+    "quarter": "רבע",
     "month": "חודש",
     "months": "חודשים",
     "week": "שבוע",
@@ -611,8 +631,8 @@ define({
     "theseGroups": "קבוצות אלה"
   },
   "shareLink": {
-    "email": "דוא\"ל",
-    "shareEmail": "דוא\"ל",
+    "email": "דוא''ל",
+    "shareEmail": "דוא''ל",
     "facebook": "פייסבוק",
     "shareFacebook": "פייסבוק",
     "twitter": "טוויטר",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+‎",
     "EmbedTips": "הטמע אפליקציה זו באתר",
     "shareEmailSubject": "שיתוף אפליקציית אינטרנט:",
-    "shareEmailTxt1": "זו אפליקציית אינטרנט שמשותפת איתך באמצעות Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "באפשרותך ליצור אפליקציית אינטרנט משלך ולשתף אותה באמצעות Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "זו אפליקציית אינטרנט שמשותפת איתך באמצעות ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "באפשרותך ליצור אפליקציית אינטרנט משלך ולשתף אותה באמצעות ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "לקבלת פרטים, בקר בכתובת http://www.esri.com/software/web-appbuilder.",
     "smallSize": "קטן",
     "mediumSize": "בינוני",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "הרחב פלט",
     "tooltip": "לחץ על המפה כדי להוסיף נקודה"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "קישור אל: ",
+    "previewLinkToolTipsSuffix": "קישור זה יפעל בעת פתיחת האפליקציה."
+  },
   "noEditPrivileges": "לחשבונך אין הרשאות ליצור נתונים או לשנות אותם.",
   "noEditableLayers": "לחשבונך אין הרשאה ליצור או לשנות נתונים, או שמפת אינטרנט זו לא מכילה שכבות הניתנות לעריכה.",
   "invalidConfiguration": "תצורת הווידג'ט לא הוגדרה או שהשכבות בתצורה אינן נמצאות עוד במפה. פתח את האפליקציה במצב עריכה והגדר מחדש את תצורת הווידג'ט.",
   "essentialAppsLicenseErrorForApp": "החשבון שלך אינו מורשה להשתמש באפליקציה שאינה ציבורית. בקש ממנהל המערכת בארגון שלך להקצות לך סוג משתמש שכולל את Essential Apps או רישיון הרחבה ל-Essential Apps.",
-  "essentialAppsLicenseErrorForBuilder": "החשבון שלך אינו מורשה עבור Web AppBuilder. בקש ממנהל המערכת בארגון שלך להקצות לך סוג משתמש שכולל את Essential Apps או רישיון הרחבה ל-Essential Apps."
+  "essentialAppsLicenseErrorForBuilder": "החשבון שלך אינו מורשה עבור Web AppBuilder. בקש ממנהל המערכת בארגון שלך להקצות לך סוג משתמש שכולל את Essential Apps או רישיון הרחבה ל-Essential Apps.",
+  "blockedByAdminErrorForApp": "הארגון שלך חסם גישה ליישום זה. לפרטים, פנה למנהל המערכת שלך.",
+  "blockedByAdminErrorForBuilder": "הארגון שלך חסם את הגישה ל-Web AppBuilder. לפרטים, פנה למנהל המערכת שלך.",
+  "orgUrlMessage": "היישום שאתה מנסה לגשת אליו לא נמצא בכתובת ה-URL שציינת.",
+  "advancedOptions": "אפשרויות מתקדמות",
+  "proceedTo": "המשך אל ${value}",
+  "setStyle": "הגדר סגנון"
 });

@@ -138,7 +138,7 @@ function(lang, array, aspect, Deferred, cookie, json, topic, dojoScript, esriNS,
           this.webTierPortalUrls.push(thePortalUrl);
 
           //we should not save cookie of web-tier authorization
-          this.removeWabAuthCookie();
+          this.removeWabAuthInfo();
 
           //if portal uses LDAP authorization and HTTPS-Only enabled,
           //esriNS.id.getCredential will fail if uses http protocol
@@ -455,23 +455,35 @@ function(lang, array, aspect, Deferred, cookie, json, topic, dojoScript, esriNS,
       return oAuthInfo;
     },
 
-    signOutAll: function(){
+    /*
+     * @param xtSignInInfo
+     *    optional, only use for XT edition.
+     */
+    signOutAll: function(xtSignInInfo){
+      var signOutUrl;
       var portalUrl = portalUrlUtils.getStandardPortalUrl(this.portalUrl);
       var sharingRest = portalUrl + '/sharing/rest';
-      var cre = esriNS.id.findCredential(sharingRest);
-      var isPublishEvent = !!cre;
+      var signInUrl = portalUrlUtils.getPortalSignInUrlFromLocation();
+      signInUrl = signInUrl + '?returnUrl=' + encodeURIComponent(window.location.href);
+      var setPortalUrl = jimuUtils.getLocationUrlWithoutHashAndQueryParams();
+      setPortalUrl = jimuUtils.url.addQueryParamToUrl(setPortalUrl, 'action', 'setportalurl');
+
       if(window.appInfo.isRunInPortal){
         this.removeEsriAuthCookieStorage();
+        signOutUrl = sharingRest + "/oauth2/signout?client_id=arcgisonline&redirect_uri=" + signInUrl;
+        window.location.href = signOutUrl;
+      } else{
+        this.removeWabAuthInfo();
+        if(xtSignInInfo && xtSignInInfo.supportsOAuth) {
+          signOutUrl = sharingRest + "/oauth2/signout?client_id=" + xtSignInInfo.appId +
+                        "&redirect_uri=" + setPortalUrl;
+          window.location.href = signOutUrl;
+        } else {
+          //portal 10.2 or webTier portal.
+          window.location.href = setPortalUrl;
+        }
       }
-      else{
-        this.removeWabAuthCookie();
-      }
-      esriNS.id.destroyCredentials();
-      //if sign in portal with oAuth, esriNS.id._oAuthHash will not be null
-      esriNS.id._oAuthHash = null;
-      if(isPublishEvent){
-        this._publishCurrentPortalUserSignOut(portalUrl);
-      }
+
     },
 
     userHaveSignInPortal: function(_portalUrl) {
@@ -569,7 +581,7 @@ function(lang, array, aspect, Deferred, cookie, json, topic, dojoScript, esriNS,
       wabAuth.scope = 'portal';
       wabAuth.isAdmin = !!wabAuth.isAdmin;
 
-      this.saveWabCookie(wabAuth);
+      this.saveWabAuthInfo(wabAuth);
 
       var sharingRest = wabAuth.server + "/sharing/rest";
       wabAuth.server = sharingRest;
@@ -605,22 +617,54 @@ function(lang, array, aspect, Deferred, cookie, json, topic, dojoScript, esriNS,
       return cre;
     },
 
-    saveWabCookie: function(wabAuth){
+    readWabAuthInfo: function() {
+      var wabAuth = null;
+      // read token from localStorage
+      var token = localStorage.getItem('wab_token');
+      try{
+        // read wab_auth cookie
+        var authStr = cookie("wab_auth");
+        // set token from localStorage
+        if(authStr) {
+          wabAuth = json.parse(authStr);
+          wabAuth.token = token;
+        }
+      } catch(e){
+        console.error(e);
+      }
+      return wabAuth;
+    },
+
+    saveWabAuthInfo: function(_wabAuth){
+      // Since removing Clear-Text cookie (online9.1), wab no longer store token wab_auth cookie.
+      // In order to reduce changes, keeps other infos of wab_auth cookie expect token, and store token info
+      // into localStorage.
+
+      var wabAuth = lang.clone(_wabAuth);
+
+      this.removeWabAuthInfo();
+
+      // save token into localStorage
+      localStorage.setItem('wab_token', wabAuth.token);
+
+      // save wab_auth cookie without token property.
       var cookieName = "wab_auth";
-      this.removeCookie(cookieName);
+      delete wabAuth.token;
       cookie(cookieName, json.stringify(wabAuth), {
         expires: new Date(wabAuth.expires),
         path: '/'
       });
     },
 
-    removeWabAuthCookie: function(){
+    removeWabAuthInfo: function(){
+      // remove wab_auth cookie
       this.removeCookie("wab_auth");
+
+      // remove wab_token from localStorage
+      localStorage.removeItem('wab_token');
     },
 
     removeEsriAuthCookieStorage: function() {
-      this.removeCookie('esri_auth');
-
       var itemName = "esriJSAPIOAuth";
       if (window.localStorage) {
         window.localStorage.removeItem(itemName);
@@ -720,18 +764,8 @@ function(lang, array, aspect, Deferred, cookie, json, topic, dojoScript, esriNS,
 
     xtGetCredentialFromCookie: function(portalUrl){
       //{referer,server,scope,token,expires,userId,isAdmin}
-      var strAuth = cookie("wab_auth");
-      var wabAuth = null;
 
-      if(strAuth){
-        try{
-          wabAuth = json.parse(strAuth);
-        }
-        catch(e){
-          console.error(e);
-        }
-      }
-
+      var wabAuth = this.readWabAuthInfo();
       if(!(wabAuth && typeof wabAuth === 'object')){
         return null;
       }
@@ -755,7 +789,7 @@ function(lang, array, aspect, Deferred, cookie, json, topic, dojoScript, esriNS,
       var timeNow = dateNow.getTime();
       var isValidExpires = wabAuth.expires > timeNow;
       if (!isValidExpires) {
-        this.removeCookie("wab_auth");
+        this.removeWabAuthInfo();
         return null;
       }
 

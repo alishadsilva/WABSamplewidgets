@@ -167,12 +167,12 @@ define(['dojo/_base/declare',
             uri = widgetJson.amdFolder + action.uri;
           }
 
+          var i18nLabels = widgetJson.manifest['i18nLabels_featureAction_' + action.name];
           defs.push(this.registerAction({
             uri: uri,
             widgetId: widgetJson.id,
             name: action.name,
-            label: widgetJson.manifest['i18nLabels_featureAction_' + action.name][window.dojoConfig.locale] ||
-              widgetJson.manifest['i18nLabels_featureAction_' + action.name].defaultLabel
+            label: i18nLabels[window.dojoConfig.locale] || i18nLabels[window.dojoConfig.locale.split('-')[0]] || i18nLabels.defaultLabel
           }));
         }, this);
         return all(defs);

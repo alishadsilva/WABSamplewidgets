@@ -43,6 +43,11 @@
   /* width: auto; */
   flex-grow: 1;
   padding: 0 10px;
+  margin: 0;
+  font-size: 16px;
+}
+.jimu-foldable-panel .title-label:focus{
+  outline: none !important;
 }
 .jimu-foldable-panel .btns-container{
   min-width: 70px;

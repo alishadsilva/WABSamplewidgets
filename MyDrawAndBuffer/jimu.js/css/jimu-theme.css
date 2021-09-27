@@ -226,7 +226,7 @@
 
 /* css for add-with-icon */
 .add-with-icon{
-  color: #24B5CC;
+  color: #067EAA;
 }
 
 /* css for jimu-table */
@@ -391,6 +391,10 @@
   content: '\e90c';
 }
 
+.jimu-draw-box .arrow-icon:before{
+  content: '\e913';
+}
+
 .jimu-draw-box .line-icon:before{
   content: '\e90b';
 }
@@ -437,7 +441,7 @@
   color: white !important;
 }
 .jimu-draw-box .drawings-clear:before{
-  content: '\e901';
+  content: '\e914';
 }
 
 .jimu-draw-box.enabled .drawings-clear:hover{

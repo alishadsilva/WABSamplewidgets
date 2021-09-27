@@ -98,19 +98,30 @@ define({
     "tooltipText": "Teks tooltip",
     "findAddressOrPlace": "Temukan alamat atau tempat",
     "expand": "Perluas ${value}",
-    "collapse": "Ciutkan ${value}"
+    "collapse": "Ciutkan ${value}",
+    "asc": "Naik",
+    "desc": "Turun"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Dukungan browser terbatas",
+    "onlineContent1": "Anda sedang menggunakan browser yang ditolak. Beberapa bagian dari aplikasi ini mungkin tidak bekerja dengan optimal atau tidak bekerja sama sekali di browser ini. Dukungan untuk browser ini tidak akan dilanjutkan pada masa mendatang.",
+    "content2": "Harap gunakan versi terbaru <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, atau <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Untuk informasi selengkapnya tentang dukungan browser, lihat dokumentasi kami. Sampaikan umpan balik Anda melalui <feedback-link>GeoNet, Esri Community</feedback-link>.",
+    "enterpriseContent1": "Anda menggunakan browser yang tidak lagi didukung. Beberapa bagian dari aplikasi ini mungkin tidak bekerja dengan optimal atau tidak bekerja sama sekali di browser ini."
   },
   "errorCode": "Kode",
   "errorMessage": "Pesan",
   "errorDetail": "Detail",
   "widgetPlaceholderTooltip": "Untuk mengaturnya, pergi ke Widget dan klik tempat teks yang sesuai",
+  "widgetToolTip": "${widgetLabel}. Tekan Enter untuk berfokus ke dalam widget ini. Saat fokus berada di dalam, tekan Esc untuk berfokus kembali pada widget.",
   "skips": {
     "skips": "Lewati Tautan",
     "skipTo": "Lewati ke ${value}",
     "headerController": "Lewati ke Pengontrol Header",
     "map": "Lewati ke Peta",
     "sidePanel": "Lewati ke Panel Samping",
-    "attributeTable": "Lewati ke Tabel Atribut"
+    "attributeTable": "Lewati ke Tabel Atribut",
+    "tabAway": "Tekan Tab untuk melanjutkan dan keluar aplikasi, tekan Shift dan Tab untuk kembali ke ${value} dalam"
   },
   "panelHeader": {
     "foldWindow": "Tutup jendela",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Titik",
+    "arrow": "Panah",
     "line": "Garis",
     "polyline": "Polyline",
     "freehandPolyline": "Polyline bebas",
@@ -222,7 +234,7 @@ define({
     "clear": "Kosongkan"
   },
   "popupConfig": {
-    "title": "Judul",
+    "title": "Gelar",
     "add": "Tambah",
     "fields": "Kolom",
     "noField": "Tidak ada kolom",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Semua nilai unik kolom ini",
     "previousCascadeFilterTip": "Nilai difilter menurut ekspresi sebelumnya",
     "allCascadeFilterTip": "Nilai difilter menurut semua ekspresi lainnya",
+    "dateOptions": "Opsi tanggal",
+    "startDateOptions": "Opsi tanggal mulai",
+    "endDateOptions": "Opsi tanggal berakhir",
     "custom": "tanggal...",
     "today": "hari ini",
     "yesterday": "kemarin",
     "tomorrow": "besok",
+    "atLeastOne": "Minimal satu opsi tanggal harus dicentang.",
+    "notUncheckedCurrent": "Opsi tanggal yang dipilih tidak dapat dibatalkan centangnya.",
     "theseDays": "hari-hari ini",
     "thisWeek": "minggu ini",
     "thisMonth": "bulan ini",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Perlihatkan fitur terpilih",
     "ExportToFeatureCollection": "Ekspor ke koleksi fitur",
     "ExportToGeoJSON": "Ekspor ke GeoJSON",
+    "ExportToFilegdb": "Ekspor ke geodatabase file",
+    "ExportToShapefile": "Ekspor ke shapefile",
     "EditAttributes": "Edit atribut",
     "AddMarker": "Tambahkan penanda",
     "RemoveMarker": "Hapus penanda",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Tahun",
     "years": "Tahun",
+    "quarter": "Kuartal",
     "month": "Bulan",
     "months": "Bulan",
     "week": "Minggu",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "Kesalahan buat widget",
     "createWidgetSettingPageError": "Kesalahan buat halaman pengaturan widget",
-    "loadWidgetResourceError": "Kesalahan muat sumber widget"
+    "loadWidgetResourceError": "Kesalahan muat sumber daya widget"
   },
   "shareOptions": {
     "shareMap": "Pilih siapa yang bisa melihat aplikasi ini",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Tempelkan aplikasi ini di situs web",
     "shareEmailSubject": "Berbagi aplikasi web:",
-    "shareEmailTxt1": "Ini aplikasi web yang dibagi dengan Anda menggunakan Web AppBuilder untuk ArcGIS.",
-    "shareEmailTxt2": "Anda dapat membuat dan berbagi aplikasi web Anda sendiri dengan Web AppBuilder untuk ArcGIS Esri.",
+    "shareEmailTxt1": "Ini adalah aplikasi web yang dibagikan dengan Anda menggunakan ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Anda dapat membuat dan berbagi aplikasi web Anda sendiri dengan Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Kunjungi http://www.esri.com/software/web-appbuilder untuk keterangan selengkapnya.",
     "smallSize": "Kecil",
     "mediumSize": "Sedang",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Perluas Output",
     "tooltip": "Klik pada peta untuk menambahkan titik"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Tautkan ke: ",
+    "previewLinkToolTipsSuffix": "Tautan ini akan berfungsi ketika aplikasi diluncurkan."
+  },
   "noEditPrivileges": "Akun Anda tidak memiliki izin untuk membuat atau mengubah data.",
   "noEditableLayers": "Akun Anda tidak memiliki izin untuk membuat atau mengubah data. Atau web map ini tidak berisi layer yang dapat diedit.",
   "invalidConfiguration": "Widget tidak dikonfigurasi atau layer dalam konfigurasi tidak ada lagi dalam peta. Harap buka aplikasi dalam mode builder dan konfigurasi ulang widget.",
   "essentialAppsLicenseErrorForApp": "Akun Anda tidak dilisensikan untuk menggunakan aplikasi yang bukan bersifat publik. Harap minta administrator organisasi Anda untuk menetapkan Anda jenis pengguna yang menyertakan lisensi Essential App atau add-on Essential App.",
-  "essentialAppsLicenseErrorForBuilder": "Akun Anda tidak dilisensikan untuk Web AppBuilder. Harap minta administrator organisasi Anda untuk menetapkan Anda jenis pengguna yang menyertakan lisensi Essential App atau add-on Essential App."
+  "essentialAppsLicenseErrorForBuilder": "Akun Anda tidak dilisensikan untuk Web AppBuilder. Harap minta administrator organisasi Anda untuk menetapkan Anda jenis pengguna yang menyertakan lisensi Essential App atau add-on Essential App.",
+  "blockedByAdminErrorForApp": "Organisasi Anda telah memblokir akses ke aplikasi ini. Silakan hubungi administrator Anda untuk informasi lebih lanjut.",
+  "blockedByAdminErrorForBuilder": "Organisasi Anda telah memblokir akses ke Web AppBuilder. Silakan hubungi administrator Anda untuk informasi lebih lanjut.",
+  "orgUrlMessage": "Aplikasi yang hendak Anda akses tidak berasal dari URL yang Anda berikan.",
+  "advancedOptions": "Opsi lanjutan",
+  "proceedTo": "Lanjutkan ke ${value}",
+  "setStyle": "Atur gaya"
 });

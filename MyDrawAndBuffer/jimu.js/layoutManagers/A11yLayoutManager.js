@@ -165,11 +165,25 @@ define([
       }
 
       //set trap node for resolving the final links which tabindex equals 0.
-      var trapLinkNode = query('#trapLinkNode')[0];
-      this.own(on(trapLinkNode, 'focus', lang.hitch(this, function(evt) {
+      var trapLinkNodes = query('.trapLinkNode');
+      var firstTrapNode = trapLinkNodes[0];
+      this.lastTrapNode = trapLinkNodes[1];
+      //add tips for last trap node
+      var tabAwayStr = esriLang.substitute({value: window.jimuNls.skips.skips}, window.jimuNls.skips.tabAway);
+      html.setAttr(this.lastTrapNode, 'aria-label', tabAwayStr);
+      jimuUtils.addTooltipByDomNode(Tooltip, this.lastTrapNode, tabAwayStr);
+
+      this.own(on(firstTrapNode, 'focus', lang.hitch(this, function(evt) {
         var isSpalsh = jimuUtils.tryToFocusSplashWidget(evt);
         if(!isSpalsh){
-          jimuUtils.focusOnFirstSkipLink();
+          this.lastTrapNode.focus();
+        }
+      })));
+
+      this.own(on(this.lastTrapNode, 'keydown', lang.hitch(this, function(evt) {
+        if(evt.shiftKey && evt.keyCode === keys.TAB){
+          evt.preventDefault();
+          jimuUtils.focusOnFirstSkipLink(); //go to skip-links when shift+tab
         }
       })));
 
@@ -226,8 +240,8 @@ define([
       //make layoutPanels support enter-key and esc-key events.
       var layoutPanels = query('.lm_item.lm_stack', this.layoutContainer);
       //for nvda + ff
-      var panelHandler = layoutPanels.on('focus', lang.hitch(this, function(evt) {
-        panelHandler.remove();
+      window._panelHandler = layoutPanels.on('focus', lang.hitch(this, function(evt) {
+        window._panelHandler && window._panelHandler.remove();
         var isSpalsh = jimuUtils.tryToFocusSplashWidget(evt);
         if(!isSpalsh){
           jimuUtils.focusOnFirstSkipLink();
@@ -236,7 +250,6 @@ define([
       for(var i = 0; i <= layoutPanels.length - 1; i ++){
         var panel = layoutPanels[i];
         panel.tabIndex = tabIndex - 1;
-        html.setAttr(panel, 'role', 'application');
         // html.setAttr(panel, 'aria-label', 'panel box');
         this.own(on(panel, 'keydown', lang.hitch(this, function(panel, evt) {
           if(html.hasClass(evt.target, 'lm_stack')){
@@ -254,8 +267,8 @@ define([
               if(!evt.shiftKey && !panel.nextSibling && !panel.parentNode.nextSibling){
                 //stop cursor focusing on the widget which has bigger tabindex in map container.
                 evt.preventDefault();
-                //focus on first skip link from last panel
-                jimuUtils.focusOnFirstSkipLink();
+                //focus on last virtual DOM which tabindex=0 from last panel.
+                this.lastTrapNode.focus();
               }
             }
           }else if(evt.keyCode === keys.ESCAPE){
@@ -283,9 +296,11 @@ define([
           if(evt.shiftKey && evt.keyCode === keys.TAB){
             evt.preventDefault();
           }
-        }else{//for widgets that related to map
-          evt.stopPropagation();
         }
+        //for widgets that related to map
+        // else{
+        //   evt.stopPropagation(); //remove it for fixing #16554
+        // }
       })));
 
       this.own(on(this.map.container, 'focus', lang.hitch(this, function(evt) {
@@ -320,7 +335,6 @@ define([
 
     mo._initAbsoluteMapEvents = function(){
       this._initMapAttrs();
-      html.setAttr(this.map.container, 'role', 'application');
 
       //allow map's pan-action with arrow and support cancel-event
       this.own(on(this.map.container, 'keydown', lang.hitch(this, function(evt) {
@@ -374,7 +388,6 @@ define([
 
       var links = '';
       var linksContainer = query('#skipContainer')[0];
-      html.setAttr(linksContainer, 'role', 'application');
       html.setAttr(linksContainer, 'aria-label', skipNls.skips);
       rtoWindowElements.forEach(function(e){
         if(e.name !== 'Splash'){
@@ -409,6 +422,7 @@ define([
       //event
       var linkNodes = query('a', linksContainer);
       this.own(on(linkNodes, 'focus', lang.hitch(this, function(evt) {
+        window._panelHandler && window._panelHandler.remove();
         if(this.widgetManager._resetFirstFocusNode()){
           return;
         }

@@ -252,6 +252,8 @@ function(declare, lang, html, _WidgetBase, topic, on, query,
           '{border-bottom-color: ${mainBackgroundColor} !important;}';
         cssText += '.jimu-tab>.control>.tab' +
           '{color: ${mainBackgroundColor} !important; border-color: ${mainBackgroundColor} !important}';
+        cssText += ' .popup-links .title, .popup-links a, .popup-links, .popup-links .line '+
+          '{ color: ${mainBackgroundColor} ; border-color: ${mainBackgroundColor};}';
       }else if(theme.name === 'BillboardTheme'){
         cssText += '.jimu-widget-homebutton .HomeButton .home,' +
           ' .jimu-widget-mylocation .place-holder, .jimu-widget-zoomslider.vertical .zoom-in,' +
@@ -289,8 +291,6 @@ function(declare, lang, html, _WidgetBase, topic, on, query,
           '{background-color: ${mainBackgroundColor} !important; opacity: 1;}';
       }else if(theme.name === 'TabTheme'){
         cssText += '.tab-widget-frame .title-label{color: ${mainBackgroundColor} !important;}';
-      }else if(theme.name === 'DashboardTheme'){
-        cssText += '.jimu-widget-dnd-header{background-color: ${mainBackgroundColor} !important;}';
       }else if(theme.name === 'DartTheme'){
         cssText += '.jimu-widget-fullScreen .fullScreen{background-color: ${mainBackgroundColor} !important;}';
         cssText += '.dart-controller-extent-navigate .jimu-widget-extent-navigate .operation.jimu-state-disabled,' +
@@ -503,12 +503,6 @@ function(declare, lang, html, _WidgetBase, topic, on, query,
 
     _getThemeCurrentStyleId: function(theme){
       return 'theme_' + theme.name + '_style_' + theme.styles[0];
-    },
-
-    _doPostLoad: function(){
-      //load somethings that may be used later.
-      //let it load behind the stage.
-      require(['dynamic-modules/postload']);
     },
 
     _onOpenWidgetRequest: function(widgetId){

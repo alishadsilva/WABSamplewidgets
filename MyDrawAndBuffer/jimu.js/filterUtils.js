@@ -86,6 +86,8 @@ function(declare, lang, array, locale, dojoNumber, esriLang, ItemFileWriteStore,
       this._supportFieldTypes.push(this._stringFieldType);
       this._supportFieldTypes.push(this._dateFieldType);
       this._supportFieldTypes = this._supportFieldTypes.concat(this._numberFieldTypes);
+
+      this.filterBuilderNls = window.jimuNls.filterBuilder;
     },
 
     OPERATORS:{
@@ -378,24 +380,24 @@ function(declare, lang, array, locale, dojoNumber, esriLang, ItemFileWriteStore,
           var values = clazz.getRealDateByVirtualDate(singlePart.valueObj.virtualDate);
           singlePart.value1 = values[0];
           singlePart.value2 = values[1];
-          // singlePart.valueObj.value1 = values[0].toDateString();
-          // singlePart.valueObj.value2 = values[1].toDateString();
+          singlePart.valueObj.value1 = jimuUtils.getDateTimeStr(values[0]);
+          singlePart.valueObj.value2 = jimuUtils.getDateTimeStr(values[1]);
         }else if(singleVirtualDateOpts.indexOf(singlePart.operator) > -1){
           v = clazz.getRealDateByVirtualDate(singlePart.valueObj.virtualDate);
           singlePart.value = v;
-          // singlePart.valueObj.value = v.toDateString();
+          singlePart.valueObj.value = jimuUtils.getDateTimeStr(v);
         }
       }else{
         if(singlePart.valueObj.virtualDate1){
           v = clazz.getRealDateByVirtualDate(singlePart.valueObj.virtualDate1);
           singlePart.value1 = v;
-          // singlePart.valueObj.value1 = v.toDateString();
+          singlePart.valueObj.value1 = jimuUtils.getDateTimeStr(v);
         }
 
         if(singlePart.valueObj.virtualDate2){
           v = clazz.getRealDateByVirtualDate(singlePart.valueObj.virtualDate2);
           singlePart.value2 = v;
-          // singlePart.valueObj.value2 = v.toDateString();
+          singlePart.valueObj.value2 = jimuUtils.getDateTimeStr(v);
         }
       }
     },
@@ -1031,27 +1033,6 @@ function(declare, lang, array, locale, dojoNumber, esriLang, ItemFileWriteStore,
       return this.formatDate(newValue);
     },
 
-    _dateENUM:{
-      'dateOperatorIsOn':'is on ',
-      'dateOperatorIsNotOn':'is not on ',
-      'dateOperatorIsOn_At':'is at ',
-      'dateOperatorIsNotOn_At':'is not at ',
-      'dateOperatorIsIn':'is in ',
-      'dateOperatorIsNotIn':'is not in ',
-      'dateOperatorIsBefore':'is before ',
-      'dateOperatorIsAfter':'is after ',
-      'dateOperatorIsOnOrBefore':'is on or before ',
-      'dateOperatorIsOnOrAfter':'is on or after ',
-      'dateOperatorIsOnOrBefore_At':'is at or before ',
-      'dateOperatorIsOnOrAfter_At':'is at or after ',
-      'dateOperatorInTheLast':['is in the last ',' from CURRENT_TIMESTAMP'],
-      'dateOperatorNotInTheLast':['is not in the last ',' from CURRENT_TIMESTAMP'],
-      'dateOperatorIsBetween':['is between ',' and '],
-      'dateOperatorIsNotBetween':['is not between ',' and '],
-      'dateOperatorIsBlank':'is blank',
-      'dateOperatorIsNotBlank':'is not blank'
-    },
-
     _getDisplayDates:function(valObj){
       var uiDates = {value: valObj.virtualDate, value1: valObj.virtualDate1, value2: valObj.virtualDate2};
       var fieldInfo = valObj.dateFormat === "" ? {} : {format: {dateFormat: valObj.dateFormat}};
@@ -1064,36 +1045,41 @@ function(declare, lang, array, locale, dojoNumber, esriLang, ItemFileWriteStore,
           uiDates.value = jimuUtils.localizeDateTimeByFieldInfo(jimuUtils.getDateByDateTimeStr(valObj.value), fieldInfo,
            valObj.enableTime, valObj.timeAccuracy);
         }
+      }else{
+        uiDates.value = this.filterBuilderNls[valObj.virtualDate];
       }
+
       if(valObj.virtualDate1 === ''){
         uiDates.value1 = jimuUtils.localizeDateTimeByFieldInfo(jimuUtils.getDateByDateTimeStr(valObj.value1),
          fieldInfo, valObj.enableTime1, valObj.timeAccuracy1);
+      }else{
+        uiDates.value1 = this.filterBuilderNls[valObj.virtualDate1];
       }
+
       if(valObj.virtualDate2 === ''){
         uiDates.value2 = jimuUtils.localizeDateTimeByFieldInfo(jimuUtils.getDateByDateTimeStr(valObj.value2),
          fieldInfo, valObj.enableTime2, valObj.timeAccuracy2);
+      }else{
+        uiDates.value2 = this.filterBuilderNls[valObj.virtualDate2];
       }
+
       return uiDates;
     },
 
     getDisplaySQL:function(fName, valObj, type){
-      var whereClause = '', typeStrs = this._dateENUM[type];
+      var whereClause = '';
       if(type.indexOf('InTheLast') > 0){
-        whereClause = typeStrs[0] + valObj.value + ' ' +
-          this._getDateRangeEnum(valObj.value, valObj.range) + typeStrs[1];
+        whereClause = this.filterBuilderNls[type] + ' ' + valObj.value + ' ' +
+         this._getDateRangeEnum(valObj.value, valObj.range);
       }else{
         var whereDates = this._getDisplayDates(valObj, type);
         if (type.indexOf("Between") > 0) {
-          whereClause = typeStrs[0] + whereDates.value1 + typeStrs[1] + whereDates.value2;
+          whereClause = this.filterBuilderNls[type] + ' ' + whereDates.value1 + ' ' + this.filterBuilderNls.and + ' ' +
+           whereDates.value2;
         }else if(type.indexOf('Blank') > 0){
-          whereClause = this._dateENUM[type];
+          whereClause = this.filterBuilderNls[type];
         }else{
-          //use at operator when unique + dateTime
-          if(valObj.type === 'unique' && valObj.dateFormat &&  valObj.dateFormat.indexOf('Time') >= 0 &&
-           type !== 'dateOperatorIsBefore' && type !== 'dateOperatorIsAfter'){
-            type = type + '_At';
-          }
-          whereClause = this._dateENUM[type] + whereDates.value;
+          whereClause = this.filterBuilderNls[type] + ' ' + whereDates.value;
         }
       }
       return fName + ' ' + whereClause;
@@ -1109,7 +1095,7 @@ function(declare, lang, array, locale, dojoNumber, esriLang, ItemFileWriteStore,
         'dateOperatorMinutes': 'minute'
       };
       range = _rangeDateEnum[range];
-      return value > 1 ? range + 's' : range;
+      return window.jimuNls.timeUnit[value > 1 ? range + 's' : range].toLowerCase();
     },
 
     _convertRangeToDays: function(rangeCount, rangeType) {
@@ -2086,6 +2072,7 @@ function(declare, lang, array, locale, dojoNumber, esriLang, ItemFileWriteStore,
     }
   });
 
+  clazz.VIRTUAL_DATE_CUSTOM = 'custom';
   clazz.VIRTUAL_DATE_TODAY = 'today';
   clazz.VIRTUAL_DATE_YESTERDAY = 'yesterday';
   clazz.VIRTUAL_DATE_TOMORROW = 'tomorrow';

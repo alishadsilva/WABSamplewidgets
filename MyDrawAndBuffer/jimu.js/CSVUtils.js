@@ -19,7 +19,9 @@ define([
   'dojo/_base/lang',
   'dojo/_base/array',
   'dojo/_base/html',
+  "dojo/_base/kernel",
   'dojo/has',
+  "dojo/number",
   'dojo/Deferred',
   'jimu/utils',
   'esri/lang',
@@ -27,8 +29,8 @@ define([
   'esri/tasks/query',
   'esri/graphic',
   "jimu/ArcadeUtils"],
-  function(exports, lang, array, html, has, Deferred, jimuUtils, esriLang, QueryTask, Query,
-  Graphic, ArcadeUtils) {
+  function(exports, lang, array, html, dojo, has, number, Deferred, jimuUtils, esriLang,
+    QueryTask, Query, Graphic, ArcadeUtils) {
     /*
     ** filename String no file extension
     ** datas Object[]
@@ -141,8 +143,9 @@ define([
       var content = "";
       var len = 0,
         n = 0,
-        comma = "",
+        separator = "",
         value = "";
+      var defaultDelimiter = getDelimiter(); // either "," or ";"
       try {
         columns = array.map(columns, function(f){
           if(typeof f === 'string'){
@@ -153,30 +156,38 @@ define([
         });
         array.forEach(columns, function(_field) {
           var _fieldText = _field.alias || _field.name;
-          // append "" to fields that include commas
-          if(_fieldText.toString().indexOf(",") > -1) {
+          // append "" to fields that include delimiter
+          if(_fieldText.toString().indexOf(defaultDelimiter) > -1) {
             _fieldText = '"' + _fieldText + '"';
           }
-          content = content + comma + _fieldText;
-          comma = ",";
+          content = content + separator + _fieldText;
+          separator = defaultDelimiter;
         });
 
         content = content + "\r\n";
         len = datas.length;
         n = columns.length;
         for (var i = 0; i < len; i++) {
-          comma = "";
+          separator = "";
           for (var m = 0; m < n; m++) {
             var _field = columns[m];
             value = datas[i][_field.name];
             if (!value && typeof value !== "number") {
               value = "";
             }
-            if (value && /[",\r\n]/g.test(value)) {
-              value = textField + value.replace(/(")/g, '""') + textField;
+            if(typeof value === "string") {
+              var shouldAddQuotes = false;
+              if(defaultDelimiter === ";") {
+                shouldAddQuotes = /[";\r\n]/g.test(value);
+              } else {
+                shouldAddQuotes = /[",\r\n]/g.test(value);
+              }
+              if(shouldAddQuotes) {
+                value = textField + value.replace(/(")/g, '""') + textField;
+              }
             }
-            content = content + comma + value;
-            comma = ",";
+            content = content + separator + value;
+            separator = defaultDelimiter;
           }
           content = content + "\r\n";
         }
@@ -322,7 +333,7 @@ define([
         if (options.fromClient) {
           data = array.map(layer.graphics, function(graphic) {
             var attrs = withGeometry ? getAttrsWithXY(graphic) : lang.clone(graphic);
-            attrs = withExpressionFields ? 
+            attrs = withExpressionFields ?
             exports._getAttrsWithExpressions(attrs, options.arcadeExpressions) : attrs;
             return attrs;
           });
@@ -373,6 +384,7 @@ define([
       query.orderByFields = options.orderByFields;
       query.start = options.start;
       query.num = options.num;
+      query.outSpatialReference = options.outSpatialReference;
 
       qt.execute(query, function(results) {
         var data = array.map(results.features, function(feature) {
@@ -399,12 +411,9 @@ define([
         for (var j = 0; j < outFields.length; j++) {
           var _field = outFields[j];
           aliasData[_field.name] = exports._getExportValue(
-            datas[i][_field.name],
+            datas[i],
             _field,
-            layer.objectIdField,
-            layer.typeIdField,
-            datas[i][layer.typeIdField],
-            layer.types,
+            layer,
             formattedOptions
             );
         }
@@ -425,8 +434,8 @@ define([
       return def;
     };
 
-    exports._getExportValue = function(data, field, pk, typeIdField,
-      typeData, types, formattedOptions) {
+    exports._getExportValue = function(datas, field, layer, formattedOptions) {
+      var data = datas[field.name];
       var pInfos = formattedOptions.popupInfo;
       function getFormatInfo(fieldName) {
         if (pInfos && esriLang.isDefined(pInfos.fieldInfos)) {
@@ -450,24 +459,14 @@ define([
         }
         return false;
       }
-      var isDomain = !!field.domain && formattedOptions.formatCodedValue;
       var isDate = field.type === "esriFieldTypeDate" && formattedOptions.formatDate;
-      var isOjbectIdField = pk && (field.name === pk);
-      var isTypeIdField = typeIdField && (field.name === typeIdField);
       var isRichTextField = field.type === "esriFieldTypeString" &&
                             formattedOptions.richText.clearFormat &&
                             isRichTextField(field.name);
 
       if (isDate) {
         return jimuUtils.fieldFormatter.getFormattedDate(data, getFormatInfo(field.name));
-      }
-      if (isTypeIdField) {
-        return jimuUtils.fieldFormatter.getTypeName(data, types);
-      }
-      if (isDomain) {
-        return jimuUtils.fieldFormatter.getCodedValue(field.domain, data);
-      }
-      if (isRichTextField) {
+      } else if (isRichTextField) {
         if(data) {
           var d = document.createElement('span');
           d.innerHTML = data;
@@ -475,28 +474,10 @@ define([
         } else {
           return data;
         }
+      } else {
+        var result = jimuUtils.getDisplayValueForCodedValueOrSubtype(layer, field.name, datas);
+        return result.isCodedValueOrSubtype ? result.displayValue : datas[field.name];
       }
-      if (!isDomain && !isDate && !isOjbectIdField && !isTypeIdField && !isRichTextField) {
-        var codeValue = null;
-        if (pk && types && types.length > 0) {
-          var typeChecks = array.filter(types, function(item) {
-            // value of typeIdField has been changed above
-            return item.id === typeData;
-          });
-          var typeCheck = typeChecks && typeChecks[0];
-
-          if (typeCheck && typeCheck.domains &&
-            typeCheck.domains[field.name] && typeCheck.domains[field.name].codedValues) {
-            codeValue = jimuUtils.fieldFormatter.getCodedValue(
-              typeCheck.domains[field.name],
-              data
-            );
-          }
-        }
-        return codeValue !== null ? codeValue : data;
-      }
-
-      return data;
     };
 
     exports._getAttrsWithExpressions = function(attributes, arcadeExpressions) {
@@ -533,6 +514,17 @@ define([
       }
 
       return attrs;
+    }
+
+    function getDelimiter() {
+      var decimalNumberTester = number.format(1.1, {
+        locale: dojo.locale
+      });
+      var sep = decimalNumberTester.substring(1,2);
+      if(sep === ',') {
+        return ';';
+      }
+      return ',';
     }
 
   });

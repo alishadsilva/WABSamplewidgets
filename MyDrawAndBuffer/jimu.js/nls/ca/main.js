@@ -98,19 +98,30 @@ define({
     "tooltipText": "Text d'informació sobre eines",
     "findAddressOrPlace": "Cerca una adreça o un lloc",
     "expand": "Expandeix ${value}",
-    "collapse": "Redueix ${value}"
+    "collapse": "Redueix ${value}",
+    "asc": "Ascendent",
+    "desc": "Descendent"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Suport limitat per al navegador",
+    "onlineContent1": "Esteu utilitzant un navegador que està obsolet. És possible que algunes parts d'aquesta aplicació no funcionin de manera òptima o que no funcionin en aquest navegador. Aquest navegador deixarà de ser compatible.",
+    "content2": "Feu servir les últimes versions de <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> o <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Per a més informació sobre suport per als navegadors, vegeu la nostra documentació. Valoreu-nos a través de <feedback-link>GeoNet, la Comunitat d’Esri</feedback-link>.",
+    "enterpriseContent1": "Esteu utilitzant un navegador que ja no és compatible. És possible que algunes parts d'aquesta aplicació no funcionin de manera òptima o que no funcionin en aquest navegador."
   },
   "errorCode": "Codi",
   "errorMessage": "Missatge",
   "errorDetail": "Detall",
   "widgetPlaceholderTooltip": "Per configurar-ho, aneu a Widgets i feu clic al marcador de posició corresponent.",
+  "widgetToolTip": "${widgetLabel}. Premeu Retorn per situar l'enfocament a dins d'aquest widget. Quan l'enfocament sigui a dins, premeu Esc per tornar a situar l'enfocament al widget.",
   "skips": {
     "skips": "Omet els enllaços",
     "skipTo": "Ves a ${value}",
     "headerController": "Ves al controlador de capçalera",
     "map": "Ves al mapa",
     "sidePanel": "Ves a la subfinestra lateral",
-    "attributeTable": "Ves a la taula d'atributs"
+    "attributeTable": "Ves a la taula d'atributs",
+    "tabAway": "Premeu Tabulador per continuar i sortir de l'aplicació. Premeu Maj i Tabulador per tornar a ${value} a"
   },
   "panelHeader": {
     "foldWindow": "Plega la finestra",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punt",
+    "arrow": "Fletxa",
     "line": "Línia",
     "polyline": "Polilínia",
     "freehandPolyline": "Polilínia a mà alçada",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Tots els valors únics d'aquest camp",
     "previousCascadeFilterTip": "Valors filtrats per les expressions anteriors",
     "allCascadeFilterTip": "Valors filtrats per totes les altres expressions",
+    "dateOptions": "Opcions de data",
+    "startDateOptions": "Opcions de data d'inici",
+    "endDateOptions": "Opcions de data de finalització",
     "custom": "la data...",
     "today": "avui",
     "yesterday": "ahir",
     "tomorrow": "demà",
+    "atLeastOne": "Cal activar una opció de data com a mínim.",
+    "notUncheckedCurrent": "L'opció de data seleccionada no es pot desactivar.",
     "theseDays": "aquests dies",
     "thisWeek": "aquesta setmana",
     "thisMonth": "aquest mes",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Mostra les entitats seleccionades",
     "ExportToFeatureCollection": "Exporta a una col·lecció d'entitats",
     "ExportToGeoJSON": "Exporta a un fitxer GeoJSON",
+    "ExportToFilegdb": "Exporta-ho a una geobase de dades de fitxers",
+    "ExportToShapefile": "Exporta-ho a shapefile",
     "EditAttributes": "Edita els atributs",
     "AddMarker": "Afegeix un marcador",
     "RemoveMarker": "Elimina el marcador",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Any",
     "years": "Anys",
+    "quarter": "Trimestre",
     "month": "Mes",
     "months": "Mesos",
     "week": "Setmana",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Integra aquesta aplicació en un lloc web",
     "shareEmailSubject": "S'està compartint l'aplicació web:",
-    "shareEmailTxt1": "Aquesta aplicació web s'ha compartit amb vós mitjançant el Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Podeu crear i compartir la vostra pròpia aplicació web amb l'Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Aquesta aplicació web s'ha compartit amb vós mitjançant l'ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Podeu crear i compartir la vostra pròpia aplicació web amb l'Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Visiteu http://www.esri.com/software/web-appbuilder per obtenir més informació.",
     "smallSize": "Petit",
     "mediumSize": "Mitjà",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Expandeix la sortida",
     "tooltip": "Feu clic al mapa per afegir un punt"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Enllaç a: ",
+    "previewLinkToolTipsSuffix": "Aquest enllaç funcionarà quan s'iniciï l'aplicació."
+  },
   "noEditPrivileges": "El vostre compte no té permís per crear o modificar dades.",
   "noEditableLayers": "El vostre compte no té permís per crear ni modificar dades. O bé, aquest mapa web no conté cap capa editable.",
   "invalidConfiguration": "El widget no està configurat o les capes de la configuració ja no es troben al mapa. Obriu l'aplicació en el mode del builder i torneu a configurar el widget.",
   "essentialAppsLicenseErrorForApp": "El vostre compte no té llicència per utilitzar una aplicació que no sigui pública. Demaneu a l'administrador de l'organització que us assigni un tipus d'usuari que inclogui les aplicacions bàsiques o una llicència d'aplicacions bàsiques de complement.",
-  "essentialAppsLicenseErrorForBuilder": "El vostre compte no té llicència per al Web AppBuilder. Demaneu a l'administrador de l'organització que us assigni un tipus d'usuari que inclogui les aplicacions bàsiques o una llicència d'aplicacions bàsiques de complement."
+  "essentialAppsLicenseErrorForBuilder": "El vostre compte no té llicència per al Web AppBuilder. Demaneu a l'administrador de l'organització que us assigni un tipus d'usuari que inclogui les aplicacions bàsiques o una llicència d'aplicacions bàsiques de complement.",
+  "blockedByAdminErrorForApp": "La vostra organització ha bloquejat l’accés a aquesta aplicació. Per a més informació, poseu-vos en contacte amb el vostre administrador.",
+  "blockedByAdminErrorForBuilder": "La vostra organització ha bloquejat l’accés a Web AppBuilder. Per a més informació, poseu-vos en contacte amb el vostre administrador.",
+  "orgUrlMessage": "L’aplicació a la qual esteu intentant accedir no té el seu origen en la URL que heu facilitat.",
+  "advancedOptions": "Opcions avançades",
+  "proceedTo": "Procediu a ${value}",
+  "setStyle": "Defineix l'estil"
 });

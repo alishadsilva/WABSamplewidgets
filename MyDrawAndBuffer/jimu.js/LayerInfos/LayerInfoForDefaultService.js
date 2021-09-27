@@ -22,8 +22,9 @@ define([
   'dojo/topic',
   'dojo/dom-construct',
   './LayerInfoForDefault',
-  './LayerObjectFacory'
-], function(declare, array, lang, Deferred, topic, domConstruct, LayerInfoForDefault, LayerObjectFacory) {
+  './LayerObjectFacory',
+  '../utils'
+], function(declare, array, lang, Deferred, topic, domConstruct, LayerInfoForDefault, LayerObjectFacory, jimuUtils) {
   return declare(LayerInfoForDefault, {
     _legendsNode: null,
     //_layerObjectLoadingIndicator: null,
@@ -111,7 +112,7 @@ define([
 
           domConstruct.create("td", {
             "class": "legend-label-td",
-            "innerHTML": legend.label || " ",
+            "innerHTML": jimuUtils.sanitizeHTML(legend.label) || " ",
             "style": "padding-left: 5px"
           }, legendTr);
 
@@ -455,7 +456,8 @@ define([
           resultValue.isSupportedLayer = true;
         }
         this._getServiceDefinition().then(lang.hitch(this, function(serviceDefinition){
-          if(serviceDefinition && serviceDefinition.capabilities.indexOf("Data") >= 0) {
+          if(serviceDefinition && serviceDefinition.capabilities &&
+              serviceDefinition.capabilities.indexOf("Data") >= 0) {
             resultValue.isSupportQuery = true;
           }
           def.resolve(resultValue);

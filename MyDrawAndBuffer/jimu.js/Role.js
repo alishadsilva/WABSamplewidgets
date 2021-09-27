@@ -98,6 +98,9 @@ define([
             geoenrichment: false,     // "premium:user:geoenrichment"
             demographics: false,      // "premium:user:demographics"
             elevation: false          // "premium:user:elevation"
+          },
+          publisher: {
+            createNotebooks: false    // "premium:publisher:createNotebooks"
           }
         },
         marketplace: {                // "marketplace:*"
@@ -249,6 +252,9 @@ define([
         case "premium:user:elevation":
           this.privilegeObj.premium.user.elevation = allow;
           break;
+        case "premium:publisher:createNotebooks":
+          this.privilegeObj.premium.publisher.createNotebooks = allow;
+          break;
         case "marketplace:admin:purchase":
           this.privilegeObj.marketplace.admin.purchase = allow;
           break;
@@ -303,6 +309,7 @@ define([
       // this.privilegeObj.premium.user.geotrigger = allow;
       this.privilegeObj.premium.user.demographics = allow;
       this.privilegeObj.premium.user.elevation = allow;
+      this.privilegeObj.premium.publisher.createNotebooks = allow;
       this.privilegeObj.marketplace.admin.purchase = allow;
       this.privilegeObj.marketplace.admin.manage = allow;
       this.privilegeObj.marketplace.admin.startTrial = allow;
@@ -439,6 +446,9 @@ define([
       }
       if(this.privilegeObj.premium.user.elevation === true) {
         privs.push("premium:user:elevation");
+      }
+      if(this.privilegeObj.premium.publisher.createNotebooks === true) {
+        privs.push("premium:publisher:createNotebooks");
       }
       if(this.privilegeObj.marketplace.admin.purchase === true) {
         privs.push("marketplace:admin:purchase");
@@ -843,8 +853,16 @@ define([
      * Checks whether the privilege "premium:user:elevation" is granted.
      * @returns {null|boolean}
      */
-    canUseElevation: function() {
-      return this.privilegeObj && this.privilegeObj.premium.user.elevation;
+    // canUseElevation: function() {
+    //   return this.privilegeObj && this.privilegeObj.premium.user.elevation;
+    // },
+
+    /**
+     * Checks whether the privilege "premium:publisher:createNotebooks" is granted.
+     * @returns {null|boolean}
+     */
+    canCreateNotebooks: function() {
+      return this.privilegeObj && this.privilegeObj.premium.publisher.createNotebooks;
     },
 
     /**

@@ -98,19 +98,30 @@ define({
     "tooltipText": "نص تلميحات الأداة",
     "findAddressOrPlace": "العثور على عنوان أو مكان",
     "expand": "توسيع ${value}",
-    "collapse": "طي ${value}"
+    "collapse": "طي ${value}",
+    "asc": "تصاعدي",
+    "desc": "تنازليًا"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "دعم مستعرض محدود",
+    "onlineContent1": "أنت تستخدم متصفحًا تم إيقافه. بعض أجزاء هذا التطبيق قد لا تعمل على النحو الأمثل أو لا تعمل على الإطلاق في هذا المتصفح. سيتم إيقاف دعم هذا المتصفح في المستقبل.",
+    "content2": "يرجى استخدام أحدث إصدارات <chrome-link>Google Chrome</chrome-link> أو <firefox-link>Mozilla Firefox</firefox-link> أو <safari-link>Apple Safari</safari-link> أو <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "لمزيد من المعلومات حول دعم المستعرض، راجع وثائقنا. قدم ملاحظاتك من خلال <feedback-link>GeoNet، مجتمع Esri</feedback-link>.",
+    "enterpriseContent1": "المتصفح الذي تستخدمه لم يعد مدعومًا. بعض أجزاء هذا التطبيق قد لا تعمل على النحو الأمثل أو لا تعمل على الإطلاق في هذا المتصفح."
   },
   "errorCode": "كود",
   "errorMessage": "رسالة",
   "errorDetail": "تفاصيل",
   "widgetPlaceholderTooltip": "لتعينها، انتقل إلى عناصر واجهة الاستخدام وانقر على العناصر المتطابقة",
+  "widgetToolTip": "${widgetLabel}. اضغط على Enter للتركيز داخل عنصر واجهة المستخدم هذا. عند التركيز بالداخل، اضغط على Esc للتركيز مرة أخرة على عنصر واجهة المستخدم.",
   "skips": {
     "skips": "تخطي الروابط",
     "skipTo": "تجاوز إلى ${value}",
     "headerController": "التخطي إلى متحكم الرأس",
     "map": "تخطي إلى الخريطة",
     "sidePanel": "تجاوز إلى اللوحة الجانبية",
-    "attributeTable": "تخطي إلى جدول السمة"
+    "attributeTable": "تخطي إلى جدول السمة",
+    "tabAway": "اضغط على مفتاح Tab للمتابعة ونقل التطبيق، واضغط مفتاح Shift وTab للرجوع إلى ${value} ضمن"
   },
   "panelHeader": {
     "foldWindow": "طي النافذة",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "نقطة",
+    "arrow": "سهم",
     "line": "الخط",
     "polyline": "متعدد الخطوط",
     "freehandPolyline": "خطوط متصلة مرسومة بخط اليد",
@@ -222,7 +234,7 @@ define({
     "clear": "مسح"
   },
   "popupConfig": {
-    "title": "عنوان",
+    "title": "اللقب",
     "add": "إضافة",
     "fields": "حقول",
     "noField": "لا توجد حقول",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "جميع القيم المميزة لهذا الحقل",
     "previousCascadeFilterTip": "القيم التي يتم تصفيتها بواسطة التعبيرات السابقة",
     "allCascadeFilterTip": "القيم التي يتم تصفيتها بواسطة جميع التعبيرات الأخرى",
+    "dateOptions": "خيارات التاريخ",
+    "startDateOptions": "خيارات تاريخ البدء",
+    "endDateOptions": "خيارات تاريخ الانتهاء",
     "custom": "التاريخ...",
     "today": "اليوم",
     "yesterday": "أمس",
     "tomorrow": "غدًا",
+    "atLeastOne": "يجب تحديد خيار تاريخ واحد على الأقل.",
+    "notUncheckedCurrent": "يتعذر إلغاء تحديد خيار التاريخ المحدد.",
     "theseDays": "هذه الأيام",
     "thisWeek": "هذا الأسبوع",
     "thisMonth": "هذا الشهر",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "عرض المعالم المُحددة",
     "ExportToFeatureCollection": "تصدير إلى مجموعة المعالم",
     "ExportToGeoJSON": "التصدير إلى GeoJSON",
+    "ExportToFilegdb": "تصدير إلى قاعدة بيانات جغرافية لملف",
+    "ExportToShapefile": "تصدير إلى ملف شكل",
     "EditAttributes": "تحرير البيانات الجدولية",
     "AddMarker": "إضافة علامة",
     "RemoveMarker": "إزالة علامة",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "سنة",
     "years": "سنوات",
+    "quarter": "ربع",
     "month": "شهر",
     "months": "أشهر",
     "week": "اسبوع",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "تضمين هذا التطبيق في موقع ويب",
     "shareEmailSubject": "مشاركة تطبيق الويب:",
-    "shareEmailTxt1": "هنا يوجد تطبيق ويب تم مشاركته معك باستخدام Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "يمكنك إنشاء تطبيق الويب الخاص بك ومشاركته مع Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "يوجد هنا تطبيق ويب تمت مشاركته معك باستخدام ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "يمكنك إنشاء تطبيق الويب الخاص بك ومشاركته مع Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "تفضل بزيارة http://www.esri.com/software/web-appbuilder للتفاصيل.",
     "smallSize": "صغير",
     "mediumSize": "متوسط",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "توسيع المخرجات",
     "tooltip": "انقر على الخريطة لإضافة نقطة"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "رابط إلى: ",
+    "previewLinkToolTipsSuffix": "سيعمل هذا الرابط عند تشغيل التطبيق."
+  },
   "noEditPrivileges": "لا يحتوي حسابك على أذونات لإنشاء أو تعديل البيانات.",
   "noEditableLayers": "لا يتضمن حسابك الإذن لإنشاء أو تعديل البيانات. أو أن خريطة الويب الحالية لا تتصمن أي طبقات قابلة للتعديل.",
   "invalidConfiguration": "لم يتم تكوين عنصر واجهة المستخدم أو أن الطبقات التي توجد في التكوين لم تُعد موجودة في الخريطة. يرجى فتح التطبيق في وضع المُنشئ وإعادة تكوين عنصر واجهة المستخدم.",
   "essentialAppsLicenseErrorForApp": "حسابك غير مرخص لاستخدام تطبيق غير عام. رجاءً اطلب من مسئولي المؤسسة تعيينك كنوع مستخدم يتضمن التطبيقات الأساسية أو ترخيص التطبيقات الأساسية المضافة.",
-  "essentialAppsLicenseErrorForBuilder": "حسابك غير مرخص لـ Web AppBuilder. رجاءً اطلب من مسئولي المؤسسة تعيينك كنوع مستخدم يتضمن التطبيقات الأساسية أو ترخيص التطبيقات الأساسية المضافة."
+  "essentialAppsLicenseErrorForBuilder": "حسابك غير مرخص لـ Web AppBuilder. رجاءً اطلب من مسئولي المؤسسة تعيينك كنوع مستخدم يتضمن التطبيقات الأساسية أو ترخيص التطبيقات الأساسية المضافة.",
+  "blockedByAdminErrorForApp": "لقد حظرت مؤسستك الوصول إلى هذا التطبيق. يرجى الاتصال بالمسؤول للحصول على التفاصيل.",
+  "blockedByAdminErrorForBuilder": "لقد منعت مؤسستك الوصول إلى Web AppBuilder. يرجى الاتصال بالمسؤول للحصول على التفاصيل.",
+  "orgUrlMessage": "لم ينشأ التطبيق الذي تحاول الوصول إليه من عنوان URL الذي قدمته.",
+  "advancedOptions": "خيارات متقدمة",
+  "proceedTo": "الانتقال إلى ${value}",
+  "setStyle": "تعيين نمط"
 });

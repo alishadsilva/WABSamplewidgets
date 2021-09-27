@@ -24,14 +24,18 @@ define([
     var mo = {};
 
     mo.a11y_init = function () {
-      html.setAttr(this.domNode, 'role', 'application');
-
       this.own(on(this.domNode, 'keydown', lang.hitch(this, function (evt) {
         if (!html.hasClass(evt.target, 'close-btn') && evt.keyCode === keys.ESCAPE) {
           evt.stopPropagation(); //stop triggering panel's esc-event for dashboard theme
           this.closeNode.focus();
         }
       })));
+    };
+
+    mo._onTitleLabelKeyDown = function (evt) {
+      if (evt.shiftKey && evt.keyCode === keys.TAB) {
+        evt.preventDefault();
+      }
     };
 
     mo._onMaxBtnKeyDown = function (evt) {

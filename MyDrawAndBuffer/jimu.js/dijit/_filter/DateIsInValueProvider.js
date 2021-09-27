@@ -101,7 +101,7 @@ define([
         var result = {
           "isValid": true,
           "type": this.partObj.valueObj.type,
-          "value": null,//date.toDateString()
+          "value": null,
           "virtualDate": this.dateTypeSelect.get('value')
         };
 
@@ -109,10 +109,8 @@ define([
         var date = filterUtils.getRealDateByVirtualDate(virtualDate);
         result.virtualDate = virtualDate;
         if(date){
-          // result.value1 = date[0].toDateString();
-          // result.value2 = date[1].toDateString();
-          result.value1 = jimuUtils.getDateTimeStr(date[0], 'YYYY-MM-DD');
-          result.value2 = jimuUtils.getDateTimeStr(date[1], 'YYYY-MM-DD');
+          result.value1 = jimuUtils.getDateTimeStr(date[0]);
+          result.value2 = jimuUtils.getDateTimeStr(date[1]);
         }
 
         return result;

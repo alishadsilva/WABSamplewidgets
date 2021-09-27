@@ -41,6 +41,7 @@ define([
     _unreachableLayersTitleOfWebmap: null,
     _objectId: null,
     _layerInfoFactory: null,
+    _previousLayerOrder: null,
 
     constructor: function(map, webmapItemData) {
       this._objectId = Math.random();
@@ -50,6 +51,7 @@ define([
       this._tables = webmapItemData.tables;
       this._layerInfoFactory = new LayerInfoFactory(map, this);
       this.map = map;
+      this._previousLayerOrder = [].concat(this.map.layerIds, this.map.graphicsLayerIds);
       this._initLayerInfos();
       this._initBasemapLayerInfos();
       this._initTablesInfos();
@@ -384,7 +386,7 @@ define([
         this._markFirstOrLastNode();
         topic.publish('layerInfos/layerReorder');
         */
-        topic.publish('layerInfos/layerReorder', index, steps, 'moveup');
+        //topic.publish('layerInfos/layerReorder', index, steps, 'moveup');
       }
       return beChangedLayerInfo;
     },
@@ -428,7 +430,7 @@ define([
         this._markFirstOrLastNode();
         topic.publish('layerInfos/layerReorder');
         */
-        topic.publish('layerInfos/layerReorder', index, steps, 'movedown');
+        //topic.publish('layerInfos/layerReorder', index, steps, 'movedown');
       }
       return beChangedLayerInfo;
     },
@@ -532,6 +534,25 @@ define([
       return result;
     },
 
+    _getSibilingLayerInfos: function(layerInfo) {
+      if(layerInfo.isRootLayer()) {
+        return this._finalLayerInfos;
+      } else {
+        return layerInfo.parentLayerInfo.getSubLayers();
+      }
+    },
+
+    _revertSibilingLayersOnState: function(layerInfo, state, targetVisibility) {
+      //reverse sibiling layers
+      var sibilingLayerInfos = this._getSibilingLayerInfos(layerInfo);
+      array.some(sibilingLayerInfos, lang.hitch(this, function(sibilingLayerInfo) {
+        var sibilingLayerId = sibilingLayerInfo.id;
+        if(!state.layerOptions[sibilingLayerId]) {
+          state.layerOptions[sibilingLayerId] = {visible: targetVisibility};
+        }
+      }));
+    },
+
     // simplificationState = {
     //   showLayers: [],            // layerId or layerTitle, alternative with other show/hide layers
     //   showLayersEncoded: [],     // alternative with other show/hide layers
@@ -544,7 +565,7 @@ define([
       var state = {layerOptions: {}};
       var showOrHideLayerIdsObj = this._getShowOrHideLayerIdsBySimpleState(simplificationState);
       this.traversal(lang.hitch(this, function(layerInfo) {
-        state.layerOptions[layerInfo.id] = {};
+        //state.layerOptions[layerInfo.id] = {};
         // restore layers visibility.
         var showOrHideLayerIds;
         var isShowLayerIds;
@@ -570,16 +591,21 @@ define([
         });
         if(isShowLayerIds) {
           if(layerId !== null) {
-            state.layerOptions[layerInfo.id].visible = true;
-          } else {
-            state.layerOptions[layerInfo.id].visible = false;
-          }
+            // layerId exist at isShowLayerIds.
+            state.layerOptions[layerInfo.id] = {visible: true};
+            this._revertSibilingLayersOnState(layerInfo, state, false);
+          } else if(showOrHideLayerIds.length === 0){
+            // means url parameter is empty (showlayers= )
+            state.layerOptions[layerInfo.id] = {visible: false};
+          } // else, keeps layer visibility
         } else {
-          if(layerId === null) {
-            state.layerOptions[layerInfo.id].visible = true;
-          } else {
-            state.layerOptions[layerInfo.id].visible = false;
-          }
+          if(layerId !== null) {
+            state.layerOptions[layerInfo.id] = {visible: false};
+            this._revertSibilingLayersOnState(layerInfo, state, true);
+          } else if(showOrHideLayerIds.length === 0){
+            // means url parameter is empty (hidelayers= )
+            state.layerOptions[layerInfo.id] = {visible: true};
+          } // else, keeps layer visibility
         }
       }));
 
@@ -1045,11 +1071,11 @@ define([
       handleAdd = on(this.map, "layer-add-result", lang.hitch(this, this._onLayersChange, clazz.ADDED));
       handleRemove = on(this.map, "layer-remove", lang.hitch(this, this._onLayersChange, clazz.REMOVED));
 
-      //this.own(on(this.map, "layers-add-result", lang.hitch(this, this._onLayersChange)));
-      //handleRemoves = on(this.map, "layers-removed", lang.hitch(this, this._onLayersChange));
 
-      handleReorder = topic.subscribe('layerInfos/layerReorder',
-        lang.hitch(this, this._onLayerReorder));
+      handleReorder = on(this.map, "layer-reorder", lang.hitch(this, this._onLayerReorder));
+
+      //handleReorder = topic.subscribe('layerInfos/layerReorder',
+      //  lang.hitch(this, this._onLayerReorder));
 
       handleIsShowInMapChanged = topic.subscribe('layerInfos/layerInfo/isShowInMapChanged',
         lang.hitch(this, this._onShowInMapChanged));
@@ -1186,10 +1212,24 @@ define([
       this._emitEventForEveryLayerInfo('filterChanged', changedLayerInfos, parameterObj);
     },
 
-    _onLayerReorder: function(beMovedLayerInfoIndex, steps,  moveUpOrDown) {
-      // doesn't call update(), manual reorder layerInfosArrar.
-      var beMovedLayerInfo = this._reorderLayerInfosArray(beMovedLayerInfoIndex, steps, moveUpOrDown);
-      this._emitEvent('layerInfosReorder', beMovedLayerInfo, clazz.REORDERED, beMovedLayerInfo);
+    _onLayerReorder: function(/*beMovedLayerInfoIndex, steps,  moveUpOrDown*/) {
+      //// doesn't call update(), manual reorder layerInfosArrar.
+      //var beMovedLayerInfo = this._reorderLayerInfosArray(beMovedLayerInfoIndex, steps, moveUpOrDown);
+      //this._emitEvent('layerInfosReorder', beMovedLayerInfo, clazz.REORDERED, beMovedLayerInfo);
+
+      var currentLayerOrder = [].concat(this.map.layerIds, this.map.graphicsLayerIds);
+      var isOrderChanged = array.some(currentLayerOrder, lang.hitch(this, function(layerId, index) {
+        if(layerId === this._previousLayerOrder[index]) {
+          return false;
+        } else {
+          return true;
+        }
+      }));
+      if((currentLayerOrder.length === this._previousLayerOrder.length) && isOrderChanged) {
+        this.update();
+        this._emitEvent('layerInfosReorder', null, clazz.REORDERED);
+      }
+      this._previousLayerOrder = currentLayerOrder;
     },
 
     _onRendererChanged: function(changedLayerInfos) {

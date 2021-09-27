@@ -29,7 +29,8 @@ define([
   'dojo/Evented',
   'esri/graphic',
   'esri/layers/GraphicsLayer',
-  'esri/toolbars/draw',
+  // 'esri/toolbars/draw',
+  'jimu/dijit/Draw',
   'esri/symbols/jsonUtils',
   'esri/geometry/Polygon'
 ],
@@ -56,6 +57,7 @@ function(declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, templat
     types:null,
     /*available geoTypes:
       ["POINT",
+       "ARROW",
        "LINE", "POLYLINE", "FREEHAND_POLYLINE",
        "TRIANGLE", "EXTENT", "CIRCLE", "ELLIPSE", "POLYGON", "FREEHAND_POLYGON",
        "TEXT"]
@@ -97,6 +99,7 @@ function(declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, templat
     //css classes:
     //draw-item
     //point-icon
+    //arrow-icon
     //line-icon
     //polyline-icon
     //freehand-polyline-icon
@@ -389,10 +392,13 @@ function(declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, templat
       }else{
         this.geoTypes = [];
         if(!(this.types && this.types.length > 0)){
-          this.types = ['point', 'polyline', 'polygon'];
+          this.types = ['point', 'arrow', 'polyline', 'polygon'];
         }
         if(this.types.indexOf('point') >= 0){
           this.geoTypes = this.geoTypes.concat(["POINT"]);
+        }
+        if(this.types.indexOf('arrow') >= 0){
+          this.geoTypes = this.geoTypes.concat(["ARROW"]);
         }
         if(this.types.indexOf('polyline') >= 0){
           this.geoTypes = this.geoTypes.concat(["LINE", "POLYLINE", "FREEHAND_POLYLINE"]);

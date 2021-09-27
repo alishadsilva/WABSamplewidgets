@@ -28,12 +28,13 @@ define([
   './ConfigLoader',
   './tokenUtils',
   './dijit/AGOLLoading',
+  './portalUrlUtils',
   './portalUtils',
   'esri/config',
   'esri/tasks/GeometryService'
 ],
 function (declare, lang, array, html, topic, Deferred, on, jimuUtils, WidgetManager,
-  AppVersionManager, ConfigLoader, tokenUtils, AGOLLoading, portalUtils, esriConfig, GeometryService) {
+  AppVersionManager, ConfigLoader, tokenUtils, AGOLLoading, portalUrlUtils, portalUtils, esriConfig, GeometryService) {
   var instance = null, clazz;
 
   clazz = declare(null, {
@@ -147,18 +148,84 @@ function (declare, lang, array, html, topic, Deferred, on, jimuUtils, WidgetMana
         loading.destroy();
         console.error(err);
         if(err && err.message && typeof err.message === 'string'){
-          this._showErrorMessage(err.message);
+          this._showErrorMessage(err);
         }
       }));
     },
 
-    _showErrorMessage: function(msg){
-      html.create('div', {
-        'class': 'app-error',
-        innerHTML: jimuUtils.sanitizeHTML(msg)
-      }, document.body);
-      /*globals jimuConfig*/
-      html.setStyle(jimuConfig.loadingId, 'display', 'none');
+    _showErrorMessage: function(error){
+      if(error.isSelfOrigin === false) {
+        html.create('div', {
+          'class': 'app-error',
+          innerHTML: jimuUtils.sanitizeHTML(error.message || error)
+        }, document.body);
+
+        // close buttion
+        var closeButton = html.create('div', {
+          'class': 'app-error',
+          innerHTML: jimuUtils.sanitizeHTML(window.jimuNls.common.close)
+        }, document.body);
+        html.setStyle(closeButton, {'margin-top': '80px',
+                                    'padding-top': 0,
+                                    'background': 'none',
+                                    'cursor': 'pointer'});
+        on(closeButton, 'click', lang.hitch(this, function() {
+          window.close();
+        }));
+        html.setStyle(closeButton, 'display', 'none');
+
+        // advanced options buttion
+        var advancedButtonBox = html.create('div', {
+          'class': 'app-error'
+        }, document.body);
+        html.setStyle(advancedButtonBox, {'margin-top': '90px',
+                                          'padding-top': 0,
+                                          'background': 'none'});
+
+        var advancedButton = html.create('div', {
+          'class': 'app-error-advanced-button',
+          innerHTML: jimuUtils.sanitizeHTML(window.jimuNls.advancedOptions)
+        }, advancedButtonBox);
+
+        html.setStyle(advancedButton, {'margin': '0 auto 0 auto',
+                                        'color': '#666',
+                                        'padding': '8px 12px 8px 12px',
+                                        'background': 'none',
+                                        'border': '1px solid #ccc',
+                                        'display': 'inline-block',
+                                        'border-radius': '4px',
+                                        'cursor': 'pointer'});
+
+        on(advancedButton, 'click', lang.hitch(this, function() {
+          html.setStyle(proceedContent, 'display', 'block');
+        }));
+
+        // proceed to
+        var currentHref = window.location.href;
+        var portalUrl = portalUrlUtils.getStandardPortalUrl(window.location.origin);
+        var arcgisOnlinUrl = portalUrlUtils.getArcgisOnlineUrl(portalUrl);
+        var targetHref = currentHref.replace(window.location.origin, arcgisOnlinUrl);
+        var content = window.jimuNls.proceedTo.replace('${value}',
+          '<a href=' + targetHref + '>' + targetHref + '</a>');
+        var proceedContent = html.create('div', {
+          'class': 'app-error',
+          innerHTML: jimuUtils.sanitizeHTML(content)
+        }, document.body);
+        html.setStyle(proceedContent, {'margin-top': '140px',
+                                        'display': 'none',
+                                        'padding-top': 0,
+                                        'background': 'none'});
+
+        /*globals jimuConfig*/
+        html.setStyle(jimuConfig.loadingId, 'display', 'none');
+      } else {
+        html.create('div', {
+          'class': 'app-error',
+          innerHTML: jimuUtils.sanitizeHTML(error.message || error)
+        }, document.body);
+        /*globals jimuConfig*/
+        html.setStyle(jimuConfig.loadingId, 'display', 'none');
+      }
     },
 
     getAppConfig: function () {
@@ -778,7 +845,8 @@ function (declare, lang, array, html, topic, Deferred, on, jimuUtils, WidgetMana
 
       if(newSharedTheme.useLogo && !oldSharedTheme.useLogo){
         if(this.portalSelf.portalProperties && this.portalSelf.portalProperties.sharedTheme){
-          if(this.portalSelf.portalProperties.sharedTheme.logo.small){
+          if(this.portalSelf.portalProperties.sharedTheme.logo &&
+            this.portalSelf.portalProperties.sharedTheme.logo.small){
             this.appConfig.logo = this.portalSelf.portalProperties.sharedTheme.logo.small;
           }else{
             this.appConfig.logo = 'images/app-logo.png';
@@ -1023,6 +1091,9 @@ function (declare, lang, array, html, topic, Deferred, on, jimuUtils, WidgetMana
             topic.publish("appConfigLoaded", this.getAppConfig());
           }));
         }
+
+        var credential = tokenUtils.getPortalCredential(window.portalUrl);
+        window.postMessageToSw({type: 'to_sw_credential', credential: credential.toJson()});
       }));
     },
 
@@ -1327,7 +1398,8 @@ function (declare, lang, array, html, topic, Deferred, on, jimuUtils, WidgetMana
     _getDefaultIconFromUri: function(uri){
       var segs = uri.split('/');
       segs.pop();
-      return segs.join('/') + '/images/icon.png?wab_dv=' + window.deployVersion;
+      var iconUrl = segs.join('/') + '/images/icon.png?wab_dv=' + window.deployVersion;
+      return iconUrl;
     },
 
     _addIndexForWidgetPool: function(config){
@@ -1395,7 +1467,8 @@ function (declare, lang, array, html, topic, Deferred, on, jimuUtils, WidgetMana
         return;
       }
 
-      if(e.icon && e.icon === e.folderUrl + 'images/icon.png?wab_dv=' + window.deployVersion){
+      var defaultIcon = e.folderUrl + 'images/icon.png?wab_dv=' + window.deployVersion;
+      if(e.icon && e.icon === defaultIcon){
         delete e.icon;
       }
 

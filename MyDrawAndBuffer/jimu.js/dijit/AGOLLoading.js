@@ -18,9 +18,10 @@ define(['dojo/_base/declare',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'dojo/text!./templates/AGOLLoading.html',
-  'dojo/_base/html'
+  'dojo/_base/html',
+  '../utils'
 ],
-function(declare, _WidgetBase, _TemplatedMixin, template, html) {
+function(declare, _WidgetBase, _TemplatedMixin, template, html, jimuUtils) {
   return declare([_WidgetBase, _TemplatedMixin], {
     'baseClass': 'jimu-agol-loading',
     declaredClass: 'jimu.dijit.AGOLLoading',
@@ -44,7 +45,7 @@ function(declare, _WidgetBase, _TemplatedMixin, template, html) {
         html.setStyle(this.imgDiv, 'display', 'none');
       }
       if(typeof this.loadingText === 'string'){
-        this.textNode.innerHTML = this.loadingText;
+        this.textNode.innerHTML = jimuUtils.sanitizeHTML(this.loadingText);
       }
     },
 

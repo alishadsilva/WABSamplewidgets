@@ -98,19 +98,30 @@ define({
     "tooltipText": "Texto da Dica de Ferramenta",
     "findAddressOrPlace": "Encontrar um endereço ou local",
     "expand": "Expandir ${value}",
-    "collapse": "Fechar ${value}"
+    "collapse": "Fechar ${value}",
+    "asc": "Ascendente",
+    "desc": "Decrescente"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Suporte ao navegador limitado",
+    "onlineContent1": "Está a usar um navegador obsoleto. Algumas partes desta aplicação podem não funcionar de maneira ideal ou de todo neste navegador. O suporte para este navegador será descontinuado no futuro.",
+    "content2": "Use as versões mais recentes do <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> ou <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Para mais informações sobre suporte ao navegador, consulte a nossa documentação. Forneça o seu feedback através de <feedback-link>GeoNet, a Comunidade da Esri</feedback-link>.",
+    "enterpriseContent1": "Está a usar um navegador que já não suportado. Algumas partes desta aplicação podem não funcionar de maneira ideal ou de todo neste navegador."
   },
   "errorCode": "Código",
   "errorMessage": "Mensagem",
   "errorDetail": "Detalhe",
   "widgetPlaceholderTooltip": "Para configurar, vá a Widgets e clique no placehorlder correspondente",
+  "widgetToolTip": "${widgetLabel}. Pressione Enter para focar no interior do widget. Quando o foco está no interior, pressione Esc para focar novamente no widget.",
   "skips": {
     "skips": "Ignorar Ligações",
     "skipTo": "Avançar para ${value}",
     "headerController": "Aceder ao Controlador do Cabeçalho",
     "map": "Aceder ao Mapa",
     "sidePanel": "Avançar para Painel Lateral",
-    "attributeTable": "Aceder à Tabela de Atributos"
+    "attributeTable": "Aceder à Tabela de Atributos",
+    "tabAway": "Prima Tab para continuar e sair da aplicação, prima Shift e Tab para voltar para ${value} em"
   },
   "panelHeader": {
     "foldWindow": "Dobrar janela",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Ponto",
+    "arrow": "Seta",
     "line": "Linha",
     "polyline": "Polilinha",
     "freehandPolyline": "Polilinha à mão livre",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Todos os valores únicos deste campo",
     "previousCascadeFilterTip": "Valores filtrados por expressões anteriores",
     "allCascadeFilterTip": "Valores filtrados por todas as restantes expressões",
+    "dateOptions": "Opções de data",
+    "startDateOptions": "Opções de data de início",
+    "endDateOptions": "Opções de data de fim",
     "custom": "A data...",
     "today": "hoje",
     "yesterday": "ontem",
     "tomorrow": "amanhã",
+    "atLeastOne": "Deve ter assinalada pelo menos uma opção de data.",
+    "notUncheckedCurrent": "A opção de data selecionada não pode ser desmarcada.",
     "theseDays": "nos dias que correm",
     "thisWeek": "esta semana",
     "thisMonth": "este Mês",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Exibir elementos selecionados",
     "ExportToFeatureCollection": "Exportar para coleção de elementos",
     "ExportToGeoJSON": "Exportar para GeoJSON",
+    "ExportToFilegdb": "Exportar para file geodatabase",
+    "ExportToShapefile": "Exportar para shapefile",
     "EditAttributes": "Editar atributos",
     "AddMarker": "Adicionar um marcador",
     "RemoveMarker": "Remover marcador",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Ano",
     "years": "Anos",
+    "quarter": "Quarto",
     "month": "Mês",
     "months": "Meses",
     "week": "Semana",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Incorporar este mapa num site web",
     "shareEmailSubject": "Incorporar esta aplicação num site web",
-    "shareEmailTxt1": "Aqui está uma aplicação web partilhada consigo utilizando o Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Pode criar e partilhar a sua própria aplicação com o Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Aqui está uma aplicação web partilhada consigo utilizando o ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Pode criar e partilhar a sua própria aplicação web com o Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Visite http://www.esri.com/software/web-appbuilder para obter detalhes.",
     "smallSize": "Pequeno",
     "mediumSize": "Média",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Expandir Saída",
     "tooltip": "clique no mapa para adicionar ponto"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Link a: ",
+    "previewLinkToolTipsSuffix": "O link funciona quando a aplicação é executada."
+  },
   "noEditPrivileges": "A sua conta não tem permissão para criar ou modificar dados.",
   "noEditableLayers": "A sua conta não possui permissão para criar ou modificar dados. Ou este mapa web não contém quaisquer camadas editáveis.",
   "invalidConfiguration": "O widget não se encontra configurado ou as camadas da configuração já não se encontram no mapa.  Por favor, abra a aplicação no modo de builder e reconfigure o widget.",
   "essentialAppsLicenseErrorForApp": "A sua conta não está licenciada para usar uma aplicação não pública. Peça ao administrador da sua organização para lhe atribuir um tipo de utilizador que inclua a licença para aplicações essenciais ou aplicações essenciais complementares.",
-  "essentialAppsLicenseErrorForBuilder": "A sua conta não está licenciada para o Web AppBuilder. Peça ao administrador da sua organização para lhe atribuir um tipo de utilizador que inclua a licença para aplicações essenciais ou aplicações essenciais complementares."
+  "essentialAppsLicenseErrorForBuilder": "A sua conta não está licenciada para o Web AppBuilder. Peça ao administrador da sua organização para lhe atribuir um tipo de utilizador que inclua a licença para aplicações essenciais ou aplicações essenciais complementares.",
+  "blockedByAdminErrorForApp": "A sua organização bloqueou o acesso a esta aplicação. Contacte o seu administrador para obter detalhes.",
+  "blockedByAdminErrorForBuilder": "A sua organização bloqueou o acesso ao Web AppBuilder. Contacte o seu administrador para detalhes.",
+  "orgUrlMessage": "A aplicação a que está a tentar aceder não tem origem no URL que forneceu.",
+  "advancedOptions": "Opções avançadas",
+  "proceedTo": "Prosseguir para ${value}",
+  "setStyle": "Definir estilo"
 });

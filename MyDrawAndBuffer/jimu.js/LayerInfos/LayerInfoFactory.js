@@ -23,6 +23,7 @@ define([
   'jimu/LayerInfos/LayerInfoForWMS',
   //'jimu/LayerInfos/LayerInfoForGroup',
   'jimu/LayerInfos/LayerInfoForDefaultDynamic',
+  'jimu/LayerInfos/LayerInfoForDefaultDynamicShipFeatureLayer',
   'jimu/LayerInfos/LayerInfoForDefaultTile',
   'jimu/LayerInfos/LayerInfoForDefaultWMS',
   'jimu/LayerInfos/LayerInfoForDefaultTable',
@@ -39,6 +40,7 @@ define([
   LayerInfoForWMS,
   //LayerInfoForGroup,
   LayerInfoForDefaultDynamic,
+  LayerInfoForDefaultDynamicShipFeatureLayer,
   LayerInfoForDefaultTile,
   LayerInfoForDefaultWMS,
   LayerInfoForDefaultTable,
@@ -86,6 +88,9 @@ define([
           case 'mapservice_tiled_group':
             return new LayerInfoForGroup(operLayer, this.map, this, true);
           */
+          case 'mapservice_dynamic_ship_featurelayer':
+            newLayerInfo = new LayerInfoForDefaultDynamicShipFeatureLayer(operLayer, this.map, this, this.layerInfos);
+            break;
           case 'mapservice_dynamic_group':
           case 'mapservice_dynamic':
             newLayerInfo = new LayerInfoForDefaultDynamic(operLayer, this.map, this, this.layerInfos);

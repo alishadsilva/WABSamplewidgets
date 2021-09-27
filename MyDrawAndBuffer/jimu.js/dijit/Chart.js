@@ -35,7 +35,7 @@ define([
       'baseClass': 'jimu-dijit-chart',
       templateString: '<div></div>',
       declaredClass: 'jimu.dijit.chart',
-      // constructor -> this.config, this.chartDom
+      // constructor -> this.config, this.chartDom, this.preview: boolean
 
       //public methods:
       //setConfig -> update the option of this.chart.
@@ -73,6 +73,9 @@ define([
       // "backgroundColor": "#fff",
       // "scale": true, //if stack = true,  force scale = false
       // "dataZoom": ["slider"], //inside
+      // "dataZoomOption": {
+      //    mode: 'AUTO', // ALL
+      // }
       // "events": [{
       //   "name": "", //"click"、"dblclick"、"mousedown"、"mousemove"、"mouseup"、"mouseover"、"mouseout"
       //   "callback": "function (params) {}"
@@ -173,20 +176,25 @@ define([
       },
 
       updateConfig: function(config) {
-        if (!config) {
+        if (!config || !this.chart) {
           return false;
         }
+
+        var prevOption = this.chart.getOption();
+        var isSameNumberSeriesItems = this._isSameNumberSeriesItems(prevOption, config);
+        var prevRatio = (!this.preview && isSameNumberSeriesItems) ? this.getDatazoomRatio(prevOption) : null;
+
         this.config = config;
         this._specialThemeByConfig(config);
         var option = this._chartFactory(config);
         this.chart.setOption(option, true);
 
-        this._settingByGrid(config, option);
+        this._settingByGrid(config, option, prevRatio);
 
         return true;
       },
 
-      _settingByGrid: function(config, option) {
+      _settingByGrid: function(config, option, prevRatio) {
         if (config.type === 'gauge') {
           return this._resetGaugePosition(config);
         }
@@ -194,7 +202,7 @@ define([
         config.layout = this.chartUtils.calcDefaultLayout(config);
         if (this.chartUtils.isAxisChart(config)) {
           option = this.chartUtils.settingGrid(option, config);
-          option = this.chartUtils.settingDataZoom(option, config, position);
+          option = this.chartUtils.settingDataZoom(option, config, position, prevRatio);
         }
         option = this.chartUtils.settingChartLayout(option, config);
         this.chart.setOption(option, false);
@@ -277,9 +285,21 @@ define([
           height: height || '100%'
         });
         this.chart.resize();
-        //data zoom
-        this._resizeDataZoom();
         this._resetGaugePosition(this.config);
+      },
+
+      getDatazoomRatio: function(option){
+        var dataZoom = option && option.dataZoom && option.dataZoom[0]
+        var ratio = dataZoom ? [dataZoom.start, dataZoom.end] : null;
+        return ratio
+      },
+
+      _isSameNumberSeriesItems: function(prevOption, config) {
+        var prevSeriesNumber = prevOption && prevOption.series && prevOption.series[0] && 
+        prevOption.series[0].data && prevOption.series[0].data.length;
+        var currentSeriesNumber = config && config.series && config.series[0] && 
+        config.series[0].data && config.series[0].data.length;
+        return prevSeriesNumber === currentSeriesNumber;
       },
 
       _resizeDataZoom: function() {

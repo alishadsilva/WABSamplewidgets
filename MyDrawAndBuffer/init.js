@@ -16,7 +16,7 @@
 
 var dojoConfig, jimuConfig;
 
-/*global weinreUrl, loadResources, _loadPolyfills, loadingCallback, debug, allCookies, unescape */
+/*global weinreUrl, loadResources, _loadPolyfills, loadingCallback, debug, allCookies */
 
 var ie = (function() {
 
@@ -220,6 +220,7 @@ var ie = (function() {
 
             require(['jimu/main'/*, 'libs/main'*/], function(jimuMain) {
               //loadingCallback('jimu', resources.length + 1, resources.length);
+              window.showWarningForLimitedBrowser(window.jimuNls);
               jimuMain.initApp();
             });
           });
@@ -230,17 +231,10 @@ var ie = (function() {
 
   function setLocale(){
     if(window.queryObject.locale){
-      dojoConfig.locale = window.queryObject.locale.toLowerCase();
+      var locale = window.queryObject.locale.toLowerCase();
+      dojoConfig.locale = ['hi'].indexOf(locale) >= 0 ? 'en' : locale;
       window._setRTL(dojoConfig.locale);
       return;
-    }
-
-    if(allCookies.esri_auth){
-      /*jshint -W061 */
-      var userObj = eval('(' + unescape(allCookies.esri_auth) + ')');
-      if(userObj.culture){
-        dojoConfig.locale = userObj.culture;
-      }
     }
 
     if(window.queryObject.mode){
@@ -259,6 +253,7 @@ var ie = (function() {
     }
 
     dojoConfig.locale = dojoConfig.locale.toLowerCase();
+    dojoConfig.locale = ['hi'].indexOf(dojoConfig.locale) >= 0 ? 'en' : dojoConfig.locale;
     window._setRTL(dojoConfig.locale);
   }
 })();

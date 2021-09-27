@@ -16,6 +16,7 @@
 
 define([
   'dojo/Evented',
+  'dojo/on',
   'dojo/_base/html',
   'dojo/_base/declare',
   'dojo/_base/lang',
@@ -25,7 +26,7 @@ define([
   'dojo/text!./TwoDatesValueProvider.html',
   'jimu/utils'
 ],
-  function(Evented, html, declare, lang, ValueProvider, _WidgetsInTemplateMixin,
+  function(Evented, on, html, declare, lang, ValueProvider, _WidgetsInTemplateMixin,
     DateValueSelector, template, jimuUitls) {
 
     return declare([ValueProvider, _WidgetsInTemplateMixin, Evented], {
@@ -56,8 +57,21 @@ define([
         opts2.customId = opts2_id + '_and';
         opts2.prompt = this.nls.and;
 
+        if(this.runtime){
+          opts1.virtualDates = this.partObj.interactiveObj.virtualDates1;
+          opts2.virtualDates = this.partObj.interactiveObj.virtualDates2;
+        }
+
         this._dijit1 = new DateValueSelector(opts1, this._dijitDiv1);
         this._dijit2 = new DateValueSelector(opts2, this._dijitDiv2);
+
+        //bind change event
+        this.own(on(this._dijit1, 'change', lang.hitch(this, function(date){
+          this.emit('change', date, 'start');
+        })));
+        this.own(on(this._dijit2, 'change', lang.hitch(this, function(date){
+          this.emit('change', date, 'end');
+        })));
       },
       _initDateSelectors:function(){
       },

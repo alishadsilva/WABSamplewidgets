@@ -17,15 +17,17 @@ define([
   'dojo/_base/declare',
   'dojo/_base/lang',
   'dojo/_base/html',
+  'dojo/Deferred',
   'dojo/topic',
   'dojo/on',
   'dojo/query',
   './FeatureActionManager',
   './utils',
   './dijit/FeatureActionPopupMenu',
-  './RelatedRecordsPopupProjector'
-  ], function(declare, lang, html, topic, on, query, FeatureActionManager,
-  jimuUtils, PopupMenu, RelatedRecordsPopupProjector) {
+  './RelatedRecordsPopupProjector',
+  './LayerInfos/LayerInfos'
+  ], function(declare, lang, html, Deferred, topic, on, query, FeatureActionManager,
+  jimuUtils, PopupMenu, RelatedRecordsPopupProjector, LayerInfos) {
     var instance = null;
     var clazz = declare(null, {
       mapManager: null,
@@ -125,6 +127,19 @@ define([
         html.removeClass(this.popupMenuButtonMobile, 'disabled');
       },
 
+      convertFeatures: function(features) {
+        var def = new Deferred();
+        var layerInfos = LayerInfos.getInstanceSync();
+        var featureLayer = features && features[0] && features[0].getLayer();
+        var layerInfo = layerInfos.getLayerInfoById(featureLayer && featureLayer.id);
+        if(layerInfo) {
+          def = layerInfo.getMSShipFeatures(features);
+        } else {
+          def.resolve(null);
+        }
+        return def;
+      },
+
       // public method, can be called from outside.
       initPopupMenu: function(features){
         if(!features) {
@@ -132,27 +147,29 @@ define([
           this.popupMenu.setActions([]);
           return;
         }
-        var featureSet = jimuUtils.toFeatureSet(features);
-        this.featureActionManager.getSupportedActions(featureSet).then(lang.hitch(this, function(actions){
-          var excludeActions = ['ZoomTo', 'ShowPopup', 'Flash', 'ExportToCSV',
-            'ExportToFeatureCollection', 'ExportToGeoJSON', 'ShowRelatedRecords',
-            'SaveToMyContent', 'CreateLayer'];
-          var popupActions = actions.filter(lang.hitch(this, function(action){
-            return excludeActions.indexOf(action.name) < 0 ;
-          }));
+        this.convertFeatures(features).then(lang.hitch(this, function(msShipFeatures) {
+          var featureSet = jimuUtils.toFeatureSet(msShipFeatures || features);
+          this.featureActionManager.getSupportedActions(featureSet).then(lang.hitch(this, function(actions){
+            var excludeActions = ['ZoomTo', 'ShowPopup', 'Flash', 'ExportToCSV',
+              'ExportToFeatureCollection', 'ExportToGeoJSON', 'ShowRelatedRecords',
+              'SaveToMyContent', 'CreateLayer'];
+            var popupActions = actions.filter(lang.hitch(this, function(action){
+              return excludeActions.indexOf(action.name) < 0 ;
+            }));
 
-          if(popupActions.length === 0){
-            this._disablePopupMenu();
-          }else{
-            this._enablePopupMenu();
-          }
-          var menuActions = popupActions.map(lang.hitch(this, function(action){
-            //action.data = jimuUtils.toFeatureSet(feature);
-            action.data = featureSet;
-            return action;
+            if(popupActions.length === 0){
+              this._disablePopupMenu();
+            }else{
+              this._enablePopupMenu();
+            }
+            var menuActions = popupActions.map(lang.hitch(this, function(action){
+              //action.data = jimuUtils.toFeatureSet(feature);
+              action.data = featureSet;
+              return action;
+            }));
+            this.menuActionsOfSelectedFeature = menuActions;
+            this.popupMenu.setActions(menuActions);
           }));
-          this.menuActionsOfSelectedFeature = menuActions;
-          this.popupMenu.setActions(menuActions);
         }));
       },
 

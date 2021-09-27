@@ -98,19 +98,30 @@ define({
     "tooltipText": "Text plovoucího popisku",
     "findAddressOrPlace": "Najít adresu nebo místo",
     "expand": "Rozbalit ${value}",
-    "collapse": "Zabalit ${value}"
+    "collapse": "Zabalit ${value}",
+    "asc": "Vzestupně",
+    "desc": "Sestupně"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Omezená podpora prohlížeče",
+    "onlineContent1": "Používáte prohlížeč, který je zastaralý. Některé části této aplikace nemusí v tomto prohlížeči fungovat optimálně nebo vůbec. Podpora tohoto prohlížeče bude v budoucnu ukončena.",
+    "content2": "Použijte nejnovější verze prohlížečů <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> nebo <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Další informace o podpoře prohlížečů najdete v naší dokumentaci. Dejte nám zpětnou vazbu prostřednictvím <feedback-link>GeoNet, komunity Esri</feedback-link>.",
+    "enterpriseContent1": "Používáte prohlížeč, který již není podporován. Některé části této aplikace nemusí v tomto prohlížeči fungovat optimálně nebo vůbec."
   },
   "errorCode": "Kód",
   "errorMessage": "Zpráva",
   "errorDetail": "Podrobnosti",
   "widgetPlaceholderTooltip": "Chcete-li nastavit widget, vyberte jej z nabídky.",
+  "widgetToolTip": "${widgetLabel}. Stiskněte klávesu Enter pro zaměření uvnitř tohoto widgetu. Je-li zaměření uvnitř, stisknutím klávesy Esc se zaměříte zpátky na widget.",
   "skips": {
     "skips": "Přeskočit odkazy",
     "skipTo": "Přeskočit na ${value}",
     "headerController": "Přeskočit na ovladač záhlaví",
     "map": "Přeskočit na mapu",
     "sidePanel": "Přeskočit na postranní panel",
-    "attributeTable": "Přeskočit na atributovou tabulku"
+    "attributeTable": "Přeskočit na atributovou tabulku",
+    "tabAway": "Stisknutím klávesy Tab opustíte aplikaci, stisknutím kláves Shift a Tab se vrátíte zpět na ${value}"
   },
   "panelHeader": {
     "foldWindow": "Sbalit okno",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Bod",
+    "arrow": "Šipka",
     "line": "Linie",
     "polyline": "Polylinie",
     "freehandPolyline": "Linie od ruky",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Všechny jedinečné hodnoty tohoto pole",
     "previousCascadeFilterTip": "Hodnoty filtrované předchozími výrazy",
     "allCascadeFilterTip": "Hodnoty filtrované všemi ostatními výrazy",
+    "dateOptions": "Možnosti data",
+    "startDateOptions": "Otevřít možnosti data zahájení",
+    "endDateOptions": "Zavřít možnosti data",
     "custom": "datum…",
     "today": "dnes",
     "yesterday": "včera",
     "tomorrow": "zítra",
+    "atLeastOne": "Alespoň jedna možnost data by měla být označena.",
+    "notUncheckedCurrent": "Označení možnosti data nejde zrušit.",
     "theseDays": "tyto dny",
     "thisWeek": "tento týden",
     "thisMonth": "tento měsíc",
@@ -493,7 +510,7 @@ define({
     "featureActions": "Akce prvku",
     "ZoomTo": "Zaostřit",
     "PanTo": "Posunout k",
-    "Flash": "Flash",
+    "Flash": "Zablikat",
     "ShowPopup": "Zobrazit vyskakovací okno",
     "CreateLayer": "Vytvořit vrstvu",
     "ShowStatistics": "Statistika…",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Zobrazit vybrané prvky",
     "ExportToFeatureCollection": "Exportovat do kolekce prvků",
     "ExportToGeoJSON": "Exportovat do GeoJSON",
+    "ExportToFilegdb": "Exportovat do souborové geodatabáze",
+    "ExportToShapefile": "Exportovat do shapefile",
     "EditAttributes": "Editovat atributy",
     "AddMarker": "Přidat značku",
     "RemoveMarker": "Odstranit značku",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "Rok",
     "years": "Roky",
+    "quarter": "Čtvrť",
     "month": "Měsíc",
     "months": "Měsíce",
     "week": "Týden",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "Došlo k chybě při vytváření widgetu.",
     "createWidgetSettingPageError": "Došlo k chybě na stránce nastavení widgetu.",
-    "loadWidgetResourceError": "Došlo k chybě při načítání zdroje widgetu."
+    "loadWidgetResourceError": "Došlo k chybě při načítání zdroje widgetu"
   },
   "shareOptions": {
     "shareMap": "Zvolte, kdo bude moci vidět tuto aplikaci",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Vložení aplikace do webových stránek.",
     "shareEmailSubject": "Sdílení webové aplikace:",
-    "shareEmailTxt1": "Zde je webová aplikace, která s vámi byla sdílena pomocí aplikace Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Aplikaci Esri Web AppBuilder for ArcGIS můžete použít k vytváření a sdílení vlastních webových aplikací.",
+    "shareEmailTxt1": "Zde je webová aplikace, která s vámi byla sdílena pomocí ArcGIS Web Builder.",
+    "shareEmailTxt2": "Aplikaci ArcGIS Web AppBuilder od společnosti Esri můžete použít k vytváření a sdílení vlastních webových aplikací.",
     "shareEmailTxt3": "Podrobné informace naleznete na webových stránkách http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Malý",
     "mediumSize": "Střední",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Rozbalit výstup",
     "tooltip": "Kliknutím přidejte bod mapě"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Odkaz na: ",
+    "previewLinkToolTipsSuffix": "Tento odkaz bude fungovat při spuštění aplikace."
+  },
   "noEditPrivileges": "Váš online účet nemá přístupová práva k vytváření nebo úpravě dat.",
   "noEditableLayers": "Váš účet nemá oprávnění vytvářet či upravovat data nebo tato webová mapa neobsahuje žádné editovatelné vrstvy.",
   "invalidConfiguration": "Widget není nakonfigurován nebo se vrstvy v konfiguraci již nenacházejí v mapě. Spusťte aplikaci v režimu tvorby a upravte konfiguraci widgetu.",
   "essentialAppsLicenseErrorForApp": "Váš účet nevlastní licenci k používání aplikace, která není veřejná. Požádejte prosím správce své organizace, aby vám přidělil typ uživatele, jehož součástí jsou základní aplikace nebo doplňková licence základních aplikací.",
-  "essentialAppsLicenseErrorForBuilder": "Váš účet nevlastní licenci Web AppBuilder. Požádejte prosím správce své organizace, aby vám přidělil typ uživatele, jehož součástí jsou základní aplikace nebo doplňková licence základních aplikací."
+  "essentialAppsLicenseErrorForBuilder": "Váš účet nevlastní licenci Web AppBuilder. Požádejte prosím správce své organizace, aby vám přidělil typ uživatele, jehož součástí jsou základní aplikace nebo doplňková licence základních aplikací.",
+  "blockedByAdminErrorForApp": "Vaše organizace zakázala přístup k této aplikaci. Obraťte se na svého správce ohledně podrobností.",
+  "blockedByAdminErrorForBuilder": "Vaše organizace zakázala přístup k nástroji Web AppBuilder. Obraťte se na svého správce ohledně podrobností.",
+  "orgUrlMessage": "Aplikace, ke které se snažíte získat přístup, nepochází z adresy URL, kterou jste zadali.",
+  "advancedOptions": "Pokročilé možnosti",
+  "proceedTo": "Pokračujte na ${value}",
+  "setStyle": "Nastavit styl"
 });

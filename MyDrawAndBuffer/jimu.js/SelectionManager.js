@@ -20,6 +20,7 @@ define([
     'dojo/_base/lang',
     'dojo/_base/array',
     'dojo/topic',
+    'dojo/on',
     'esri/layers/FeatureLayer',
     'esri/layers/GraphicsLayer',
     'esri/geometry/geometryEngine',
@@ -29,7 +30,7 @@ define([
     'esri/symbols/SimpleLineSymbol',
     'esri/symbols/SimpleFillSymbol'
   ],
-  function(declare, Deferred, lang, array, topic, FeatureLayer, GraphicsLayer, geometryEngine,
+  function(declare, Deferred, lang, array, topic, on, FeatureLayer, GraphicsLayer, geometryEngine,
     Graphic, Color, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol) {
     var instance = null;
 
@@ -51,6 +52,8 @@ define([
        * @type {Object}
        */
       _displayLayers: {},
+
+      previousMapScale: null,
 
       setSelectionSymbol: function(layer){
         var type = layer.geometryType;
@@ -141,6 +144,9 @@ define([
 
       getClientFeaturesByGeometry: function(layer, geometry, fullyWithinGeometry){
         var features = array.filter(layer.graphics, lang.hitch(this, function(g) {
+          if (!g.geometry) {
+            return false;
+          }
           if(fullyWithinGeometry){
             return geometryEngine.contains(geometry, g.geometry);
           }else{
@@ -164,9 +170,32 @@ define([
 
       _createDisplayLayer: function(featureLayer){
         var displayLayer = new GraphicsLayer();
+        var idField = featureLayer.objectIdField;
         displayLayer.fields = featureLayer.fields;
         displayLayer.id = "displayLayer_of_" + featureLayer.id;
         this.map.addLayer(displayLayer);
+        if (!this.map.spatialReference.equals(featureLayer.spatialReference) || featureLayer.hasWebGLSurface()) {
+          var selectionSymbol = featureLayer.getSelectionSymbol();
+          // feature layer need to project dynamically, update geometry of that feature
+          on(featureLayer, 'update-end', lang.hitch(this, function() {
+            var scale = Math.round(this.map.getScale());
+            if (this.previousMapScale !== scale && displayLayer.graphics && displayLayer.graphics.length > 0) {
+              this.previousMapScale = scale;
+              var selectedIds = array.map(displayLayer.graphics, function(graphic) {
+                return graphic.attributes[idField];
+              });
+              var selectedFeatures = array.filter(featureLayer.graphics, function(graphic) {
+                return selectedIds.indexOf(graphic.attributes[idField]) >= 0;
+              });
+              displayLayer.clear();
+              array.forEach(selectedFeatures, lang.hitch(this, function(feature){
+                var graphic = new Graphic(feature.toJson());
+                graphic.setSymbol(selectionSymbol);
+                displayLayer.add(graphic);
+              }));
+            }
+          }));
+        }
         return displayLayer;
       },
 
@@ -182,10 +211,12 @@ define([
         var selectFeatures = featureLayer.getSelectedFeatures();
         this.clearDisplayLayer(featureLayer);
         array.forEach(selectFeatures, lang.hitch(this, function(feature){
-          feature.setSymbol(null);
-          var graphic = new Graphic(feature.toJson());
-          graphic.setSymbol(selectionSymbol);
-          displayLayer.add(graphic);
+          if (feature.visible) {
+            feature.setSymbol(null);
+            var graphic = new Graphic(feature.toJson());
+            graphic.setSymbol(selectionSymbol);
+            displayLayer.add(graphic);
+          }
         }));
       },
 
@@ -197,9 +228,11 @@ define([
 
         if(selectionMethod === FeatureLayer.SELECTION_NEW || selectionMethod === FeatureLayer.SELECTION_ADD){
           array.forEach(features, lang.hitch(this, function(feature){
-            var idField = featureLayer.objectIdField;
-            var featureIdVal = feature.attributes[idField];
-            featureLayer._selectedFeaturesWebGL[featureIdVal] = feature;
+            if (feature.visible) {
+              var idField = featureLayer.objectIdField;
+              var featureIdVal = feature.attributes[idField];
+              featureLayer._selectedFeaturesWebGL[featureIdVal] = feature;
+            }
           }));
         }else if(selectionMethod === FeatureLayer.SELECTION_SUBTRACT){
           array.forEach(features, lang.hitch(this, function(feature){

@@ -349,17 +349,11 @@ define([
           html.setStyle(this.titleNode, 'color', '');
         }
 
-        if(appConfig.logoLink){
-          html.setAttr(this.logoLinkNode, 'href', appConfig.logoLink);
-          html.setAttr(this.logoLinkNode, 'tabIndex', this.tabIndex);
-          html.setAttr(this.logoNode, 'alt', appConfig.logoLink);
-          html.setStyle(this.logoNode, 'cursor', 'pointer');
-        }else{
-          html.setAttr(this.logoLinkNode, 'href', 'javascript:void(0)');
-          html.setAttr(this.logoLinkNode, 'tabIndex', -1);
-          html.setAttr(this.logoNode, 'role', 'presentation');
-          html.setStyle(this.logoNode, 'cursor', 'default');
-        }
+        utils.themesHeaderLogoA11y(appConfig, this.tabIndex, {
+          link: this.logoLinkNode,
+          logo: this.logoNode,
+          icon: this.logoNode
+        });
       },
 
       _setElementsSize: function() {
@@ -1129,8 +1123,9 @@ define([
 
       },
 
-      _getIconNodeById: function(id) {
-        var node = query('.icon-node[settingId="' + id + '"]', this.domNode);
+      _getIconNodeById: function(id, isFromMorePane) {
+        var domNode = isFromMorePane ? this.morePane.domNode : this.domNode;
+        var node = query('.icon-node[settingId="' + id + '"]', domNode);
         if (node.length === 0) {
           return;
         }
@@ -1149,7 +1144,18 @@ define([
           this.widgetManager.loadWidget(iconConfig).then(lang.hitch(this, function(widget) {
             this.openedId = iconConfig.id;
             iconNode = this._getIconNodeById(iconConfig.id);
+
+            // triggerd when current node is not inited, eg: click map-popup's action to open a widget&node which is in collapsed header-popup.
+            // init more pane, then click icon node of current widget.
+            if(!iconNode){
+              this.openedId = '';
+              this._showMorePane();
+              iconNode = this._getIconNodeById(iconConfig.id, true);
+              iconNode.click();
+              return;
+            }
             query('.icon-node', this.domNode).removeClass('jimu-state-selected');
+
             html.addClass(iconNode, 'jimu-state-selected');
 
             //we don't call widget.startup because getWidgetMarginBox has started widget

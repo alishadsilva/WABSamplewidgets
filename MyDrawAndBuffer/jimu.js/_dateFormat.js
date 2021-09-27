@@ -141,22 +141,6 @@ define([],
         },
         'connector': ' , '
       },
-      'hi': {
-        'date': {
-          'short': 'd/M/yy',
-          'medium': 'dd/MM/y',
-          'long': 'd MMMM y',
-          'onlyDate': 'dd/MM',
-          'mNoDay': 'MM/y',
-          'sNoDay': 'M/yy'
-        },
-        'time': {
-          'short': 'h:mm a',
-          'medium': 'h:mm:ss a',
-          'sNoDay': ''
-        },
-        'connector': ' , '
-      },
       'hr': {
         'date': {
           'short': 'd.M.y',

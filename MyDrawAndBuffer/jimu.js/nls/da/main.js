@@ -98,19 +98,30 @@ define({
     "tooltipText": "Tekst til værktøjstip",
     "findAddressOrPlace": "Find adresse eller sted",
     "expand": "Vis ${value}",
-    "collapse": "Skjul ${value}"
+    "collapse": "Skjul ${value}",
+    "asc": "Stigende",
+    "desc": "Faldende"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Begrænset browserstøtte",
+    "onlineContent1": "Du anvender en browser, der er udfaset. Nogle dele af denne applikation fungerer muligvis ikke optimalt - eller fungerer slet ikke - i denne browser. Understøttelse af denne browser vil blive udfaset i nær fremtid.",
+    "content2": "Brug de nyeste versioner af <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, eller <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "For yderligere oplysninger om browserstøtte, se vores dokumentation. Send din feedback via <feedback-link>GeoNet, Esri-fællesskabet</feedback-link>.",
+    "enterpriseContent1": "Du anvender en browser, der ikke længere understøttes. Nogle dele af denne applikation fungerer muligvis ikke optimalt - eller fungerer slet ikke - i denne browser."
   },
   "errorCode": "Kode",
   "errorMessage": "Meddelelse",
   "errorDetail": "Detalje",
   "widgetPlaceholderTooltip": "Gå til Widgets. og klik på den tilhørende pladsholder, for at oprette den",
+  "widgetToolTip": "${widgetLabel}. Tryk på Enter for at fokusere inde i denne widget. Når fokus er inde i, kan du trykke på Esc for at fokusere på widget'en igen.",
   "skips": {
     "skips": "Tilsidesæt links",
     "skipTo": "Fortsæt til ${value}",
     "headerController": "Fortsæt til Header-controller",
     "map": "Fortsæt til kort",
     "sidePanel": "Fortsæt til sidepanel",
-    "attributeTable": "Fortsæt til attributtabel"
+    "attributeTable": "Fortsæt til attributtabel",
+    "tabAway": "Tryk på Tab for at fortsætte og gå ud af appen, tryk på Shift og Tab for at gå tilbage til ${value} indenfor"
   },
   "panelHeader": {
     "foldWindow": "Fold vindue sammen",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punkt",
+    "arrow": "Pil",
     "line": "Linje",
     "polyline": "Polylinje",
     "freehandPolyline": "Frihåndspolylinje",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Alle entydige værdier i dette felt",
     "previousCascadeFilterTip": "Værdier filtreret efter de forrige udtryk",
     "allCascadeFilterTip": "Værdier filtreret efter alle andre udtryk",
+    "dateOptions": "Datoindstillinger",
+    "startDateOptions": "Indstillinger for startdato",
+    "endDateOptions": "Indstillinger for slutdato",
     "custom": "datoen...",
     "today": "i dag",
     "yesterday": "i går",
     "tomorrow": "i morgen",
+    "atLeastOne": "Mindst en datoindstilling skal være afkrydset.",
+    "notUncheckedCurrent": "Den valgte datoindstilling kan ikke være u-afkrydset.",
     "theseDays": "disse dage",
     "thisWeek": "denne uge",
     "thisMonth": "denne måned",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Vis udvalgte objekter",
     "ExportToFeatureCollection": "Eksportér til objektsamling",
     "ExportToGeoJSON": "Eksportér til GeoJSON",
+    "ExportToFilegdb": "Eksport til filgeodatabase",
+    "ExportToShapefile": "Eksporter til shapefil",
     "EditAttributes": "Redigér attributter",
     "AddMarker": "Tilføj en markør",
     "RemoveMarker": "Fjern markør",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "År",
     "years": "År",
+    "quarter": "Kvartal",
     "month": "Måned",
     "months": "Måneder",
     "week": "Uge",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Indlejr denne app i et websted",
     "shareEmailSubject": "Deller webapplikation:",
-    "shareEmailTxt1": "Her er en webapplikation, der deles med dig ved hjælp af Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Du kan oprette og dele din egen webapplikation med Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Her er en webapplikation, der deles med dig ved hjælp af ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Du kan oprette og dele din egen webapplikation med Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Besøg http://www.esri.com/software/web-appbuilder for at få yderligere oplysninger.",
     "smallSize": "Lille",
     "mediumSize": "Mellem",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Udvid output",
     "tooltip": "Klik på kortet for at tilføje et punkt"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Link til: ",
+    "previewLinkToolTipsSuffix": "Dette link vil fungere, når appen startes."
+  },
   "noEditPrivileges": "Din konto har ikke rettigheder til at oprette eller redigere data.",
   "noEditableLayers": "Din konto har ikke rettigheder til at oprette eller redigere data, eller også indeholder webkortet ikke nogen redigérbare lag.",
   "invalidConfiguration": "Widget'en er enten ikke konfigureret, eller lagene i konfigurationen findes ikke længere i kortet. Åbn app'en i builder-tilstand, og omkonfigurér widget'en.",
   "essentialAppsLicenseErrorForApp": "Din konto har ikke licens til at bruge en app, der ikke er offentlig. Bed din organisationsadministrator om at knytte dig til en brugertype, der omfatter Essential Apps eller en add-on Essential Apps-licens.",
-  "essentialAppsLicenseErrorForBuilder": "Din konto har ikke licens til Web AppBuilder. Bed din organisationsadministrator om at knytte dig til en brugertype, der omfatter Essential Apps eller en add-on Essential Apps-licens."
+  "essentialAppsLicenseErrorForBuilder": "Din konto har ikke licens til Web AppBuilder. Bed din organisationsadministrator om at knytte dig til en brugertype, der omfatter Essential Apps eller en add-on Essential Apps-licens.",
+  "blockedByAdminErrorForApp": "Din organisation har blokeret adgangen til denne applikation. Kontakt din administrator for at få oplysninger.",
+  "blockedByAdminErrorForBuilder": "Din organisation har blokeret adgangen til Web AppBuilder. Kontakt din administrator for at få oplysninger.",
+  "orgUrlMessage": "Den applikation, som du prøver at få adgang til, stammer ikke fra den URL, du sendte.",
+  "advancedOptions": "Avancerede indstillinger",
+  "proceedTo": "Fortsæt til ${value}",
+  "setStyle": "Angiv typografi"
 });

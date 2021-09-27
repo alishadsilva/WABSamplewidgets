@@ -26,11 +26,12 @@ define([
   'dijit/_TemplatedMixin',
   'dijit/_WidgetsInTemplateMixin',
   'dojo/text!./pageControlForQuery.html',
+  'jimu/filterUtils',
   'jimu/utils'
 ],
 function(Deferred, EsriQuery, array,
   lang, declare, JimuQuery, LayerStructure, _WidgetBase,
-  _TemplatedMixin, _WidgetsInTemplateMixin, template, jimuUtils){
+  _TemplatedMixin, _WidgetsInTemplateMixin, template, FilterUtils, jimuUtils){
 
   return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
     templateString: template,
@@ -66,6 +67,9 @@ function(Deferred, EsriQuery, array,
       this.queryType = JimuQuery.getQueryType(this.layerDefinition);
       if(this.isNumberField){
         this.fieldLength = this.numbericFieldLength[this.fieldInfo.type];
+      }else{
+        this.filterUtils = new FilterUtils();
+        this.isLayerHosted = jimuUtils.isHostedService(this.layerUrl);
       }
     },
 
@@ -86,7 +90,14 @@ function(Deferred, EsriQuery, array,
       if(this.isNumberField){ // CAST(objectid AS CHAR(32)) LIKE '%1%'
         keyWhere = "CAST(" + this.fieldInfo.name + " AS CHAR(" + this.fieldLength + ")) LIKE '%" + name + "%'";
       }else{
-        keyWhere = this.fieldInfo.name + " LIKE '%" + name + "%'";
+        //string field should support both upper case and lower case.
+        var _prefix = (this.isLayerHosted && this.filterUtils.containsNonLatinCharacter(name)) ? 'N' : '';
+        if(this.isLayerHosted){
+          keyWhere = this.fieldInfo.name + " LIKE " + _prefix + "'%" + name.replace(/\'/g, "''") + "%'";
+        }else{
+          keyWhere = "UPPER(" + this.fieldInfo.name + ") LIKE " +
+            "" + _prefix + "'%" + name.replace(/\'/g, "''").toUpperCase() + "%'";
+        }
       }
       query.where = '((' + this.cascadeFilterExprs + ') AND (' + keyWhere + '))';
 

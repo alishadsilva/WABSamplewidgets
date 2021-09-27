@@ -58,7 +58,6 @@ define(['dojo/_base/declare',
         this.createCloseBtn();
         this.panelManager.normalizePanel(this);
 
-        html.setAttr(this.domNode, 'role', 'application');
         this.own(on(this.domNode, 'keydown', lang.hitch(this, function(evt){
           if(!html.hasClass(evt.target, 'close-btn') && evt.keyCode === keys.ESCAPE){
             this.closeNode.focus();

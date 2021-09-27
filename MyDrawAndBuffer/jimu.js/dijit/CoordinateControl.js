@@ -19,7 +19,9 @@ define([
   'dojo/_base/declare',
   'dojo/_base/array',
   'dojo/_base/lang',
+  'jimu/utils',
   'dojo/on',
+  'dojo/has',
   'dojo/query',
   'dojo/dom-attr',
   'dojo/dom-class',
@@ -51,6 +53,7 @@ define([
   'jimu/dijit/Message',
   './_CoordinateControlFormatNotation',
   './_CoordinateControlConfirmNotation',
+  'dojo/_base/sniff',
   'dijit/form/TextBox',
   'dijit/form/Textarea',
   'dijit/form/Select',
@@ -59,7 +62,9 @@ define([
   dojoDeclare,
   dojoArray,
   dojoLang,
+  jimuUtils,
   dojoOn,
+  dojoHas,
   dojoQuery,
   dojoDomAttr,
   dojoDomClass,
@@ -67,7 +72,7 @@ define([
   dojoString,
   dojoTopic,
   dojoKeys,
-  dojoDeferred,
+  DojoDeferred,
   dojoEvented,
   dojoDom,
   dojoDomConstruct,
@@ -77,7 +82,7 @@ define([
   dijitWidgetsInTemplate,
   dijitRegistry,
   dijitTooltip,
-  dijitTooltipDialog,
+  DijitTooltipDialog,
   dijitPopup,
   coordCntrl,
   EsriWMUtils,
@@ -205,7 +210,7 @@ define([
      *
      **/
     postCreate: function () {
-      this._frmtdlg = new dijitTooltipDialog({
+      this._frmtdlg = new DijitTooltipDialog({
         id: this.uid + '_formatCoordinateTooltip',
         content: new CoordFormat({
           nls: this.nls,
@@ -251,6 +256,7 @@ define([
         this.coordName.setValue(this.label);
       }
       if (this.input) {
+        this.zoomButton.parentNode.style.display = "none";
         // hide any actions we don't want to see on the input coords
         this.setHidden(this.expandButton, true); //we never want to show expand button on input
         this.setHidden(this.removeControlBtn, true); //we never want to show delete on input
@@ -268,6 +274,7 @@ define([
       } else {
         //for an output control set the text area to read only
         this.coordtext.disabled = true;
+        this.coordtext.placeholder = "";
         this.setHidden(this.drawPointButton, true); //we never want to show draw button on output
         if (!this.showExpandButton) {
           this.setHidden(this.expandButton, true);
@@ -311,6 +318,13 @@ define([
         dojoLang.hitch(this, this.inputError)
       );
 
+      dojoTopic.subscribe(
+        'VALIDINPUT',
+        dojoLang.hitch(this, function (show) {
+          this.toggleZoomButton(show);
+        })
+      );
+
       // listen for dijit events
       this.own(dojoOn(
         this.expandButton,
@@ -346,7 +360,7 @@ define([
 
       this.own(dojoOn(
         this.coordName,
-        'blur',
+        'change',
         dojoLang.hitch(this, this.coordNameDidChange)
       ));
 
@@ -487,6 +501,14 @@ define([
         dojoLang.hitch(this, this.coordTextInputKeyWasPressed)
       ));
 
+      this.own(dojoOn(this.coordtext, 'input', dojoLang.hitch(this, function () {
+        this.currentClickPointDD = null;
+        if (this.zoomButton.parentNode) {
+          this.zoomButton.parentNode.style.display = "none";
+        }
+        this.emit('coordinates-deleted', {});
+      })));
+
       this.own(this.geomsrvc.on('error', dojoLang.hitch(
         this,
         this.geomSrvcDidFail)));
@@ -527,12 +549,12 @@ define([
     formatDialogApplyButtonClicked: function () {
       this.type = this._frmtdlg.content.ct;
       this.updateDisplay();
-      if (!this.hasCustomLabel &&
-        !this._frmtdlg.content.formats[this._frmtdlg.content.ct].useCustom &&
-        !this.input) {
-        this.coordName.set('value', this._frmtdlg.content.ct);
-      } else {
+      if (this.input) {
         this.coordName.set('value', this.label + " (" + this._frmtdlg.content.ct + ")");
+      } else {
+        if (this.hasCustomLabel) {
+          this.coordName.set('value', this.label);
+        }
       }
       dijitPopup.close(this._frmtdlg);
     },
@@ -544,7 +566,7 @@ define([
       var isCanceled = this._frmtdlg.content.isCanceled;
       if (isCanceled) {
         if (this.addSign !== this._frmtdlg.content.addSignChkBox.checked) {
-          this._frmtdlg.content.addSignChkBox.checked = this.addSign;
+          this._frmtdlg.content.addSignChkBox.setValue(this.addSign);
         }
         return;
       }
@@ -584,19 +606,20 @@ define([
       var s, t, tv, fw, w;
       if (this.input) {
         fw = dijitRegistry.toArray().filter(function (w) {
-          return w.baseClass === 'jimu-widget-cc' && !w.input;
+          return w.baseClass === 'jimu-coordinate-control' && !w.input;
         });
-        fw.reverse();
 
         w = fw.map(function (w) {
-          return w.coordtext.value;
+          if (w.coordtext) {
+            return w.coordtext.value;
+          }
         }).join('\r\n');
 
         tv = this.coordtext.value;
         w = tv + '\r\n' + w;
-
         this.coordtext.value = w;
-        this.coordtext.select();
+
+        this.selectText(this.coordtext);
 
         try {
           s = document.execCommand('copy');
@@ -605,7 +628,7 @@ define([
         }
         this.coordtext.value = tv;
       } else {
-        this.coordtext.select();
+        this.selectText(this.coordtext);
         try {
           s = document.execCommand('copy');
         } catch (cerr) {
@@ -614,6 +637,46 @@ define([
       }
       t = s ? this.nls.copySuccessful : this.nls.copyFailed;
       this.showToolTip(this.cpbtn.id, t);
+    },
+
+    /**
+     * Creates a selection in a textbox
+     * @param {textbox} component
+     */
+    selectText: function (component) {
+      // Create a selection
+      var selection = document.getSelection();
+      // Remove all previous selections
+      selection.removeAllRanges();
+      // Set focus on the target component
+      component.focus();
+
+      // Check if Edge or IE11
+      var isEdge = /Edge/.test(navigator.userAgent);
+      var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+
+      // Cases for Firefox, Chrome and Safari
+      if (dojoHas("ff") || dojoHas("chrome") || dojoHas("safari")) {
+        if (!this.input && this.coordtext.disabled) {
+          this.coordtext.disabled = false;
+          component.select();
+          this.coordtext.disabled = true;
+        } else {
+          component.select();
+        }
+      }
+
+      // Case for Edge
+      if (isEdge) {
+        component.select();
+      }
+
+      // Cases for IE11
+      if (isIE11) {
+        var range = document.createRange();
+        range.selectNode(component);
+        selection.addRange(range);
+      }
     },
 
     /**
@@ -643,12 +706,26 @@ define([
       }));
       this.currentClickPointDD = this.currentClickPoint = newpt;
       if (this.input) {
-        this.parentWidget.map.centerAt(this.currentClickPointDD);
+        if (this.currentClickPoint.spatialReference.equals(this.parentWidget.map.spatialReference)) {
+          this.parentWidget.map.centerAt(this.currentClickPoint);
+        } else {
+          this.getProjectedPoint(this.currentClickPoint).then(dojoLang.hitch(this,
+            function (mapPoint) {
+              this.currentClickPoint = mapPoint;
+              this.parentWidget.map.centerAt(this.currentClickPoint);
+            }
+          ), dojoLang.hitch(this,
+            function (err) {
+              console.error(err);
+              dojoTopic.publish('INPUTERROR');
+            }));
+        }
         this.updateDisplay();
         dojoTopic.publish('INPUTPOINTDIDCHANGE', {
           mapPoint: this.currentClickPointDD,
           inputFromText: true
         });
+        dojoTopic.publish('VALIDINPUT', { show: true });
       }
     },
 
@@ -667,7 +744,10 @@ define([
      **/
     coordTextInputKeyWasPressed: function (evt) {
       if (evt.keyCode === dojoKeys.ENTER) {
+        evt.preventDefault();
         var sanitizedInput = this.getCleanInput(evt.currentTarget.value);
+        //always format the text if coords are manually entered hence set inputFromText flag to false
+        this.inputFromText = false;
         this.getCoordinateType(sanitizedInput).then(dojoLang.hitch(this, function (itm) {
           if (itm) {
             if (itm.length === 1) {
@@ -720,9 +800,12 @@ define([
         this.emit('get-coordinate-complete', sanitizedInput);
         this.currentClickPoint = null;
       }
-      // Clear everything if user deleted coordinates
+      // Hide the zoom button and null out PointDD object
       if ((evt.keyCode === dojoKeys.BACKSPACE) || (evt.keyCode === dojoKeys.DELETE)) {
-        this.clear();
+        this.currentClickPointDD = null;
+        if (this.zoomButton && this.zoomButton.parentNode) {
+          this.zoomButton.parentNode.style.display = "none";
+        }
         this.emit('coordinates-deleted', {});
       }
     },
@@ -911,14 +994,16 @@ define([
      *
      **/
     zoomButtonWasClicked: function () {
-      if (this.parentWidget.map.getZoom() < this.zoomScale) {
-        this.parentWidget.map.centerAt(this.currentClickPointDD).then(
-          dojoLang.hitch(this, function () {
-            this.parentWidget.map.setScale(this.zoomScale);
-          })
-        );
-      } else {
-        this.parentWidget.map.centerAt(this.currentClickPointDD);
+      if (this.currentClickPoint) {
+        if (this.parentWidget.map.getZoom() < this.zoomScale) {
+          this.parentWidget.map.centerAt(this.currentClickPoint).then(
+            dojoLang.hitch(this, function () {
+              this.parentWidget.map.setScale(this.zoomScale);
+            })
+          );
+        } else {
+          this.parentWidget.map.centerAt(this.currentClickPoint);
+        }
       }
     },
 
@@ -943,6 +1028,9 @@ define([
      *
      **/
     remove: function () {
+      if (this._frmtdlg && this._frmtdlg.domNode.offsetParent) {
+        dijitPopup.close(this._frmtdlg);
+      }
       this.destroyRecursive();
       this.emit('removeCoordsControl');
     },
@@ -972,7 +1060,7 @@ define([
      *
      **/
     getDDPoint: function (fromPoint) {
-      var def = new dojoDeferred();
+      var def = new DojoDeferred();
       var webMerc = new EsriSpatialReference(3857);
       if (EsriWMUtils.canProject(fromPoint, webMerc)) {
         // if the point is in geographics or can be projected to geographics do so
@@ -984,7 +1072,7 @@ define([
           url: this.geomsrvc.url + '/findTransformations',
           content: {
             f: 'json',
-            inSR: fromPoint.spatialReference.wkid,
+            inSR: JSON.stringify(fromPoint.spatialReference.toJson()),
             outSR: 4326,
             extentOfInterest: JSON.stringify(this.parentWidget.map.extent) // jshint ignore:line
           },
@@ -1019,7 +1107,7 @@ define([
      *
      **/
     getProjectedPoint: function (fromPoint) {
-      var def = new dojoDeferred();
+      var def = new DojoDeferred();
       if (EsriWMUtils.canProject(fromPoint, this.parentWidget.map)) {
         // if the geographic point can be projected the map spatial reference do so
         def.resolve(EsriWMUtils.geographicToWebMercator(fromPoint));
@@ -1031,7 +1119,7 @@ define([
           content: {
             f: 'json',
             inSR: 4326,
-            outSR: this.parentWidget.map.spatialReference.wkid,
+            outSR: JSON.stringify(this.parentWidget.map.spatialReference.toJson()),
             extentOfInterest: JSON.stringify(this.parentWidget.map.extent) // jshint ignore:line
           },
           handleAs: 'json',
@@ -1081,7 +1169,7 @@ define([
       this.emit("expandButtonClicked", dojoDomClass.contains(this.coordcontrols, 'expanded'));
     },
 
-      /**
+    /**
      * Set tab index to all the focusable elements inside coord control section
      * based on the expand/collapse state
      **/
@@ -1418,8 +1506,8 @@ define([
         if (this.input) {
           if (this.graphicsLayer !== null) {
             this.graphicsLayer.clear();
-            if (this.currentClickPoint.spatialReference.wkid ===
-              this.parentWidget.map.spatialReference.wkid) {
+            if (this.currentClickPoint.spatialReference.equals(
+              this.parentWidget.map.spatialReference)) {
               this.graphicsLayer.add(new EsriGraphic(this.currentClickPoint));
             } else {
               this.getProjectedPoint(this.currentClickPointDD).then(dojoLang.hitch(this,
@@ -1436,6 +1524,7 @@ define([
             mapPoint: this.currentClickPointDD,
             inputFromText: true
           });
+          dojoTopic.publish('VALIDINPUT', { show: true });
         }
       }
     },
@@ -1456,6 +1545,17 @@ define([
      **/
     inputError: function () {
       this.setCoordUI();
+      this.toggleZoomButton(false);
+    },
+
+    /**
+     * Show/Hide zoom button
+     * @param {bool} show
+     */
+    toggleZoomButton: function (show) {
+      if (this.zoomButton.parentNode) {
+        this.zoomButton.parentNode.style.display = (show) ? "inline-block" : "none";
+      }
     },
 
     /**
@@ -1471,7 +1571,7 @@ define([
      * Send request to get dd coordinates in format string
      **/
     getCoordValues: function (fromInput, toType, numDigits) {
-      var deferred = new dojoDeferred();
+      var deferred = new DojoDeferred();
       var nd = numDigits || 6;
       var tt;
       if (toType.name) {
@@ -1533,7 +1633,7 @@ define([
      *
      **/
     getXYNotation: function (fromStr, toType) {
-      var deferred = new dojoDeferred();
+      var deferred = new DojoDeferred();
       var a;
       var tt;
       if (toType.name) {
@@ -1729,7 +1829,7 @@ define([
 
     getCoordinateType: function (fromInput) {
       var clnInput = this.getCleanInput(fromInput);
-      var deferred = new dojoDeferred();
+      var deferred = new DojoDeferred();
       //regexr.com
 
       var strs = this.getNotations();
@@ -1760,6 +1860,9 @@ define([
 
       r.latdeg = parts[0].replace(/[nNsS]/, '');
       r.londeg = parts[1].replace(/[eEwW]/, '');
+
+      r.latdeg = jimuUtils.localizeNumber(parseFloat(r.latdeg));
+      r.londeg = jimuUtils.localizeNumber(parseFloat(r.londeg));
 
       if (addSignPrefix) {
         if (parts[0].slice(-1) === 'N') {
@@ -1797,6 +1900,9 @@ define([
       r.latmin = r.parts[1].replace(/[nNsS]/, '');
       r.londeg = r.parts[2];
       r.lonmin = r.parts[3].replace(/[eEwW]/, '');
+
+      r.latmin = jimuUtils.localizeNumber(parseFloat(r.latmin));
+      r.lonmin = jimuUtils.localizeNumber(parseFloat(r.lonmin));
 
       if (addSignPrefix) {
         if (r.parts[1].slice(-1) === 'N') {
@@ -1840,8 +1946,12 @@ define([
 
       r.londeg = r.parts[3];
       r.lonmin = r.parts[4];
+
+      r.latsec = jimuUtils.localizeNumber(parseFloat(r.latsec));
+
       if (r.parts[5]) {
         r.lonsec = r.parts[5].replace(/[EWew]/, '');
+        r.lonsec = jimuUtils.localizeNumber(parseFloat(r.lonsec));
       }
 
       if (addSignPrefix) {

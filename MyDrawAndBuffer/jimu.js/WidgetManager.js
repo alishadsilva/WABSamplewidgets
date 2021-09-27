@@ -32,10 +32,12 @@ define(['dojo/_base/declare',
   './utils',
   'jimu/tokenUtils',
   './dijit/Message',
-  './DataSourceManager'
+  './DataSourceManager',
+  './portalUrlUtils',
+  './portalUtils'
 ],
 function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspect,
-  json, query, xhr, all, registry, utils, tokenUtils, Message, DataSourceManager) {
+  json, query, xhr, all, registry, utils, tokenUtils, Message, DataSourceManager, portalUrlUtils, portalUtils) {
   var instance = null,
   clazz = declare(Evented, {
 
@@ -48,6 +50,8 @@ function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspe
       this.missedActions = [];
 
       this.activeWidget = null;
+
+      this.widgetsUri = {}; // {widgetId: Promise<widgetUri>}
 
       if(window.isBuilder){
         topic.subscribe("app/mapLoaded", lang.hitch(this, this._onMapLoaded));
@@ -104,7 +108,9 @@ function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspe
         //widget have loaded(identified by id)
         def.resolve(findWidget);
       } else {
-        all([this.loadWidgetClass(setting), this.loadWidgetManifest(setting)])
+        this.getWidgetUri(setting).then(lang.hitch(this, function(uri){
+          setting.uri = uri;
+          all([this.loadWidgetClass(setting), this.loadWidgetManifest(setting)])
           .then(lang.hitch(this, function(results) {
             var clazz = results[0];
             var setting = results[1];
@@ -139,6 +145,7 @@ function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspe
           }), function(err) {
             def.reject(err);
           });
+        }));
       }
       return def;
     },
@@ -195,47 +202,70 @@ function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspe
       return def;
     },
 
+
+    getWidgetUri: function(widgetJson){
+      if(this.widgetsUri[widgetJson.id]){
+        return this.widgetsUri[widgetJson.id];
+      }
+      var def;
+      if(widgetJson.itemId){
+        def = portalUtils.getPortal(window.portalUrl).getItemById(widgetJson.itemId).then(function(item){
+          if(portalUrlUtils.isOnline(window.portalUrl) && !portalUrlUtils.isOnline(item.url)){
+            return new Deferred().reject('Not allow.', widgetJson.itemId);
+          }
+          return utils.widgetJson.getUriFromItem(item);
+        });
+      }else{
+        var info = utils.getUriInfo(widgetJson.uri);
+        if(info.isRemote){
+          def = new Deferred().reject('Not allow.', widgetJson.uri);
+        }else{
+          def = new Deferred().resolve(widgetJson.uri);
+        }
+      }
+      this.widgetsUri[widgetJson.id] = def;
+      return def;
+    },
+
     loadWidgetManifest: function(widgetJson){
       var def = new Deferred();
-      var info = utils.getUriInfo(widgetJson.uri);
-      var url;
-      if(info.isRemote){
-        url = info.folderUrl + 'manifest.json?f=json';
-      }else{
-        url = info.folderUrl + 'manifest.json';
-      }
 
-      //json.manifest is added in configmanager if manifest is merged.
-      if(widgetJson.manifest){
-        def.resolve(widgetJson);
-        return def;
-      }
+      return this.getWidgetUri(widgetJson).then(lang.hitch(this, function(uri){
+        widgetJson.uri = uri;
 
-      xhr(url, {
-        handleAs:'json',
-        headers: {
-          "X-Requested-With": null
-        }
-      }).then(lang.hitch(this, function(manifest){
-        if(manifest.error && manifest.error.code){
-          //request manifest from AGOL item, and there is an error
-          //error code may be: 400, 403
-          return def.reject(manifest.error);
-        }
-
-        manifest.category = 'widget';
-        lang.mixin(manifest, utils.getUriInfo(widgetJson.uri));
-
-        utils.manifest.addI18NLabel(manifest).then(lang.hitch(this, function(){
-          this._processManifest(manifest);
-          utils.widgetJson.addManifest2WidgetJson(widgetJson, manifest);
+        if(widgetJson.manifest){
           def.resolve(widgetJson);
+          return def;
+        }
+
+        var info = utils.getUriInfo(uri);
+        var manifestUrl = info.folderUrl + 'manifest.json';
+        return xhr(manifestUrl, {
+          handleAs:'json',
+          headers: {
+            "X-Requested-With": null
+          }
+        }).then(lang.hitch(this, function(manifest){
+          if(manifest.error && manifest.error.code){
+            //request manifest from AGOL item, and there is an error
+            //error code may be: 400, 403
+            return def.reject(manifest.error);
+          }
+
+          manifest.category = 'widget';
+          lang.mixin(manifest, utils.getUriInfo(widgetJson.uri));
+
+          return utils.manifest.addI18NLabel(manifest).then(lang.hitch(this, function(){
+            this._processManifest(manifest);
+            utils.widgetJson.addManifest2WidgetJson(widgetJson, manifest);
+            def.resolve(widgetJson);
+
+            return def;
+          }));
         }));
       }), function(err){
         def.reject(err);
       });
-
-      return def;
     },
 
     getWidgetMarginBox: function(widget) {
@@ -554,7 +584,7 @@ function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspe
         return;//Prevent repeated opening of the same widget.#14994
       }
 
-      if(utils.isAutoFocusFirstNodeWidget(widget)){
+      if (!widget._isTestSizeFlag && utils.isAutoFocusFirstNodeWidget(widget)) {//Special case for _isTestSizeFlag: timeSlider, swipe
         utils.focusFirstFocusNode(widget.domNode);
       }
 
@@ -1184,6 +1214,7 @@ function(declare, lang, array, html, Deferred, topic, Evented, on, Tooltip, aspe
     },
 
     _remove: function(id) {
+      delete this.widgetsUri[id]
       return array.some(this.loaded, function(w, i) {
         if (w.id === id) {
           this.loaded.splice(i, 1);

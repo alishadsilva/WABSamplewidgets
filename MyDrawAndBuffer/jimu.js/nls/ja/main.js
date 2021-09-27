@@ -98,19 +98,30 @@ define({
     "tooltipText": "ツールチップ テキスト",
     "findAddressOrPlace": "住所または場所の検索",
     "expand": "${value} の展開",
-    "collapse": "${value} の折りたたみ"
+    "collapse": "${value} の折りたたみ",
+    "asc": "昇順",
+    "desc": "降順"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "ブラウザーのサポートは制限されています",
+    "onlineContent1": "非推奨のブラウザーを使用しています。 このアプリケーションの一部は、このブラウザーで最適に動作しないか、全く動作しない可能性があります。 今後、このブラウザーのサポートは終了します。",
+    "content2": "最新バージョンの <chrome-link>Google Chrome</chrome-link>、<firefox-link>Mozilla Firefox</firefox-link>、<safari-link>Apple Safari</safari-link>、または <edge-link>Microsoft Edge</edge-link> を使用してください。",
+    "onlineContent3": "ブラウザー サポートの詳細については、Esri のドキュメントをご参照ください。 <feedback-link>Esri コミュニティの GeoNet</feedback-link> からフィードバックをお寄せください。",
+    "enterpriseContent1": "サポートされていないブラウザーを使用しています。 このアプリケーションの一部は、このブラウザーで最適に動作しないか、全く動作しない可能性があります。"
   },
   "errorCode": "コード",
   "errorMessage": "メッセージ",
   "errorDetail": "詳細",
   "widgetPlaceholderTooltip": "これを設定するには、ウィジェットに移動して、対応するプレースホルダーをクリックします",
+  "widgetToolTip": "${widgetLabel} Enter キーを押してこのウィジェットの内部にフォーカスします。 フォーカスが内部にある場合、Esc キーを押すとフォーカスがウィジェットに戻ります。",
   "skips": {
     "skips": "リンクをスキップ",
     "skipTo": "${value} に移動",
     "headerController": "ヘッダー コントローラーに移動",
     "map": "マップに移動",
     "sidePanel": "サイド パネルに移動",
-    "attributeTable": "属性テーブルに移動"
+    "attributeTable": "属性テーブルに移動",
+    "tabAway": "Tab キーを押して続行し、アプリから移動します。Shift キーと Tab キーを押して、中の ${value} に戻ります。"
   },
   "panelHeader": {
     "foldWindow": "ウィンドウの折りたたみ",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "ポイント",
+    "arrow": "矢印",
     "line": "ライン",
     "polyline": "ポリライン",
     "freehandPolyline": "フリーハンド ポリライン",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "このフィールドのすべての個別値",
     "previousCascadeFilterTip": "前の条件式でフィルター処理した値",
     "allCascadeFilterTip": "他のすべての条件式でフィルター処理した値",
+    "dateOptions": "日付オプション",
+    "startDateOptions": "開始日オプション",
+    "endDateOptions": "終了日オプション",
     "custom": "日付...",
     "today": "今日",
     "yesterday": "昨日",
     "tomorrow": "明日",
+    "atLeastOne": "最低 1 つの日付オプションをオンにする必要があります。",
+    "notUncheckedCurrent": "選択した日付オプションはオンにできません。",
     "theseDays": "最近",
     "thisWeek": "今週",
     "thisMonth": "今月",
@@ -416,7 +433,7 @@ define({
     "selectWebMap": "Web マップの選択",
     "addMapFromOnlineOrPortal": "アプリケーションの Web マップを、ArcGIS Online のパブリック コンテンツから検索するか、ArcGIS Online または Portal のプライベート コンテンツから検索して追加します。",
     "searchMapName": "マップ名で検索...",
-    "searchNone": "検索対象が見つかりませんでした。 もう一度お試しください。",
+    "searchNone": "検索対象が見つかりませんでした。もう一度試してください。",
     "groups": "グループ",
     "noneGroups": "グループはありません",
     "signInTip": "ログイン セッションの期限が切れています。ブラウザーを更新して、ポータルにもう一度サイン インしてください。",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "選択フィーチャの表示",
     "ExportToFeatureCollection": "フィーチャ コレクションにエクスポート",
     "ExportToGeoJSON": "GeoJSON にエクスポート",
+    "ExportToFilegdb": "ファイル ジオデータベースへのエクスポート",
+    "ExportToShapefile": "シェープファイルへのエクスポート",
     "EditAttributes": "属性編集",
     "AddMarker": "マーカーの追加",
     "RemoveMarker": "マーカーの削除",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "年",
     "years": "年",
+    "quarter": "四半期",
     "month": "月",
     "months": "月",
     "week": "週",
@@ -574,7 +594,7 @@ define({
     "hours": "時",
     "minute": "分",
     "minutes": "分",
-    "second": "2 番目",
+    "second": "秒",
     "seconds": "秒",
     "milliSecond": "ミリ秒",
     "milliSeconds": "ミリ秒"
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "このアプリの Web サイトへの埋め込み",
     "shareEmailSubject": "Web アプリの共有:",
-    "shareEmailTxt1": "これは、Web AppBuilder for ArcGIS を使用して共有されている Web アプリです。",
-    "shareEmailTxt2": "Esri Web AppBuilder for ArcGIS を使用して、独自の Web アプリを作成して共有することができます。",
+    "shareEmailTxt1": "これは、ArcGIS Web AppBuilder を使用して作成された Web アプリで、共有されています。",
+    "shareEmailTxt2": "Esri ArcGIS Web AppBuilder を使用して、独自の Web アプリを作成して共有することができます。",
     "shareEmailTxt3": "詳細については、http://www.esri.com/software/web-appbuilder をご参照ください。",
     "smallSize": "小",
     "mediumSize": "中",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "出力の展開",
     "tooltip": "マップをクリックしてポイントを追加"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "リンク先: ",
+    "previewLinkToolTipsSuffix": "このリンクは、アプリの起動時に機能します。"
+  },
   "noEditPrivileges": "ご使用のアカウントには、データを作成/変更する権限がありません。",
   "noEditableLayers": "ご使用のアカウントには、データを作成/変更する権限がありません。または、この Web マップに編集可能なレイヤーが含まれていません。",
   "invalidConfiguration": "ウィジェットが構成されていないか、構成で指定されたレイヤーがマップ内に存在しません。アプリをビルダー モードで開き、ウィジェットを再構成してください。",
   "essentialAppsLicenseErrorForApp": "パブリックでないアプリを使用するためのライセンスがアカウントに付与されていません。 組織の管理者に Essential Apps またはアドオン Essential Apps ライセンスを含むユーザー タイプを割り当てるよう依頼してください。",
-  "essentialAppsLicenseErrorForBuilder": "Web AppBuilder のライセンスがアカウントに付与されていません。 組織の管理者に Essential Apps またはアドオン Essential Apps ライセンスを含むユーザー タイプを割り当てるよう依頼してください。"
+  "essentialAppsLicenseErrorForBuilder": "Web AppBuilder のライセンスがアカウントに付与されていません。 組織の管理者に Essential Apps またはアドオン Essential Apps ライセンスを含むユーザー タイプを割り当てるよう依頼してください。",
+  "blockedByAdminErrorForApp": "組織は、このアプリケーションへのアクセスをブロックしています。 詳細については、管理者にお問い合わせください。",
+  "blockedByAdminErrorForBuilder": "組織は、Web AppBuilder へのアクセスをブロックしています。 詳細については、管理者にお問い合わせください。",
+  "orgUrlMessage": "アクセスしようとしているアプリケーションは、指定した URL からのものではありません。",
+  "advancedOptions": "高度なオプション",
+  "proceedTo": "${value} に進む",
+  "setStyle": "スタイルの設定"
 });

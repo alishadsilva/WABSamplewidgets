@@ -98,19 +98,30 @@ define({
     "tooltipText": "도구 설명 텍스트",
     "findAddressOrPlace": "주소 또는 위치 찾기",
     "expand": "${value} 확장",
-    "collapse": "${Value} 축소"
+    "collapse": "${value} 축소",
+    "asc": "오름차순",
+    "desc": "내림차순"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "제한된 브라우저 지원",
+    "onlineContent1": "사용 중인 브라우저는 더 이상 지원되지 않습니다. 이 브라우저에서는 이 응용프로그램의 일부가 최적으로 작동하지 않거나 전혀 작동하지 않을 수 있습니다. 이 브라우저에 대한 지원은 향후 중단될 것입니다.",
+    "content2": "최신 버전의 <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link>, <edge-link>Microsoft Edge</edge-link>를 사용하세요.",
+    "onlineContent3": "브라우저 지원에 대한 자세한 내용은 문서를 참고하세요. <feedback-link>GeoNet(Esri 커뮤니티)</feedback-link>을 통해 피드백을 제공하세요.",
+    "enterpriseContent1": "사용 중인 브라우저는 더 이상 지원되지 않습니다. 이 브라우저에서는 이 응용프로그램의 일부가 최적으로 작동하지 않거나 전혀 작동하지 않을 수 있습니다."
   },
   "errorCode": "코드",
   "errorMessage": "메시지",
   "errorDetail": "세부정보",
   "widgetPlaceholderTooltip": "설정하려면, 위젯으로 이동한 다음 해당 개체 틀을 클릭",
+  "widgetToolTip": "${widgetLabel}. Enter 키를 눌러 이 위젯 내부에 초점을 맞춥니다. 초점이 내부에 있으면 Esc 키를 눌러 위젯에 다시 초점을 맞춥니다.",
   "skips": {
     "skips": "링크 건너뛰기",
     "skipTo": "${value}(으)로 건너뛰기",
     "headerController": "머리글 컨트롤러로 건너뛰기",
     "map": "맵으로 건너뛰기",
     "sidePanel": "측면 패널로 건너뛰기",
-    "attributeTable": "속성 테이블로 건너뛰기"
+    "attributeTable": "속성 테이블로 건너뛰기",
+    "tabAway": "Tab 키를 눌러 계속하여 앱 외부로 이동하거나 Shift 키와 Tab 키를 눌러 ${value}(으)로 이동"
   },
   "panelHeader": {
     "foldWindow": "창 접기",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "포인트",
+    "arrow": "화살표",
     "line": "라인",
     "polyline": "폴리라인",
     "freehandPolyline": "자유곡선 폴리라인",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "이 필드의 모든 고유값",
     "previousCascadeFilterTip": "이전 식으로 필터링된 값",
     "allCascadeFilterTip": "다른 모든 식으로 필터링된 값",
+    "dateOptions": "날짜 옵션",
+    "startDateOptions": "시작일 옵션",
+    "endDateOptions": "종료일 옵션",
     "custom": "날짜는...",
     "today": "오늘",
     "yesterday": "어제",
     "tomorrow": "내일",
+    "atLeastOne": "최소 하나의 날짜 옵션을 선택해야 합니다.",
+    "notUncheckedCurrent": "선택한 날짜 옵션을 선택 취소할 수 없습니다.",
     "theseDays": "현재",
     "thisWeek": "이번 주",
     "thisMonth": "이번 달",
@@ -466,7 +483,7 @@ define({
     "cropImage": "이미지 자르기",
     "exceed": "파일 크기는 1024KB를 넘을 수 없습니다.",
     "enableFlash": "이미지를 찾아보려면 먼저 Adobe Flash를 활성화하세요.",
-    "cropWaining": "${가로} x ${세로} 픽셀 이상의 사진을 선택하세요.",
+    "cropWaining": "${width} x ${height} 픽셀 이상의 사진을 선택하세요.",
     "toolTip": "최상의 결과를 얻으려면 이미지의 폭은 ${width}픽셀, 높이는 ${height}픽셀이어야 합니다. 그 밖의 다른 크기는 맞게 조정됩니다. PNG, GIF 및 JPEG 형식의 이미지를 사용할 수 있습니다."
   },
   "simpleTable": {
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "선택한 피처 표시",
     "ExportToFeatureCollection": "피처 컬렉션으로 내보내기",
     "ExportToGeoJSON": "GeoJSON으로 내보내기",
+    "ExportToFilegdb": "파일 지오데이터베이스로 내보내기",
+    "ExportToShapefile": "쉐이프파일로 내보내기",
     "EditAttributes": "속성 편집",
     "AddMarker": "표시 추가",
     "RemoveMarker": "표시 제거",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "년",
     "years": "년",
+    "quarter": "분기",
     "month": "월",
     "months": "월",
     "week": "주",
@@ -602,7 +622,7 @@ define({
   "widgetManager": {
     "createWidgetError": "위젯 생성 오류",
     "createWidgetSettingPageError": "위젯 설정 페이지 생성 오류",
-    "loadWidgetResourceError": "위젯 리소스 로드 오류"
+    "loadWidgetResourceError": "위젯 리소스 불러오기 오류"
   },
   "shareOptions": {
     "shareMap": "이 앱을 볼 수 있는 사람 선택",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "웹 사이트에 이 앱 임베드",
     "shareEmailSubject": "웹 앱 공유:",
-    "shareEmailTxt1": "Web AppBuilder for ArcGIS를 사용하여 웹 앱을 공유할 수 있습니다.",
-    "shareEmailTxt2": "Esri Web AppBuilder for ArcGIS로 고유 웹 앱을 생성하고 공유할 수 있습니다.",
+    "shareEmailTxt1": "ArcGIS Web AppBuilder를 사용하여 공유된 웹앱입니다.",
+    "shareEmailTxt2": "Esri ArcGIS Web AppBuilder로 고유 웹앱을 생성하고 공유할 수 있습니다.",
     "shareEmailTxt3": "자세한 내용은 http://www.esri.com/software/web-appbuilder를 방문하세요.",
     "smallSize": "작게",
     "mediumSize": "중간",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "결과 확장",
     "tooltip": "맵을 클릭하여 포인트 추가"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "연결 대상: ",
+    "previewLinkToolTipsSuffix": "앱이 실행되면 이 링크가 작동합니다."
+  },
   "noEditPrivileges": "내 계정에 데이터를 만들거나 수정할 권한이 없습니다.",
   "noEditableLayers": "해당 계정에는 데이터를 만들거나 수정할 수 있는 권한이 없습니다. 또는 이 웹 맵에는 편집 가능한 레이어가 없습니다.",
   "invalidConfiguration": "위젯이 구성되지 않았거나 구성의 레이어가 더 이상 맵에 없습니다. 빌더 모드에서 앱을 열고 위젯을 다시 구성하세요.",
   "essentialAppsLicenseErrorForApp": "귀하의 계정에는 공개 상태가 아닌 앱을 사용할 수 있는 라이선스가 없습니다. 필수 앱 또는 애드온 필수 앱 라이선스가 포함된 사용자 유형을 업무 지시하려면 기관 관리자에게 문의하세요.",
-  "essentialAppsLicenseErrorForBuilder": "귀하의 계정에는 웹 앱 빌더의 라이선스가 없습니다. 필수 앱 또는 애드온 필수 앱 라이선스가 포함된 사용자 유형을 업무 지시하려면 기관 관리자에게 문의하세요."
+  "essentialAppsLicenseErrorForBuilder": "귀하의 계정에는 웹 앱 빌더의 라이선스가 없습니다. 필수 앱 또는 애드온 필수 앱 라이선스가 포함된 사용자 유형을 업무 지시하려면 기관 관리자에게 문의하세요.",
+  "blockedByAdminErrorForApp": "기관이 해당 애플리케이션에 대한 접근을 차단했습니다. 자세한 내용은 관리자에게 문의하세요.",
+  "blockedByAdminErrorForBuilder": "기관이 Web AppBuilder에 대한 접근을 차단했습니다. 자세한 내용은 관리자에게 문의하세요.",
+  "orgUrlMessage": "접근하려는 응용프로그램이 제공한 URL에서 생성되지 않았습니다.",
+  "advancedOptions": "고급 옵션",
+  "proceedTo": "${value}로 계속 진행",
+  "setStyle": "스타일 설정"
 });

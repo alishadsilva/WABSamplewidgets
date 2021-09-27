@@ -109,7 +109,7 @@ function(declare, lang, array, html, on, keys, Evented, _WidgetBase, _TemplatedM
     _createTab: function(tabConfig, width){
       var ctrlNode;
       ctrlNode = html.create('div', {
-        innerHTML: tabConfig.title,
+        innerHTML: utils.sanitizeHTML(tabConfig.title),
         'class': 'tab jimu-vcenter-text',
         style: {
           width: this.isNested? 'auto': width + '%'

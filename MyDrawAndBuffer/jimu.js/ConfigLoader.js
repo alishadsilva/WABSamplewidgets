@@ -24,7 +24,9 @@ define([
   'dojo/Deferred',
   'dojo/promise/all',
   'dojo/request/xhr',
+  'dojo/request/script',
   './utils',
+  './privilegeUtils',
   './WidgetManager',
   './shared/utils',
   './tokenUtils',
@@ -38,7 +40,7 @@ define([
   'esri/arcgis/utils'
 ],
 function (declare, lang, array, html, dojoConfig, cookie,
-  Deferred, all, xhr, jimuUtils, WidgetManager, sharedUtils, tokenUtils,
+  Deferred, all, xhr, dojoScript, jimuUtils, privilegeUtils, WidgetManager, sharedUtils, tokenUtils,
   portalUtils, appConfigResourceUtils, portalUrlUtils, AppStateManager, IdentityManager, esriConfig, esriUrlUtils,
   arcgisUtils) {
   var instance = null, clazz;
@@ -129,19 +131,38 @@ function (declare, lang, array, html, dojoConfig, cookie,
                   }));
                 }));
               }else{
-                // checkEssentialAppsLicense
                 var portalUrl = portalUrlUtils.getStandardPortalUrl(appConfig.portalUrl);
                 var portal = portalUtils.getPortal(portalUrl);
-                return jimuUtils.checkEssentialAppsLicense(this.urlParams.appid, portal, tokenUtils.isInBuilderWindow())
-                .then(lang.hitch(this, function() {
-                  return this._getAppConfigFromTemplateAppId(appConfig.portalUrl,
-                  this.urlParams.appid).then(lang.hitch(this, function(appConfig){
-                    this._tryUpdateAppConfigByLocationUrl(appConfig);
-                    return this._processInPortalAppProtocol(appConfig);
+
+                // checkIsSelfOrigin
+                return privilegeUtils.checkIsSelfOrigin(this.urlParams.appid,
+                                                                portal,
+                                                                tokenUtils.isInBuilderWindow())
+                .then(lang.hitch(this, function(isSelfOrigin) {
+                  if(!isSelfOrigin) {
+                    var error = new Error(window.jimuNls.orgUrlMessage);
+                    error.isSelfOrigin = false;
+                    throw error;
+                  }
+                })).then(lang.hitch(this, function() {
+                  // checkEssentialAppsLicense
+                  return privilegeUtils.checkEssentialAppsLicense(this.urlParams.appid,
+                                                                  portal,
+                                                                  tokenUtils.isInBuilderWindow())
+                  .then(lang.hitch(this, function() {
+                    return this._getAppConfigFromTemplateAppId(appConfig.portalUrl,
+                    this.urlParams.appid).then(lang.hitch(this, function(appConfig){
+                      this._tryUpdateAppConfigByLocationUrl(appConfig);
+                      return this._processInPortalAppProtocol(appConfig);
+                    }));
+                  }), lang.hitch(this, function(error) {
+                    console.error(error);
+                    if(error.isBlockedByOrg) {
+                      throw Error(window.jimuNls.blockedByAdminErrorForApp);
+                    } else {
+                      throw Error(window.jimuNls.essentialAppsLicenseErrorForApp);
+                    }
                   }));
-                }), lang.hitch(this, function(error) {
-                  console.error(error);
-                  throw Error(window.jimuNls.essentialAppsLicenseErrorForApp);
                 }));
               }
             }else{
@@ -486,14 +507,35 @@ function (declare, lang, array, html, dojoConfig, cookie,
               this._getAppConfigFromAppId(portalUrl, this.urlParams.id)
               .then(lang.hitch(this, function(appConfig){
 
+                //checkIsSelfOrigin
+                return privilegeUtils.checkIsSelfOrigin(this.urlParams.id,
+                                                                portal,
+                                                                tokenUtils.isInBuilderWindow())
+                .then(lang.hitch(this, function(isSelfOrigin) {
+                  if(isSelfOrigin) {
+                    return appConfig;
+                  } else {
+                    var error = new Error(window.jimuNls.orgUrlMessage);
+                    error.isSelfOrigin = false;
+                    throw error;
+                  }
+                }));
+              })).then(lang.hitch(this, function(appConfig){
+
                 // checkEssentialAppsLicense
-                return jimuUtils.checkEssentialAppsLicense(this.urlParams.id, portal, tokenUtils.isInBuilderWindow())
+                return privilegeUtils.checkEssentialAppsLicense(this.urlParams.id,
+                                                                portal,
+                                                                tokenUtils.isInBuilderWindow())
                 .then(lang.hitch(this, function() {
                   this._tryUpdateAppConfigByLocationUrl(appConfig);
                   return this._processInPortalAppProtocol(appConfig);
                 }), lang.hitch(this, function(error) {
                   console.error(error);
-                  throw Error(window.jimuNls.essentialAppsLicenseErrorForApp);
+                  if(error.isBlockedByOrg) {
+                    throw Error(window.jimuNls.blockedByAdminErrorForApp);
+                  } else {
+                    throw Error(window.jimuNls.essentialAppsLicenseErrorForApp);
+                  }
                 }));
               })).then(function(appConfig){
                 def.resolve(appConfig);
@@ -585,6 +627,10 @@ function (declare, lang, array, html, dojoConfig, cookie,
         if(this.portalSelf.portalProperties && this.portalSelf.portalProperties.sharedTheme){
           appConfig.theme.sharedTheme.isPortalSupport = true;
         }else{
+          appConfig.theme.sharedTheme.isPortalSupport = false;
+        }
+      } else {
+        if(!this.portalSelf.portalProperties || !this.portalSelf.portalProperties.sharedTheme){
           appConfig.theme.sharedTheme.isPortalSupport = false;
         }
       }
@@ -901,6 +947,8 @@ function (declare, lang, array, html, dojoConfig, cookie,
       var portal = portalUtils.getPortal(portalUrl);
       var sharingUrl = portalUrlUtils.getSharingUrl(portalUrl);
       var defSignIn;
+      var tokenUrl = portalUrl + "/sharing/generateToken?f=json";
+      var httpsTokenUrl = portalUrlUtils.setHttpsProtocol(tokenUrl);
 
       if(window.appInfo.isRunInPortal){
         // if(window !== window.top){
@@ -924,10 +972,40 @@ function (declare, lang, array, html, dojoConfig, cookie,
 
         //we don't register oauth info for app run in portal.
         defSignIn = IdentityManager.checkSignInStatus(sharingUrl);
-        defSignIn.promise.always(lang.hitch(this, function(){
+        defSignIn.promise.then(lang.hitch(this, function(credential){
+          if(!credential.token){
+            dojoScript.get(httpsTokenUrl, {
+              jsonp: 'callback'
+            }).then(lang.hitch(this, function(response){
+              if(response && response.token){
+                // add token to credential for WebTier Portal
+                credential.token = response.token;
+                if(!credential.expires){
+                  credential.expires = response.expires;
+                }
+                def.resolve();
+              } else {
+                def.resolve();
+              }
+            }), lang.hitch(this, function(err){
+              //network error
+              console.error(err);
+              def.resolve();
+            }));
+          } else {
+            window.postMessageToSw({type: 'to_sw_credential', credential: credential.toJson()});
+            def.resolve();
+          }
+        }), lang.hitch(this, function() {
+          window.postMessageToSw({type: 'to_sw_no_credential'});
+          window.isCredentialSettled = true;
           def.resolve();
         }));
       }else{
+        // do not support online custom widget for DE
+        window.postMessageToSw({type: 'to_sw_no_credential'});
+        window.isCredentialSettled = true;
+
         if (!tokenUtils.isInBuilderWindow() && !tokenUtils.isInConfigOrPreviewWindow() &&
           this.portalSelf.supportsOAuth && this.rawAppConfig && this.rawAppConfig.appId && !isWebTier) {
           tokenUtils.registerOAuthInfo(portalUrl, this.rawAppConfig.appId);
@@ -957,7 +1035,7 @@ function (declare, lang, array, html, dojoConfig, cookie,
       var appLocale = this.portalSelf.user && this.portalSelf.user.culture ||
           dojoConfig.locale;
 
-      appLocale = appLocale.toLowerCase();
+      appLocale = appLocale === 'hi' ? 'en' : appLocale.toLowerCase();
 
       if(!this.urlParams.locale && jimuUtils.isLocaleChanged(dojoConfig.locale, appLocale)){
         cookie('wab_app_locale', appLocale);
@@ -1055,7 +1133,7 @@ function (declare, lang, array, html, dojoConfig, cookie,
                 this._addNeedValuesForManifest(manifests[e.uri], e.uri);
                 jimuUtils.widgetJson.addManifest2WidgetJson(e, manifests[e.uri]);
               }else{
-                defs.push(loadWidgetManifest(this.widgetManager, e, config.portalUrl));
+                defs.push(loadWidgetManifest(this.widgetManager, e));
               }
             }
           }));
@@ -1066,7 +1144,7 @@ function (declare, lang, array, html, dojoConfig, cookie,
       }else{
         sharedUtils.visitElement(config, lang.hitch(this, function(e){
           if(!e.widgets && (e.uri || e.itemId)){
-            defs.push(loadWidgetManifest(this.widgetManager, e, config.portalUrl));
+            defs.push(loadWidgetManifest(this.widgetManager, e));
           }
         }));
         all(defs).then(function(){
@@ -1074,58 +1152,20 @@ function (declare, lang, array, html, dojoConfig, cookie,
         });
       }
 
-      function loadWidgetManifest(widgetManager, e, portalUrl){
-        function _doLoadWidgetManifest(e){
-          return widgetManager.loadWidgetManifest(e).then(function(manifest){
-            return manifest;
-          }, function(err){
-            console.log('Widget failed to load, it is removed.', e.name);
+      function loadWidgetManifest(widgetManager, e){
+        return widgetManager.loadWidgetManifest(e).then(function(manifest){
+          return manifest;
+        }, function(err){
+          console.log('Widget failed to load, it is removed.', e.name);
 
-            if(err.stack){
-              console.error(err.stack);
-            }else{
-              //TODO err.code === 400, err.code === 403
-              console.log(err);
-            }
-            deleteUnloadedWidgets(config, e);
-          });
-        }
-
-        if(e.itemId){
-          return portalUtils.getPortal(portalUrl).getItemById(e.itemId).then(function(item){
-            if(isWidgetUsable(item.url)){
-              e.uri = jimuUtils.widgetJson.getUriFromItem(item);
-              return _doLoadWidgetManifest(e);
-            }else{
-              console.log('Widget is not useable, it is removed.', e.name);
-              deleteUnloadedWidgets(config, e);
-            }
-          }, function(err){
-            console.log('Widget is not loaded, it is removed.', e.name, err);
-            deleteUnloadedWidgets(config, e);
-          });
-        }else{
-          return _doLoadWidgetManifest(e);
-        }
-      }
-
-      function isWidgetUsable(/*widgetUrl*/){
-        // if(jimuUtils.isEsriDomain(widgetUrl)){
-        //   return true;
-        // }
-
-        // var credential = tokenUtils.getPortalCredential(config.portalUrl);
-        // if(!credential){
-        //   return false;
-        // }
-
-        // //if user has signed in, because we use the config.portalUrl to get credential, so the user MUST be in this org.
-        // return true;
-
-        //this is for portal only. in portal, as long as user can access the item, use can use the widget.
-        //so return true here.
-        //When online support custom widget, we'll review this code. 20170907
-        return true;
+          if(err.stack){
+            console.error(err.stack);
+          }else{
+            //TODO err.code === 400, err.code === 403
+            console.log(err);
+          }
+          deleteUnloadedWidgets(config, e);
+        });
       }
 
       function deleteUnloadedWidgets(config, e){

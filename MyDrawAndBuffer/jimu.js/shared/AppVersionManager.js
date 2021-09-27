@@ -1358,6 +1358,86 @@ function(BaseVersionManager, utils) {
       },
 
       compatible: true
+    }, {
+      version: '2.14',
+
+      description: 'The version for Online 7.3',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.15',
+
+      description: 'The version for Online 7.4',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.16',
+
+      description: 'The version for Online 8.1',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.17',
+
+      description: 'The version for Online 8.2',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.18',
+
+      description: 'The version for Online 8.3',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.19',
+
+      description: 'The version for Online 8.4',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.20',
+
+      description: 'The version for Online 9.1',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
+    }, {
+      version: '2.21',
+
+      description: 'The version for Online 9.2',
+
+      upgrader: function(oldConfig){
+        return oldConfig;
+      },
+
+      compatible: true
     }];
 
     this.isCompatible = function(_oldVersion, _newVersion){

@@ -37,7 +37,7 @@
 						<span class="jimu-break-word" data-a11y-label-id="point-symbol-section-symbolSize">${nls.symbolSize}:</span>
 					</td>
 					<td>
-						<input data-dojo-attach-point="pointSize" data-dojo-type="dijit/form/NumberSpinner" data-a11y-label-by="point-symbol-section-symbolSize" style="width:100%;" data-dojo-props='value:18,smallDelta:1,largeDelta:10,constraints:{min:1,max:50},intermediateChanges:true'></input>
+						<input data-dojo-attach-point="pointSize" data-dojo-type="dijit/form/NumberSpinner" data-a11y-label-by="point-symbol-section-symbolSize" style="width:100%;" data-dojo-props='value:18,smallDelta:1,largeDelta:10,constraints:{min:1,max:50},intermediateChanges:true,required:true'></input>
 					</td>
 				</tr>
 				<tr data-dojo-attach-point="pointColorTr">
@@ -131,7 +131,7 @@
 					</td>
 					<td>
 						<input data-dojo-attach-point="lineWidth" data-dojo-type="dijit/form/NumberSpinner" style="width:100%;"
-						data-a11y-label-by="line-symbol-section-width" data-dojo-props='value:3,smallDelta:1,constraints:{min:1,max:50},intermediateChanges:true'></input>
+						data-a11y-label-by="line-symbol-section-width" data-dojo-props='value:3,smallDelta:1,constraints:{min:1,max:50},intermediateChanges:true,required:true'></input>
 					</td>
 				</tr>
 			</tbody>
@@ -163,6 +163,15 @@
 					</td>
 					<td>
 						<div data-dojo-attach-point="fillColor" data-dojo-type="jimu/dijit/ColorPicker" data-a11y-label-by="fill-symbol-section-color" style="width:100%;height:30px;" data-dojo-props='color:"#9bbb59"'></div>
+					</td>
+				</tr>
+				<tr class="arrowWidthTr">
+					<td>
+						<span class="jimu-break-word" data-a11y-label-id="arrow-symbol-section-width">${nls.width}:</span>
+					</td>
+					<td>
+						<input data-dojo-attach-point="arrowWidth" data-dojo-type="dijit/form/NumberSpinner" style="width:100%;"
+						data-a11y-label-by="arrow-symbol-section-width" data-dojo-props='value:12,smallDelta:1,constraints:{min:1,max:50},intermediateChanges:true,required:true'></input>
 					</td>
 				</tr>
 				<tr>
@@ -230,7 +239,7 @@
 					</td>
 					<td>
 						<input data-dojo-attach-point="textFontSize" data-dojo-type="dijit/form/NumberSpinner"
-						data-a11y-label-by="text-symbol-section-fontSize" style="width:100%;" data-dojo-props='value:20,smallDelta:1,constraints:{min:1,max:100},intermediateChanges:true'></input>
+						data-a11y-label-by="text-symbol-section-fontSize" style="width:100%;" data-dojo-props='value:20,smallDelta:1,constraints:{min:1,max:100},intermediateChanges:true,required:true'></input>
 					</td>
 				</tr>
 			</tbody>

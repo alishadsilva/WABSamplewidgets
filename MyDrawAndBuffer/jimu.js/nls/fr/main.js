@@ -98,19 +98,30 @@ define({
     "tooltipText": "Texte de l’info-bulle",
     "findAddressOrPlace": "Rechercher une adresse ou un lieu",
     "expand": "Développer ${value}",
-    "collapse": "Réduire ${value}"
+    "collapse": "Réduire ${value}",
+    "asc": "Croissant",
+    "desc": "Décroissant"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Prise en charge limitée du navigateur",
+    "onlineContent1": "Vous utilisez un navigateur obsolète. Certaines parties de cette application risquent de ne pas fonctionner de manière optimale ou de ne pas fonctionner du tout dans ce navigateur. La prise en charge de ce navigateur prendra fin ultérieurement.",
+    "content2": "Utilisez les dernières versions de <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> ou <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Pour plus d’informations sur les navigateurs pris en charge, consultez la documentation. Envoyez vos commentaires via <feedback-link>GeoNet, la communauté Esri</feedback-link>.",
+    "enterpriseContent1": "Vous utilisez un navigateur qui n’est plus pris en charge. Certaines parties de cette application risquent de ne pas fonctionner de manière optimale ou de ne pas fonctionner du tout dans ce navigateur."
   },
   "errorCode": "Code",
   "errorMessage": "Message",
   "errorDetail": "Détail",
   "widgetPlaceholderTooltip": "Pour le configurer, accédez à Widgets et cliquez sur l’espace réservé correspondant",
+  "widgetToolTip": "${widgetLabel}. Appuyez sur Entrée pour placer le focus à l’intérieur de ce widget. Lorsque le focus est placé à l’intérieur du widget, appuyez sur Échap pour annuler ce focus.",
   "skips": {
     "skips": "Ignorer les liens",
     "skipTo": "Passer à ${value}",
     "headerController": "Passer au contrôleur d’en-tête",
     "map": "Passer à la carte",
     "sidePanel": "Passer au volet latéral",
-    "attributeTable": "Passer à la table attributaire"
+    "attributeTable": "Passer à la table attributaire",
+    "tabAway": "Appuyez sur la touche Tabulation pour continuer et sortir de l’application, appuyez sur les touches Majuscule et Tabulation pour revenir à la valeur ${value} dans"
   },
   "panelHeader": {
     "foldWindow": "Réduire la fenêtre",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Point",
+    "arrow": "Flèche",
     "line": "Ligne",
     "polyline": "Polyligne",
     "freehandPolyline": "Polyligne à main levée",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Toutes les valeurs uniques de ce champ",
     "previousCascadeFilterTip": "Valeurs filtrées selon des expressions précédentes",
     "allCascadeFilterTip": "Valeurs filtrées selon toutes les autres expressions",
+    "dateOptions": "Options de date",
+    "startDateOptions": "Options de date de début",
+    "endDateOptions": "Options de date de fin",
     "custom": "la date...",
     "today": "aujourd'hui",
     "yesterday": "hier",
     "tomorrow": "demain",
+    "atLeastOne": "Au moins une date d’option doit être sélectionnée.",
+    "notUncheckedCurrent": "Impossible de décocher l’option de date sélectionnée.",
     "theseDays": "ces jours-ci",
     "thisWeek": "cette semaine",
     "thisMonth": "ce mois",
@@ -433,9 +450,9 @@ define({
     "signInTo": "Se connecter à",
     "lastModified": "Dernière modification",
     "moreDetails": "Plus de détails",
-    "mostRecent": "La plus récente",
-    "mostViewed": "Les plus consultées",
-    "highestRated": "Les mieux évaluées",
+    "mostRecent": "Les plus récents",
+    "mostViewed": "Les plus consultés",
+    "highestRated": "Les mieux évalués",
     "viewItemDetails": "Afficher les détails de l'élément"
   },
   "featureLayerChooserFromPortal": {
@@ -486,7 +503,7 @@ define({
     "toGeoJSON": "Exporter vers GeoJSON"
   },
   "appState": {
-    "title": "Etat de l'application",
+    "title": "Statut de l’application",
     "restoreMap": "Cliquez pour restaurer l’étendue de la carte et la visibilité des couches là où vous en étiez resté."
   },
   "featureActions": {
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Afficher les entités sélectionnées",
     "ExportToFeatureCollection": "Exporter vers une collection d'entités",
     "ExportToGeoJSON": "Exporter vers GeoJSON",
+    "ExportToFilegdb": "Exporter vers une géodatabase fichier",
+    "ExportToShapefile": "Exporter vers un shapefile",
     "EditAttributes": "Modifier des attributs",
     "AddMarker": "Ajouter un symbole ponctuel",
     "RemoveMarker": "Supprimer un symbole ponctuel",
@@ -520,7 +539,7 @@ define({
     "applySearchDistanceToFeatures": "Appliquer une distance de recherche aux entités sélectionnées"
   },
   "units": {
-    "miles": "Milles",
+    "miles": "Miles",
     "milesAbbr": "mi",
     "kilometers": "Kilomètres",
     "kilometersAbbr": "km",
@@ -530,11 +549,11 @@ define({
     "metersAbbr": "m",
     "yards": "Yards",
     "yardsAbbr": "yd",
-    "acres": "Ares",
+    "acres": "Acres",
     "acresAbbr": "acres",
-    "nauticalMiles": "Milles marins",
+    "nauticalMiles": "Milles nautiques",
     "nauticalMilesAbbr": "miln",
-    "uSSurveyFeet": "Pieds d'arpentage US",
+    "uSSurveyFeet": "Pieds d’arpentage US",
     "uSSurveyFeetAbbr": "ftUS",
     "centimeters": "Centimètres",
     "centimetersAbbr": "cm",
@@ -553,17 +572,18 @@ define({
     "squareKilometer": "Kilomètres carrés",
     "squareKilometerAbbr": "km²",
     "squareFeet": "Pieds carrés",
-    "squareFeetAbbr": "ft²",
+    "squareFeetAbbr": "pi²",
     "squareMeters": "Mètres carrés",
     "squareMetersAbbr": "m²",
     "squareYards": "Yards carrés",
     "squareYardsAbbr": "yd²",
-    "squareUSSurveyFeet": "Pieds d'arpentage américains carrés",
+    "squareUSSurveyFeet": "Pieds d’arpentage américains carrés",
     "squareUSSurveyFeetAbbr": "pi² US"
   },
   "timeUnit": {
     "year": "Année",
     "years": "Années",
+    "quarter": "Trimestre",
     "month": "Mois",
     "months": "Mois",
     "week": "Semaine",
@@ -574,7 +594,7 @@ define({
     "hours": "Heures",
     "minute": "Minute",
     "minutes": "Minutes",
-    "second": "Deuxième",
+    "second": "Secondes",
     "seconds": "Secondes",
     "milliSecond": "Milliseconde",
     "milliSeconds": "Millisecondes"
@@ -611,8 +631,8 @@ define({
     "theseGroups": "Ces groupes"
   },
   "shareLink": {
-    "email": "Email",
-    "shareEmail": "Courrier électronique",
+    "email": "e-mail",
+    "shareEmail": "E-mail",
     "facebook": "facebook",
     "shareFacebook": "Facebook",
     "twitter": "twitter",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Incorporer cette application dans un site Web",
     "shareEmailSubject": "Partage de l'application Web :",
-    "shareEmailTxt1": "Voici une application Web partagée avec vous à l'aide de Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Vous pouvez créer et partager votre propre application Web avec Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Voici une application Web partagée avec vous à l’aide d’ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Vous pouvez créer et partager votre propre application Web avec ArcGIS Web AppBuilder d’Esri.",
     "shareEmailTxt3": "Consultez http://www.esri.com/software/web-appbuilder pour en savoir plus.",
     "smallSize": "Petit",
     "mediumSize": "Moyen",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Développer la sortie",
     "tooltip": "Cliquez sur la carte pour ajouter un point"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Lien vers : ",
+    "previewLinkToolTipsSuffix": "Ce lien fonctionne lorsque l’application est lancée."
+  },
   "noEditPrivileges": "Votre compte ne dispose pas des autorisations de création ou de modification des données.",
   "noEditableLayers": "Votre compte ne dispose pas des autorisations de création ou de modification des données ou cette page web ne contient aucune couche modifiable.",
   "invalidConfiguration": "Le widget n'est pas configuré ou les couches de la configuration ne figurent plus sur la carte. Ouvrez l'application en mode de générateur et reconfigurez le widget.",
   "essentialAppsLicenseErrorForApp": "La licence de votre compte ne permet pas d’utiliser une application non publique. Demandez à l’administrateur de votre organisation de vous attribuer un type d’utilisateur qui inclut une licence Essential Apps ou une licence Essential Apps additionnelle.",
-  "essentialAppsLicenseErrorForBuilder": "La licence de votre compte ne permet pas d'utiliser Web AppBuilder. Demandez à l’administrateur de votre organisation de vous attribuer un type d’utilisateur qui inclut une licence Essential Apps ou une licence Essential Apps additionnelle."
+  "essentialAppsLicenseErrorForBuilder": "La licence de votre compte ne permet pas d'utiliser Web AppBuilder. Demandez à l’administrateur de votre organisation de vous attribuer un type d’utilisateur qui inclut une licence Essential Apps ou une licence Essential Apps additionnelle.",
+  "blockedByAdminErrorForApp": "Votre organisation a bloqué l’accès à cette application. Contactez votre administrateur pour plus d’informations.",
+  "blockedByAdminErrorForBuilder": "Votre organisation a bloqué l’accès à Web AppBuilder. Contactez votre administrateur pour plus d’informations.",
+  "orgUrlMessage": "L’application à laquelle vous essayez d’accéder n’est pas disponible à l’URL que vous avez indiquée.",
+  "advancedOptions": "Options avancées",
+  "proceedTo": "Poursuivre vers ${value}",
+  "setStyle": "Définir le style"
 });

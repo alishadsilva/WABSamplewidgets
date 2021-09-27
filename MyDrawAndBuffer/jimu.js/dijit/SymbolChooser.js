@@ -68,13 +68,15 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
     _invokeSymbolChangeEvent: true,
     _customPictureMarkerSymbol: null,
 
+    isArrow: false,
+
     //options:
     //you must set symbol or type
     symbol: null,//optional
     type: null,//optional, available values:marker,line,fill,text
     DEFAULT_PORTAL_URL: "//arcgis.com/",
     _portalLoadTimeoutInMs: 3000,
-    _isOnline: true,
+    _isOnline: true, // just for cases that can't fetch symbols successfully, it could be true for portal&offline.
     // Do not change the order of `_localTypes`, it matches local symbol data
     _localTypes: [
       'basic',
@@ -283,6 +285,9 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       try{
         var jsonSym = symbol.toJson();
         clone = esriSymJsonUtils.fromJson(jsonSym);
+        if(this.type === 'fill'){
+          clone.arrowWidth = symbol.arrowWidth;
+        }
       }
       catch(e){
         console.error(e);
@@ -416,16 +421,16 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
     _bindPointEvents:function(){
       this.own(on(this.pointIconTables, '.symbol-div-item:click', lang.hitch(this, this._onPointSymIconItemClick)));
       this.own(on(this.pointSymClassSelect, 'change', lang.hitch(this, this._onPointSymClassSelectChange)));
-      this.own(on(this.pointSize, 'change', lang.hitch(this, this._onPointSymbolChange)));
-      this.own(on(this.pointColor, 'change', lang.hitch(this, this._onPointSymbolChange)));
-      this.own(on(this.pointAlpha, 'change', lang.hitch(this, this._onPointSymbolChange)));
-      this.own(on(this.pointOutlineColor, 'change', lang.hitch(this, this._onPointSymbolChange)));
-      this.own(on(this.pointOutlineWidth, 'change', lang.hitch(this, this._onPointSymbolChange)));
+      this.own(on(this.pointSize, 'change', lang.hitch(this, this._onPointSymbolChange, false)));
+      this.own(on(this.pointColor, 'change', lang.hitch(this, this._onPointSymbolChange, false)));
+      this.own(on(this.pointAlpha, 'change', lang.hitch(this, this._onPointSymbolChange, false)));
+      this.own(on(this.pointOutlineColor, 'change', lang.hitch(this, this._onPointSymbolChange, false)));
+      this.own(on(this.pointOutlineWidth, 'change', lang.hitch(this, this._onPointSymbolChange, false)));
     },
 
-    _onPointSymbolChange:function(){
+    _onPointSymbolChange:function(checkValidity){
       if(this._invokeSymbolChangeEvent){
-        this._getPointSymbolBySetting();
+        this._getPointSymbolBySetting(checkValidity);
         this._onChange(this.symbol);
       }
     },
@@ -607,7 +612,7 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       if(Object.prototype.toString.call(types) === '[object Array]' && types.length > 0){
         array.forEach(types, lang.hitch(this, function(t){
           optionText = t.title || t.name;
-          isSelected = optionText === this.nls.basic ? true : false;
+          isSelected = t.defaultType ? true : false; // it uses first type when no default type for offline mode.
           if( optionText && (t.id || t.id === 0) ){
             template.push({
               label: optionText,
@@ -788,7 +793,7 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
 
       portal.queryItems({
         q: query,
-        num: 20,
+        num: 50, //Bump fetched symbol sets to 50 as JS API.
         sortField: "title"
       }).then(lang.hitch(this, function (items) {
           var listItems = items.results,
@@ -811,7 +816,8 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
                 dataUrl: item.itemDataUrl
               };
 
-              isDefaultType = typeKeywords.indexOf("default") > -1;
+              // item.name is consistent for different locals. Use it instead of typeKeyword.
+              isDefaultType = item.name === 'Basic';
               if (isDefaultType) {
                 symbolItem.defaultType = true;
                 symbolItems.unshift(symbolItem);
@@ -864,7 +870,9 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       }else{
         this._showBuildInPictureMarkerSymSettings();
       }
-      this._onPointSymbolChange();
+
+      //validate point symbol since it has "Simplemarkersymbol" and "Picturemarkersymbol"
+      this._onPointSymbolChange(true);
       var newColorTrDisplay = html.getStyle(this.pointColorTr, 'display');
       if(oldColorTrDisplay !== newColorTrDisplay){
         this.emit('resize');
@@ -923,6 +931,7 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
         this.symbol.setColor(color);
         var outlineColor = this.pointOutlineColor.getColor();
         var outlineWidth = parseFloat(this.pointOutlineWidth.get('value'));
+        outlineWidth = outlineWidth ? outlineWidth : 0; //set it as 0 when outline-input is empty
         var outlineSym = new SimpleLineSymbol();
         outlineSym.setStyle(SimpleLineSymbol.STYLE_SOLID);
         outlineSym.setColor(outlineColor);
@@ -1087,8 +1096,24 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       return this.symbol;
     },
 
+    //change fillSection type, fillSection or arrowSection
+    setFillSectionType: function(isArrow){
+      if(isArrow){ //arrow
+        html.addClass(this.fillSection, 'arrow-symbol-section');
+      }else{ //other polygons
+        html.removeClass(this.fillSection, 'arrow-symbol-section');
+        // update symbol when changing section type(fill or arrow)
+        // reset to symbol's default arrowWidth for keeping current symbol for polygon to draw
+        if(this.isArrow && !this.arrowWidth.validate()){
+          this.arrowWidth.set('value', 12);
+        }
+      }
+      this.isArrow = isArrow;
+    },
+
     /* fill section */
     _initFillSection:function(){
+      this.setFillSectionType(this.isArrow);
       this._showSection('fill');
       if(!this._fillEventBinded){
         this._fillEventBinded = true;
@@ -1106,15 +1131,16 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
           '.symbol-div-item:click',
           lang.hitch(this, this._onFillSymIconItemClick))
       );
-      this.own(on(this.fillColor, 'change', lang.hitch(this, this._onFillSymbolChange)));
-      this.own(on(this.fillAlpha, 'change', lang.hitch(this, this._onFillSymbolChange)));
-      this.own(on(this.fillOutlineColor, 'change', lang.hitch(this, this._onFillSymbolChange)));
-      this.own(on(this.fillOutlineWidth, 'change', lang.hitch(this, this._onFillSymbolChange)));
+      this.own(on(this.fillColor, 'change', lang.hitch(this, this._onFillSymbolChange, false)));
+      this.own(on(this.fillAlpha, 'change', lang.hitch(this, this._onFillSymbolChange, false)));
+      this.own(on(this.fillOutlineColor, 'change', lang.hitch(this, this._onFillSymbolChange, false)));
+      this.own(on(this.fillOutlineWidth, 'change', lang.hitch(this, this._onFillSymbolChange, false)));
+      this.own(on(this.arrowWidth, 'change', lang.hitch(this, this._onFillSymbolChange, false)));
     },
 
-    _onFillSymbolChange:function(){
+    _onFillSymbolChange:function(checkValidity){
       if(this._invokeSymbolChangeEvent){
-        this._getFillSymbolBySetting();
+        this._getFillSymbolBySetting(checkValidity);
         this._onChange(this.symbol);
       }
     },
@@ -1132,6 +1158,7 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
         this.fillOutlineWidth.set('value', parseInt(symbol.outline.width, 10));
       }
       this._invokeSymbolChangeEvent = true;
+      this.arrowWidth.set('value', parseInt(symbol.arrowWidth, 10));
     },
 
     _isSimpleFillSymbol: function(symbol){
@@ -1176,6 +1203,8 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
         return;
       }
       var symbol = esriSymJsonUtils.fromJson(jsonSym);
+
+      symbol.arrowWidth = this.symbol.arrowWidth;
       this._initFillSettings(symbol);
       this._onFillSymbolChange();
     },
@@ -1185,12 +1214,16 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
         if(!this.fillOutlineWidth.validate()){
           return null;
         }
+        if(this.isArrow && !this.arrowWidth.validate()){
+          return null;
+        }
       }
       this.symbol = new SimpleFillSymbol();
       var color = this.fillColor.getColor();
       color.a = this.fillAlpha.getAlpha();//parseFloat(this.fillAlpha.get('value').toFixed(2));
       var outlineColor = this.fillOutlineColor.getColor();
       var outlineWidth = parseInt(this.fillOutlineWidth.get('value'), 10);
+      outlineWidth = outlineWidth ? outlineWidth : 0; //set it as 0 when outline-input is empty
       this.symbol.setColor(color);
       this.symbol.setStyle(SimpleFillSymbol.STYLE_SOLID);
       var outlineSym = new SimpleLineSymbol();
@@ -1198,6 +1231,8 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       outlineSym.setColor(outlineColor);
       outlineSym.setWidth(outlineWidth);
       this.symbol.setOutline(outlineSym);
+      var arrowWidth = parseInt(this.arrowWidth.get('value'), 10);
+      this.symbol.arrowWidth = arrowWidth;
       this._updatePreview(this.fillSymPreview);
       return this.symbol;
     },
@@ -1244,7 +1279,7 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       return symbol && symbol.declaredClass === 'esri.symbol.TextSymbol';
     },
 
-    _updateTextPreview:function(fontFamily){
+    _updateTextPreview:function(text, fontFamily){
       var colorHex = this.textColor.getColor().toHex();
       var size = parseInt(this.textFontSize.get('value'), 10) + 'px';
       html.setStyle(this.textPreview, {
@@ -1252,12 +1287,13 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
         fontSize: size,
         fontFamily: fontFamily
       });
-      this.textPreview.innerHTML = this.inputText.value;
+      this.textPreview.innerHTML = text;
     },
 
     _getTextSymbolBySetting:function(checkValidity){
+      var text = jimuUtils.sanitizeHTML(this.inputText.value);
       if(checkValidity){
-        if(this.inputText.value.replace(/^\s+|\s+$/g,"") === ''){
+        if(text.replace(/^\s+|\s+$/g,"") === ''){
           return null;
         }
         if(!this.textFontSize.validate()){
@@ -1265,7 +1301,6 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
         }
       }
       this.symbol = new TextSymbol();
-      var text = this.inputText.value;
       var color = this.textColor.getColor();
       var size = parseInt(this.textFontSize.get('value'), 10);
       var font = new Font();// Default font family : Serif
@@ -1273,7 +1308,7 @@ function(declare, _WidgetBase, BindLabelPropsMixin, _TemplatedMixin, _WidgetsInT
       this.symbol.setText(text);
       this.symbol.setColor(color);
       this.symbol.setFont(font);
-      this._updateTextPreview(font.family);
+      this._updateTextPreview(text, font.family);
       return this.symbol;
     },
 

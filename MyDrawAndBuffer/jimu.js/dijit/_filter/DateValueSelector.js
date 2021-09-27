@@ -65,34 +65,41 @@ define([
         if(!(this.virtualDates && this.virtualDates.length > 0)){
           this.virtualDates =
             [filterUtils.VIRTUAL_DATE_TODAY, filterUtils.VIRTUAL_DATE_YESTERDAY, filterUtils.VIRTUAL_DATE_TOMORROW];
+          if(this.runtime){
+            this.virtualDates.unshift(filterUtils.VIRTUAL_DATE_CUSTOM);
+          }
         }
         this.dateTypeSelect.addOption({
           value: '',
           label: '&nbsp;'
         });
-        this.dateTypeSelect.addOption({
-          value: 'custom',
-          label: this.nls.custom
-        });
+        if(!this.runtime || (this.runtime && this.virtualDates.indexOf(filterUtils.VIRTUAL_DATE_CUSTOM) >= 0) ){
+          this.dateTypeSelect.addOption({
+            value: 'custom',
+            label: this.nls.custom
+          });
+        }
         array.map(this.virtualDates, lang.hitch(this, function(virtualDate){
-          var option = {
-            value: virtualDate,
-            label: virtualDate
-          };
-          switch(virtualDate){
-            case filterUtils.VIRTUAL_DATE_TODAY:
-              option.label = this.nls.today;
-              break;
-            case filterUtils.VIRTUAL_DATE_YESTERDAY:
-              option.label = this.nls.yesterday;
-              break;
-            case filterUtils.VIRTUAL_DATE_TOMORROW:
-              option.label = this.nls.tomorrow;
-              break;
-            default:
-              break;
+          if(virtualDate !== 'custom'){
+            var option = {
+              value: virtualDate,
+              label: virtualDate
+            };
+            switch(virtualDate){
+              case filterUtils.VIRTUAL_DATE_TODAY:
+                option.label = this.nls.today;
+                break;
+              case filterUtils.VIRTUAL_DATE_YESTERDAY:
+                option.label = this.nls.yesterday;
+                break;
+              case filterUtils.VIRTUAL_DATE_TOMORROW:
+                option.label = this.nls.tomorrow;
+                break;
+              default:
+                break;
+            }
+            this.dateTypeSelect.addOption(option);
           }
-          this.dateTypeSelect.addOption(option);
         }));
         this.dateTypeSelect.startup();
 
@@ -224,8 +231,7 @@ define([
         if(virtualDate === 'custom'){
           date = this.dateTimeObj.date;
           if(date){
-            // result.value = date.toDateString();//ymd
-            result.value = jimuUtils.getDateTimeStr(date);//save a full date time format
+            result.value = jimuUtils.getDateTimeStr(date, true);//save a full date time format
           }else{
             result.value = null;
           }
@@ -236,8 +242,7 @@ define([
           date = filterUtils.getRealDateByVirtualDate(virtualDate);
           result.virtualDate = virtualDate;
           if(date){
-            // result.value = date.toDateString();
-            result.value = jimuUtils.getDateTimeStr(date, 'YYYY-MM-DD');
+            result.value = jimuUtils.getDateTimeStr(date);
           }else{
             result = null;
           }
@@ -297,7 +302,7 @@ define([
         if(this.dateTypeSelect.get('value') === 'dateTime'){
           this.showDateTimePopup();
         }
-        this.emit('change');
+        this.emit('change', this.dateTypeSelect.get('value'));
       },
 
       showDateTimePopup: function(){

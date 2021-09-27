@@ -98,19 +98,30 @@ define({
     "tooltipText": "Tipsrutetext",
     "findAddressOrPlace": "Sök efter adress eller plats",
     "expand": "Visa ${value}",
-    "collapse": "Dölj ${value}"
+    "collapse": "Dölj ${value}",
+    "asc": "Stigande",
+    "desc": "Fallande"
+  },
+  "limitedUnsupportedBrowser": {
+    "title": "Begränsat webbläsarstöd",
+    "onlineContent1": "Du använder en webbläsare som är inaktuell. Vissa delar av applikationen kanske inte fungerar optimalt eller inte alls i den här webbläsaren. Stödet för den här webbläsaren upphör i framtiden.",
+    "content2": "Använd den senaste versionen av <chrome-link>Google Chrome</chrome-link>, <firefox-link>Mozilla Firefox</firefox-link>, <safari-link>Apple Safari</safari-link> eller <edge-link>Microsoft Edge</edge-link>.",
+    "onlineContent3": "Mer information om webbläsarstöd finns i vår dokumentation. Lämna din återkoppling via <feedback-link>GeoNet, Esris community</feedback-link>.",
+    "enterpriseContent1": "Du använder en webbläsare som inte längre stöds. Vissa delar av applikationen kanske inte fungerar optimalt eller inte alls i den här webbläsaren."
   },
   "errorCode": "Kod",
   "errorMessage": "Meddelande",
   "errorDetail": "Information",
   "widgetPlaceholderTooltip": "Ställ in detta genom att gå till Widgetar och klicka på motsvarande platshållare",
+  "widgetToolTip": "${widgetLabel}. Tryck på Enter för att fokusera inuti widgeten. När fokus är inut trycker du på Esc för att fokusera tillbaka på widgeten.",
   "skips": {
     "skips": "Hoppa över länkar",
     "skipTo": "Hoppa till ${value}",
     "headerController": "Hoppa till rubrikstyrning",
     "map": "Hoppa till karta",
     "sidePanel": "Hoppa till sidopanel",
-    "attributeTable": "Hoppa till attributtabell"
+    "attributeTable": "Hoppa till attributtabell",
+    "tabAway": "Tryck på Tabb om du vill fortsätta och lämna appen, eller tryck på Skift och Tabb om du vill gå tillbaka till ${value} i den"
   },
   "panelHeader": {
     "foldWindow": "Dölj fönster",
@@ -209,6 +220,7 @@ define({
   },
   "drawBox": {
     "point": "Punkt",
+    "arrow": "Pil",
     "line": "Linje",
     "polyline": "Polylinje",
     "freehandPolyline": "Frihandspolylinje",
@@ -365,10 +377,15 @@ define({
     "noneCascadeFilterTip": "Alla unika värden för det här fältet",
     "previousCascadeFilterTip": "Värden som filtrerats av tidigare uttryck",
     "allCascadeFilterTip": "Värden som filtrerats av alla andra uttryck",
+    "dateOptions": "Datumalternativ",
+    "startDateOptions": "Alternativ för startdatum",
+    "endDateOptions": "Alternativ för slutdatum",
     "custom": "datumet...",
     "today": "idag",
     "yesterday": "igår",
     "tomorrow": "i morgon",
+    "atLeastOne": "Minst ett datumalternativ bör markeras.",
+    "notUncheckedCurrent": "Det valda datumalternativet går inte att avmarkera.",
     "theseDays": "dessa dagar",
     "thisWeek": "den här veckan",
     "thisMonth": "den här månaden",
@@ -502,6 +519,8 @@ define({
     "ShowSelectedFeature": "Visa valda geoobjekt",
     "ExportToFeatureCollection": "Exportera till geoobjektsamling",
     "ExportToGeoJSON": "Exportera till GeoJSON",
+    "ExportToFilegdb": "Exportera till filbaserad geodatabas",
+    "ExportToShapefile": "Exportera till shapefil",
     "EditAttributes": "Redigera attribut",
     "AddMarker": "Lägg till en markering",
     "RemoveMarker": "Ta bort markering",
@@ -564,6 +583,7 @@ define({
   "timeUnit": {
     "year": "År",
     "years": "År",
+    "quarter": "Kvartal",
     "month": "Månad",
     "months": "Månader",
     "week": "Vecka",
@@ -621,8 +641,8 @@ define({
     "shareGooglePlus": "Google+",
     "EmbedTips": "Bädda in den här appen på en webbplats",
     "shareEmailSubject": "Delar webbapp:",
-    "shareEmailTxt1": "Här är en webbapp som har delats med dig med hjälp av Web AppBuilder for ArcGIS.",
-    "shareEmailTxt2": "Du kan skapa och dela egna webbappar med Esri Web AppBuilder for ArcGIS.",
+    "shareEmailTxt1": "Här är en webbapp som har delats med dig med hjälp av ArcGIS Web AppBuilder.",
+    "shareEmailTxt2": "Du kan skapa och dela egna webbappar med Esri ArcGIS Web AppBuilder.",
     "shareEmailTxt3": "Mer information finns på http://www.esri.com/software/web-appbuilder.",
     "smallSize": "Liten",
     "mediumSize": "Medium",
@@ -803,9 +823,19 @@ define({
     "expandOutput": "Expandera utdata",
     "tooltip": "Klicka på kartan för att lägga till en punkt"
   },
+  "richTextEditor": {
+    "previewLinkToolTipsPrefix": "Länk till: ",
+    "previewLinkToolTipsSuffix": "Den här länken fungerar när appen startas."
+  },
   "noEditPrivileges": "Ditt konto har inte behörighet att skapa eller ändra data.",
   "noEditableLayers": "Ditt konto har inte behörighet att skapa eller ändra data. Eller så innehåller webbkartan inga redigerbara lager.",
   "invalidConfiguration": "Widgeten är antingen inte konfigurerad eller så finns lagren i konfigurationen inte längre i kartan. Öppna appen i byggläge och konfigurera om widgeten.",
   "essentialAppsLicenseErrorForApp": "Ditt konto har ingen licens för att använda en app som inte är tillgänglig för allmänheten. Be din organisations administratör att tilldela dig en användartyp som omfattar Essential Apps eller en tilläggslicens för Essential Apps.",
-  "essentialAppsLicenseErrorForBuilder": "Ditt konto har ingen licens för Web AppBuilder. Be din organisations administratör att tilldela dig en användartyp som omfattar Essential Apps eller en tilläggslicens för Essential Apps."
+  "essentialAppsLicenseErrorForBuilder": "Ditt konto har ingen licens för Web AppBuilder. Be din organisations administratör att tilldela dig en användartyp som omfattar Essential Apps eller en tilläggslicens för Essential Apps.",
+  "blockedByAdminErrorForApp": "Din organisation har blockerat åtkomst till den här applikationen. Kontakta administratören för information.",
+  "blockedByAdminErrorForBuilder": "Din organisation har blockerat åtkomst till Web AppBuilder. Kontakta administratören för information.",
+  "orgUrlMessage": "Den applikation du försöker öppna hämtas inte från den URL du angav.",
+  "advancedOptions": "Avancerade alternativ",
+  "proceedTo": "Fortsätt till ${value}",
+  "setStyle": "Ange stil"
 });
